@@ -141,10 +141,25 @@ export function AuthProvider({ children }) {
 
   // LOGOUT
   const logout = useCallback(async () => {
-    setSession(null);
-    dispatch({
-      type: 'LOGOUT',
-    });
+    try {
+      // Make an API call to the logout endpoint to invalidate the session on the server
+      await axios.post(endpoints.auth.logout); // Adjust the endpoint if necessary
+
+      // Clear the session on the client side
+      setSession(null);
+
+      // Dispatch the logout action to update the state
+      dispatch({
+        type: 'LOGOUT',
+      });
+    } catch (error) {
+      console.error('Error during logout:', error);
+      // In case of error, just clear the session and update state
+      setSession(null);
+      dispatch({
+        type: 'LOGOUT',
+      });
+    }
   }, []);
 
   // ----------------------------------------------------------------------

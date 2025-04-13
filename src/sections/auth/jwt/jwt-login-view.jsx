@@ -23,11 +23,13 @@ import { useAuthContext } from 'src/auth/hooks';
 // components
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
 export default function JwtLoginView() {
   const { login } = useAuthContext();
+  const { enqueueSnackbar } = useSnackbar();
 
   const router = useRouter();
 
@@ -65,6 +67,7 @@ export default function JwtLoginView() {
       await login?.(data.email, data.password);
 
       router.push(returnTo || PATH_AFTER_LOGIN);
+      enqueueSnackbar('Login berhasil', { variant: 'success' });
     } catch (error) {
       console.error(error);
       reset();
@@ -127,8 +130,6 @@ export default function JwtLoginView() {
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       {renderHead}
-
-   
 
       {renderForm}
     </FormProvider>

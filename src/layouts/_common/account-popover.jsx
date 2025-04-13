@@ -44,7 +44,7 @@ export default function AccountPopover() {
 
   // const { user } = useMockedUser();
 
-  const {user} = useAuthContext();
+  const { user } = useAuthContext();
 
   const { logout } = useAuthContext();
 
@@ -57,6 +57,9 @@ export default function AccountPopover() {
       await logout();
       popover.onClose();
       router.replace('/');
+      enqueueSnackbar('Logout successfully!', {
+        variant: 'success',
+      });
     } catch (error) {
       console.error(error);
       enqueueSnackbar('Unable to logout!', { variant: 'error' });
