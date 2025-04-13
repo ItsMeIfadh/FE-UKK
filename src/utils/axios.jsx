@@ -6,14 +6,14 @@ import { HOST_API } from 'src/config-global';
 
 const axiosInstance = axios.create({
   baseURL: HOST_API,
-  withCredentials: true, // Untuk mengirimkan cookie (refresh token)
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem('accessToken');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}` ;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -25,9 +25,7 @@ export default axiosInstance;
 
 export const fetcher = async (args) => {
   const [url, config] = Array.isArray(args) ? args : [args];
-
   const res = await axiosInstance.get(url, { ...config });
-
   return res.data;
 };
 
@@ -38,7 +36,7 @@ export const endpoints = {
   kanban: '/api/kanban',
   calendar: '/api/calendar',
   auth: {
-    me: '/api/users',
+    me: '/api/user',
     login: '/api/login',
     register: '/api/auth/register',
   },
