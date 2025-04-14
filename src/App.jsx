@@ -25,6 +25,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 // ----------------------------------------------------------------------
 
 // routes
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Router from 'src/routes/sections';
 // theme
 import ThemeProvider from 'src/theme';
@@ -62,6 +63,9 @@ export default function App() {
 
   useScrollToTop();
 
+  // Create a client
+  const queryClient = new QueryClient();
+
   return (
     <AuthProvider>
       <LocalizationProvider>
@@ -82,7 +86,9 @@ export default function App() {
                   <SettingsDrawer />
                   <ProgressBar />
                   <AuthConsumer>
-                    <Router />
+                    <QueryClientProvider client={queryClient}>
+                      <Router />
+                    </QueryClientProvider>
                   </AuthConsumer>
                 </CheckoutProvider>
               </SnackbarProvider>

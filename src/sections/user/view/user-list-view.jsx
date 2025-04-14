@@ -38,6 +38,7 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 //
+import { useFetchAllUser } from 'src/hooks/user/useFetchAllUser';
 import UserTableRow from '../user-table-row';
 import UserTableToolbar from '../user-table-toolbar';
 import UserTableFiltersResult from '../user-table-filters-result';
@@ -75,6 +76,9 @@ export default function UserListView() {
   const [tableData, setTableData] = useState(_userList);
 
   const [filters, setFilters] = useState(defaultFilters);
+
+  const { data } = useFetchAllUser();
+  console.log(data);
 
   const dataFiltered = applyFilter({
     inputData: tableData,

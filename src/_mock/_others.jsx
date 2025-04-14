@@ -119,16 +119,17 @@ export const _notifications = [...Array(9)].map((_, index) => ({
 
 export const _mapContact = [
   {
-    latlng: [33, 65],
-    address: _mock.fullAddress(1),
-    phoneNumber: _mock.phoneNumber(1),
+    latlng: [-6.595038, 106.816635], // Lokasi Bogor
+    address: 'Jl. Raya Ciomas No.01, Ciomas, Kabupaten Bogor, Jawa Barat 16610',
+    phoneNumber: '0812-3456-7890',
   },
   {
-    latlng: [-12.5, 18.5],
-    address: _mock.fullAddress(2),
-    phoneNumber: _mock.phoneNumber(2),
+    latlng: [-6.200000, 106.816666], // Jakarta
+    address: 'Jl. Merdeka Selatan No.12, Jakarta Pusat, DKI Jakarta 10110',
+    phoneNumber: '0857-9876-5432',
   },
 ];
+
 
 // ----------------------------------------------------------------------
 
