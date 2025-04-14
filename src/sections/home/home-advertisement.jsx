@@ -48,6 +48,9 @@ export default function HomeAdvertisement() {
           href={paths.projects} // ini tetap, kalau kamu memang mau navigasi
           sx={{
             color: 'grey.800',
+            mx: 4, // padding horizontal
+            py: 1.5, // padding vertical
+            mt: 2, // margin top
             '&:hover': {
               transform: 'scale(1.05) translateY(-5px)',
               transition: 'transform 0.3s ease-in-out',
