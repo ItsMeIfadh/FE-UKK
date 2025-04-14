@@ -33,16 +33,16 @@ const JwtRegisterPage = lazy(() => import('src/pages/auth/jwt/register'));
 
 // ----------------------------------------------------------------------
 
-const authAmplify = {
-  path: 'amplify',
-  element: (
-    <GuestGuard>
-      <Suspense fallback={<SplashScreen />}>
-        <Outlet />
-      </Suspense>
-    </GuestGuard>
-  ),
-};
+// const authAmplify = {
+//   path: 'amplify',
+//   element: (
+//     <GuestGuard>
+//       <Suspense fallback={<SplashScreen />}>
+//         <Outlet />
+//       </Suspense>
+//     </GuestGuard>
+//   ),
+// };
 
 const authJwt = {
   path: 'jwt',
@@ -98,6 +98,6 @@ const authAuth0 = {
 export const authRoutes = [
   {
     path: 'auth',
-    children: [authAmplify, authJwt, authFirebase, authAuth0],
+    children: [authJwt, authFirebase, authAuth0],
   },
 ];
