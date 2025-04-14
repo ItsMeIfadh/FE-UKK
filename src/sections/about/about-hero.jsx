@@ -35,29 +35,33 @@ export default function AboutHero() {
             },
           }}
         >
-         <TextAnimate text="Siapa" variants={varFade().inRight} sx={{ color: 'primary.main' }} />
+          <Stack spacing={2} display="inline-flex" direction="row" sx={{ color: 'primary.main' }}>
+            <TextAnimate text="PPLG" variants={varFade().inRight} />
+            <TextAnimate text="Creations" variants={varFade().inRight} />
+          </Stack>
 
-<br />
+          <br />
 
-<Stack spacing={2} display="inline-flex" direction="row" sx={{ color: 'common.white' }}>
-  <TextAnimate text="kami" />
-  <TextAnimate text="?" />
-</Stack>
+          <Stack spacing={2} display="inline-flex" direction="row" sx={{ color: 'common.white' }}>
+            <TextAnimate text="siapa" />
+            <TextAnimate text="kami" />
+            <TextAnimate text="?" />
+          </Stack>
 
-<m.div variants={varFade().inRight}>
-  <Typography
-    variant="h4"
-    sx={{
-      mt: 3,
-      color: 'common.white',
-      fontWeight: 'fontWeightSemiBold',
-    }}
-  >
-    Ayo bekerja sama dan
-    <br /> buat website keren dengan mudah <br />
-    bersama kami
-  </Typography>
-</m.div>
+          <m.div variants={varFade().inRight}>
+            <Typography
+              variant="h4"
+              sx={{
+                mt: 3,
+                color: 'common.white',
+                fontWeight: 'fontWeightSemiBold',
+              }}
+            >
+              Temukan solusi digital terbaik
+              <br />  untuk bisnis Anda dan proyek Anda<br />
+              bersama kami.
+            </Typography>
+          </m.div>
 
         </Box>
       </Container>
