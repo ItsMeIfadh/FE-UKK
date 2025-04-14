@@ -10,10 +10,10 @@ import { SplashScreen } from 'src/components/loading-screen';
 const IndexPage = lazy(() => import('src/pages/components'));
 // FOUNDATION
 // const ColorsPage = lazy(() => import('src/pages/components/foundation/colors'));
-const TypographyPage = lazy(() => import('src/pages/components/foundation/typography'));
-const ShadowsPage = lazy(() => import('src/pages/components/foundation/shadows'));
-const GridPage = lazy(() => import('src/pages/components/foundation/grid'));
-const IconsPage = lazy(() => import('src/pages/components/foundation/icons'));
+// const TypographyPage = lazy(() => import('src/pages/components/foundation/typography'));
+// const ShadowsPage = lazy(() => import('src/pages/components/foundation/shadows'));
+// const GridPage = lazy(() => import('src/pages/components/foundation/grid'));
+// const IconsPage = lazy(() => import('src/pages/components/foundation/icons'));
 // MUI COMPONENTS
 const AccordionPage = lazy(() => import('src/pages/components/mui/accordion'));
 const AlertPage = lazy(() => import('src/pages/components/mui/alert'));
@@ -88,12 +88,7 @@ export const componentsRoutes = [
               {
                 element: <Navigate to="/components/foundation/colors" replace />,
                 index: true,
-              },
-              // { path: 'colors', element: <ColorsPage /> },
-              { path: 'typography', element: <TypographyPage /> },
-              { path: 'shadows', element: <ShadowsPage /> },
-              { path: 'grid', element: <GridPage /> },
-              { path: 'icons', element: <IconsPage /> },
+              }
             ],
           },
           {
