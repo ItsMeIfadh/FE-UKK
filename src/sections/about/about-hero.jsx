@@ -58,7 +58,7 @@ export default function AboutHero() {
               }}
             >
               Temukan solusi digital terbaik
-              <br />  untuk bisnis Anda dan proyek Anda<br />
+              <br />  untuk bisnis Anda dan proyek Anda
               bersama kami.
             </Typography>
           </m.div>
