@@ -61,13 +61,79 @@ export default function ContactHero() {
             textAlign: { xs: 'center', md: 'unset' },
           }}
         >
-          <TextAnimate text="Dimana" sx={{ color: 'primary.main' }} variants={varFade().inRight} />
-          <br />
-          <Stack spacing={2} display="inline-flex" direction="row" sx={{ color: 'common.white' }}>
-            <TextAnimate text="kamu" />
-            <TextAnimate text="bisa" />
-            <TextAnimate text="temukan kami?" />
-          </Stack>
+<TextAnimate
+  text="Dimana"
+  variants={varFade().inRight}
+  sx={{
+    color: 'primary.main',
+    typography: {
+      xs: 'h1',    // Lebih besar di tampilan HP
+      sm: 'h2',    // Ukuran di tablet lebih besar
+      md: 'h1',    // Ukuran lebih besar lagi di laptop
+    },
+    fontWeight: 'bold',
+    textAlign: 'left', // Justify ke kiri
+  }}
+/>
+
+<br />
+
+<Stack
+  spacing={2}
+  display="inline-flex"
+  direction="row"
+  sx={{
+    color: 'common.white',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',  // Menyesuaikan justify ke kiri
+  }}
+>
+  <TextAnimate
+    text="kamu"
+    sx={{
+      typography: {
+        xs: 'h1',   // Ukuran lebih besar untuk HP
+        sm: 'h1',   // Ukuran lebih besar di tablet
+        md: 'h1',   // Ukuran lebih besar di laptop
+      },
+      textAlign: 'left',  // Justify ke kiri
+    }}
+  />
+  <TextAnimate
+    text="bisa"
+    sx={{
+      typography: {
+        xs: 'h1',   // Ukuran lebih besar untuk HP
+        sm: 'h1',   // Ukuran lebih besar di tablet
+        md: 'h1',   // Ukuran lebih besar di laptop
+      },
+      textAlign: 'left',  // Justify ke kiri
+    }}
+  />
+  <TextAnimate
+    text="temukan"
+    sx={{
+      typography: {
+        xs: 'h1',   // Ukuran lebih besar untuk HP
+        sm: 'h1',   // Ukuran lebih besar di tablet
+        md: 'h1',   // Ukuran lebih besar di laptop
+      },
+      textAlign: 'left',  // Justify ke kiri
+    }}
+  />
+  <TextAnimate
+    text="kami?"
+    sx={{
+      typography: {
+        xs: 'h1',   // Ukuran lebih besar untuk HP
+        sm: 'h1',   // Ukuran lebih besar di tablet
+        md: 'h1',   // Ukuran lebih besar di laptop
+      },
+      textAlign: 'left',  // Justify ke kiri
+    }}
+  />
+</Stack>
+
 
           <Stack
             spacing={5}

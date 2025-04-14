@@ -8,7 +8,7 @@ export default function ContactPage() {
   return (
     <>
       <Helmet>
-        <title> Contact us</title>
+        <title> PPLG Creations: Contact us</title>
       </Helmet>
 
       <ContactView />
