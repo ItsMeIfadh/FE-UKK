@@ -6,7 +6,7 @@ import { _mapContact } from 'src/_mock';
 //
 import ContactMap from '../contact-map';
 import ContactHero from '../contact-hero';
-import ContactForm from '../contact-form';
+// import ContactForm from '../contact-form';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ export default function ContactView() {
             md: 'repeat(2, 1fr)',
           }}
         >
-          <ContactForm />
+          {/* <ContactForm /> */}
 
           <ContactMap contacts={_mapContact} />
         </Box>
