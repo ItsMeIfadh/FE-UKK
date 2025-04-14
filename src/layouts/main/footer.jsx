@@ -103,7 +103,7 @@ export default function Footer() {
   sx={{
     maxWidth: { xs: 320, sm: 400, md: 480 },
     mx: { xs: 'auto', md: 'unset' },
-    textAlign: { xs: 'center', md: 'left' },
+    textAlign: 'justify',
     fontSize: { xs: '0.875rem', sm: '0.95rem', md: '1rem' },
     lineHeight: 1.8,
     color: 'text.secondary',
