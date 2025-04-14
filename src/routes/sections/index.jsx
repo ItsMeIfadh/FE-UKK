@@ -6,7 +6,7 @@ import MainLayout from 'src/layouts/main';
 //
 import { mainRoutes, HomePage } from './main';
 import { authRoutes } from './auth';
-import { authDemoRoutes } from './auth-demo';
+// import { authDemoRoutes } from './auth-demo';
 import { dashboardRoutes } from './dashboard';
 import { componentsRoutes } from './components';
 
@@ -34,7 +34,7 @@ export default function Router() {
 
     // Auth routes
     ...authRoutes,
-    ...authDemoRoutes,
+    // ...authDemoRoutes,
 
     // Dashboard routes
     ...dashboardRoutes,
