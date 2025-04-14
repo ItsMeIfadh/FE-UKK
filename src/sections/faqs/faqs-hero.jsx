@@ -48,12 +48,28 @@ export default function FaqsHero() {
             />
             <br />
 
-            <Stack spacing={2} display="inline-flex" direction="row" sx={{ color: 'common.white' }}>
-              <TextAnimate text="Yuk," />
-              <TextAnimate text="kita" />
-              <TextAnimate text="kupas" />
-              <TextAnimate text="tuntas!" />
-            </Stack>
+            <Stack spacing={1} sx={{ color: 'common.white' }}>
+  <Stack
+    direction="row"
+    spacing={2}
+    display="inline-flex"
+    sx={{
+      flexWrap: 'wrap',
+    }}
+  >
+    <TextAnimate text="Yuk," />
+    <TextAnimate text="kita" />
+    <TextAnimate text="kupas" />
+  </Stack>
+
+  <TextAnimate
+    text="tuntas!"
+    sx={{
+      fontWeight: 'bold',
+    }}
+  />
+</Stack>
+
           </div>
 
           <m.div variants={varFade().in}>
