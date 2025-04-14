@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import ComponentsView from 'src/sections/_examples/view';
+// import ComponentsView from 'src/sections/_examples/view';
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ export default function ComponentsPage() {
         <title> Components</title>
       </Helmet>
 
-      <ComponentsView />
+      {/* <ComponentsView /> */}
     </>
   );
 }
