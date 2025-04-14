@@ -16,34 +16,34 @@ const IndexPage = lazy(() => import('src/pages/components'));
 // const IconsPage = lazy(() => import('src/pages/components/foundation/icons'));
 // MUI COMPONENTS
 // const AccordionPage = lazy(() => import('src/pages/components/mui/accordion'));
-const AlertPage = lazy(() => import('src/pages/components/mui/alert'));
-const AutocompletePage = lazy(() => import('src/pages/components/mui/autocomplete'));
-const AvatarPage = lazy(() => import('src/pages/components/mui/avatar'));
-const BadgePage = lazy(() => import('src/pages/components/mui/badge'));
-const BreadcrumbsPage = lazy(() => import('src/pages/components/mui/breadcrumbs'));
-const ButtonsPage = lazy(() => import('src/pages/components/mui/buttons'));
-const CheckboxPage = lazy(() => import('src/pages/components/mui/checkbox'));
-const ChipPage = lazy(() => import('src/pages/components/mui/chip'));
-const DataGridPage = lazy(() => import('src/pages/components/mui/data-grid'));
-const DialogPage = lazy(() => import('src/pages/components/mui/dialog'));
-const ListPage = lazy(() => import('src/pages/components/mui/list'));
-const MenuPage = lazy(() => import('src/pages/components/mui/menu'));
-const PaginationPage = lazy(() => import('src/pages/components/mui/pagination'));
-const PickersPage = lazy(() => import('src/pages/components/mui/pickers'));
-const PopoverPage = lazy(() => import('src/pages/components/mui/popover'));
-const ProgressPage = lazy(() => import('src/pages/components/mui/progress'));
-const RadioButtonsPage = lazy(() => import('src/pages/components/mui/radio-button'));
-const RatingPage = lazy(() => import('src/pages/components/mui/rating'));
-const SliderPage = lazy(() => import('src/pages/components/mui/slider'));
-const StepperPage = lazy(() => import('src/pages/components/mui/stepper'));
-const SwitchPage = lazy(() => import('src/pages/components/mui/switch'));
-const TablePage = lazy(() => import('src/pages/components/mui/table'));
-const TabsPage = lazy(() => import('src/pages/components/mui/tabs'));
-const TextFieldPage = lazy(() => import('src/pages/components/mui/textfield'));
-const TimelinePage = lazy(() => import('src/pages/components/mui/timeline'));
-const TooltipPage = lazy(() => import('src/pages/components/mui/tooltip'));
-const TransferListPage = lazy(() => import('src/pages/components/mui/transfer-list'));
-const TreesViewPage = lazy(() => import('src/pages/components/mui/tree-view'));
+// const AlertPage = lazy(() => import('src/pages/components/mui/alert'));
+// const AutocompletePage = lazy(() => import('src/pages/components/mui/autocomplete'));
+// const AvatarPage = lazy(() => import('src/pages/components/mui/avatar'));
+// const BadgePage = lazy(() => import('src/pages/components/mui/badge'));
+// const BreadcrumbsPage = lazy(() => import('src/pages/components/mui/breadcrumbs'));
+// const ButtonsPage = lazy(() => import('src/pages/components/mui/buttons'));
+// const CheckboxPage = lazy(() => import('src/pages/components/mui/checkbox'));
+// const ChipPage = lazy(() => import('src/pages/components/mui/chip'));
+// const DataGridPage = lazy(() => import('src/pages/components/mui/data-grid'));
+// const DialogPage = lazy(() => import('src/pages/components/mui/dialog'));
+// const ListPage = lazy(() => import('src/pages/components/mui/list'));
+// const MenuPage = lazy(() => import('src/pages/components/mui/menu'));
+// const PaginationPage = lazy(() => import('src/pages/components/mui/pagination'));
+// const PickersPage = lazy(() => import('src/pages/components/mui/pickers'));
+// const PopoverPage = lazy(() => import('src/pages/components/mui/popover'));
+// const ProgressPage = lazy(() => import('src/pages/components/mui/progress'));
+// const RadioButtonsPage = lazy(() => import('src/pages/components/mui/radio-button'));
+// const RatingPage = lazy(() => import('src/pages/components/mui/rating'));
+// const SliderPage = lazy(() => import('src/pages/components/mui/slider'));
+// const StepperPage = lazy(() => import('src/pages/components/mui/stepper'));
+// const SwitchPage = lazy(() => import('src/pages/components/mui/switch'));
+// const TablePage = lazy(() => import('src/pages/components/mui/table'));
+// const TabsPage = lazy(() => import('src/pages/components/mui/tabs'));
+// const TextFieldPage = lazy(() => import('src/pages/components/mui/textfield'));
+// const TimelinePage = lazy(() => import('src/pages/components/mui/timeline'));
+// const TooltipPage = lazy(() => import('src/pages/components/mui/tooltip'));
+// const TransferListPage = lazy(() => import('src/pages/components/mui/transfer-list'));
+// const TreesViewPage = lazy(() => import('src/pages/components/mui/tree-view'));
 // EXTRA COMPONENTS
 const AnimatePage = lazy(() => import('src/pages/components/extra/animate'));
 const CarouselsPage = lazy(() => import('src/pages/components/extra/carousel'));
@@ -95,7 +95,7 @@ export const componentsRoutes = [
             path: 'mui',
             children: [
               {
-                element: <Navigate to="/components/mui/accordion" replace />,
+                // element: <Navigate to="/components/mui/accordion" replace />,
                 index: true,
               },
               { path: 'accordion', element: <AccordionPage /> },
