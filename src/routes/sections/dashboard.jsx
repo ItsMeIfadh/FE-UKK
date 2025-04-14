@@ -37,9 +37,9 @@ const UserAccountPage = lazy(() => import('src/pages/dashboard/user/account'));
 const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'));
 const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'));
 // BLOG
-const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
-const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'));
-const BlogNewPostPage = lazy(() => import('src/pages/dashboard/post/new'));
+// const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
+// const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'));
+// const BlogNewPostPage = lazy(() => import('src/pages/dashboard/post/new'));
 // const BlogEditPostPage = lazy(() => import('src/pages/dashboard/post/edit'));
 // JOB
 const JobDetailsPage = lazy(() => import('src/pages/dashboard/job/details'));
@@ -124,16 +124,7 @@ export const dashboardRoutes = [
           { path: 'new', element: <InvoiceCreatePage /> },
         ],
       },
-      {
-        path: 'post',
-        children: [
-          { element: <BlogPostsPage />, index: true },
-          { path: 'list', element: <BlogPostsPage /> },
-          { path: ':title', element: <BlogPostPage /> },
-          // { path: ':title/edit', element: <BlogEditPostPage /> },
-          { path: 'new', element: <BlogNewPostPage /> },
-        ],
-      },
+
       {
         path: 'job',
         children: [
