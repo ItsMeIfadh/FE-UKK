@@ -40,7 +40,7 @@ const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'));
 const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
 const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'));
 const BlogNewPostPage = lazy(() => import('src/pages/dashboard/post/new'));
-const BlogEditPostPage = lazy(() => import('src/pages/dashboard/post/edit'));
+// const BlogEditPostPage = lazy(() => import('src/pages/dashboard/post/edit'));
 // JOB
 const JobDetailsPage = lazy(() => import('src/pages/dashboard/job/details'));
 const JobListPage = lazy(() => import('src/pages/dashboard/job/list'));
@@ -130,7 +130,7 @@ export const dashboardRoutes = [
           { element: <BlogPostsPage />, index: true },
           { path: 'list', element: <BlogPostsPage /> },
           { path: ':title', element: <BlogPostPage /> },
-          { path: ':title/edit', element: <BlogEditPostPage /> },
+          // { path: ':title/edit', element: <BlogEditPostPage /> },
           { path: 'new', element: <BlogNewPostPage /> },
         ],
       },
