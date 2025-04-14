@@ -15,7 +15,7 @@ const IndexPage = lazy(() => import('src/pages/components'));
 // const GridPage = lazy(() => import('src/pages/components/foundation/grid'));
 // const IconsPage = lazy(() => import('src/pages/components/foundation/icons'));
 // MUI COMPONENTS
-const AccordionPage = lazy(() => import('src/pages/components/mui/accordion'));
+// const AccordionPage = lazy(() => import('src/pages/components/mui/accordion'));
 const AlertPage = lazy(() => import('src/pages/components/mui/alert'));
 const AutocompletePage = lazy(() => import('src/pages/components/mui/autocomplete'));
 const AvatarPage = lazy(() => import('src/pages/components/mui/avatar'));
