@@ -58,7 +58,7 @@ export const endpoints = {
     search: '/api/product/search',
   },
   user : {
-    list: '/api/users',
+    list: '/api/user',
     details: '/api/user/id',
   }
 };
