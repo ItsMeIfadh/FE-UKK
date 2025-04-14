@@ -34,7 +34,7 @@ export default function FaqsList() {
                   sm: '1.1rem',
                   md: '1.25rem',
                 },
-                fontWeight: 'bold',
+                fontWeight: '',
               }}
             >
               {accordion.heading}
