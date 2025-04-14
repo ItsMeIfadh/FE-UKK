@@ -83,7 +83,7 @@ export const dashboardRoutes = [
       { path: 'analytics', element: <OverviewAnalyticsPage /> },
       { path: 'banking', element: <OverviewBankingPage /> },
       { path: 'booking', element: <OverviewBookingPage /> },
-      { path: 'file', element: <OverviewFilePage /> },
+      // { path: 'file', element: <OverviewFilePage /> },
       {
         path: 'user',
         children: [
