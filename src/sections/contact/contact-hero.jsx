@@ -12,27 +12,26 @@ import { bgGradient } from 'src/theme/css';
 import { MotionContainer, varFade } from 'src/components/animate';
 
 // ----------------------------------------------------------------------
-
 const CONTACTS = [
   {
-    country: 'Bali',
-    address: '508 Bridle Avenue Newnan, GA 30263',
-    phoneNumber: '(239) 555-0108',
+    country: 'SMKN 1 Ciomas',
+    address: 'Jl. Raya Laladon No.88, Ciomas, Bogor, Jawa Barat',
+    // phoneNumber: '08xx-xxxx-xxxx',
   },
   {
-    country: 'London',
-    address: '508 Bridle Avenue Newnan, GA 30263',
-    phoneNumber: '(319) 555-0115',
+    country: 'Instagram',
+    address: '@pplgcreations',
+    phoneNumber: '-',
   },
   {
-    country: 'Prague',
-    address: '508 Bridle Avenue Newnan, GA 30263',
-    phoneNumber: '(252) 555-0126',
+    country: 'WhatsApp',
+    address: 'Hubungi kami langsung via WhatsApp',
+    phoneNumber: '08xx-xxxx-xxxx',
   },
   {
-    country: 'Moscow',
-    address: '508 Bridle',
-    phoneNumber: '(307) 555-0133',
+    country: 'Email',
+    address: 'pplgcreations@gmail.com',
+    phoneNumber: '-',
   },
 ];
 
@@ -62,13 +61,12 @@ export default function ContactHero() {
             textAlign: { xs: 'center', md: 'unset' },
           }}
         >
-          <TextAnimate text="Where" sx={{ color: 'primary.main' }} variants={varFade().inRight} />
+          <TextAnimate text="Dimana" sx={{ color: 'primary.main' }} variants={varFade().inRight} />
           <br />
-
           <Stack spacing={2} display="inline-flex" direction="row" sx={{ color: 'common.white' }}>
-            <TextAnimate text="to" />
-            <TextAnimate text="find" />
-            <TextAnimate text="us?" />
+            <TextAnimate text="kamu" />
+            <TextAnimate text="bisa" />
+            <TextAnimate text="temukan kami?" />
           </Stack>
 
           <Stack
@@ -89,6 +87,11 @@ export default function ContactHero() {
                   <Typography variant="body2" sx={{ opacity: 0.8 }}>
                     {contact.address}
                   </Typography>
+                  {contact.phoneNumber !== '-' && (
+                    <Typography variant="body2" sx={{ opacity: 0.6 }}>
+                      {contact.phoneNumber}
+                    </Typography>
+                  )}
                 </m.div>
               </Stack>
             ))}

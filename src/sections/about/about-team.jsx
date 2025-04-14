@@ -43,13 +43,13 @@ export default function AboutTeam() {
     <Container component={MotionViewport} sx={{ textAlign: 'center', py: { xs: 10, md: 15 } }}>
       <m.div variants={varFade().inDown}>
         <Typography variant="overline" sx={{ color: 'text.disabled' }}>
-          Dream team
+          Team impian
         </Typography>
       </m.div>
 
       <m.div variants={varFade().inUp}>
         <Typography variant="h2" sx={{ my: 3 }}>
-          Great team is the key
+          Team yang hebat adalah kunci nya
         </Typography>
       </m.div>
 

@@ -5,7 +5,7 @@ import Masonry from '@mui/lab/Masonry';
 import { alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -31,11 +31,11 @@ export default function AboutTestimonials() {
 
   const mdUp = useResponsive('up', 'md');
 
-  const renderLink = (
-    <Button color="primary" endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}>
-      Read more testimonials
-    </Button>
-  );
+  // const renderLink = (
+  //   <Button color="primary" endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}>
+  //     Read more testimonials
+  //   </Button>
+  // );
 
   const renderDescription = (
     <Box
@@ -46,22 +46,22 @@ export default function AboutTestimonials() {
     >
       <m.div variants={varFade().inUp}>
         <Typography variant="overline" sx={{ color: 'common.white', opacity: 0.48 }}>
-          Testimonials
+          Testimoni
         </Typography>
       </m.div>
 
       <m.div variants={varFade().inUp}>
         <Typography variant="h2" sx={{ my: 3, color: 'common.white' }}>
-          Who love <br />
-          my work
+          Siapa yang <br />
+          menyukai karya kami
         </Typography>
       </m.div>
 
       <m.div variants={varFade().inUp}>
         <Typography sx={{ color: 'common.white' }}>
-          Our goal is to create a product and service that you’re satisfied with and use it every
-          day. This is why we’re constantly working on our services to make it better every day and
-          really listen to what our users has to say.
+          Tujuan kami adalah menciptakan produk dan layanan yang memuaskan dan berguna bagi
+          pengguna. Karena itu, kami terus mendengarkan masukan dan memperbaiki karya kami setiap
+          hari.
         </Typography>
       </m.div>
 
@@ -71,7 +71,7 @@ export default function AboutTestimonials() {
           variants={varFade().inUp}
           sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}
         >
-          {renderLink}
+          {/* {renderLink} */}
         </Box>
       )}
     </Box>
@@ -140,7 +140,7 @@ export default function AboutTestimonials() {
             variants={varFade().inUp}
             sx={{ bottom: 60, position: 'absolute' }}
           >
-            {renderLink}
+            {/* {renderLink} */}
           </Box>
         )}
       </Container>
