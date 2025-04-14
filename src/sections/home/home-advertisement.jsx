@@ -6,6 +6,8 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 // theme
+import { Typography } from '@mui/material';
+
 import { bgGradient } from 'src/theme/css';
 // routes
 import { paths } from 'src/routes/paths';
@@ -27,14 +29,25 @@ export default function HomeAdvertisement() {
         },
       }}
     >
-      <Box
-        component={m.div}
-        variants={varFade().inDown}
-        sx={{ color: 'common.white', mb: 5, typography: 'h2' }}
-      >
-        Jelajahi Inovasi Teknologi
-        <br /> dari Siswa PPLG SMKN 1 Ciomas
-      </Box>
+<Typography
+  component={m.div}
+  variants={varFade().inDown}
+  sx={{
+    color: 'common.white',
+    mb: 5,
+    typography: {
+      xs: 'h5',   // ukuran kecil di HP
+      sm: 'h4',
+      md: 'h2',   // ukuran besar di desktop
+    },
+    textAlign: 'center',
+    fontWeight: 'bold',
+  }}
+>
+  Jelajahi Inovasi Teknologi<br />
+  dari Siswa PPLG SMKN 1 Ciomas
+</Typography>
+
 
       <Stack
         direction={{ xs: 'column', md: 'row' }}
