@@ -47,11 +47,11 @@ import UserTableFiltersResult from '../user-table-filters-result';
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...USER_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name' },
-  { id: 'phoneNumber', label: 'Phone Number', width: 180 },
-  { id: 'company', label: 'Company', width: 220 },
+  { id: 'username', label: 'Nama Pengguna' },
+  { id: 'email', label: 'Email', width: 180 },
+  { id: 'address', label: 'Alamat Rumah', width: 220 },
   { id: 'role', label: 'Role', width: 180 },
-  { id: 'status', label: 'Status', width: 100 },
+  { id: 'is_active', label: 'Status', width: 100 },
   { id: '', width: 88 },
 ];
 
@@ -160,7 +160,7 @@ export default function UserListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New User
+              User Baru
             </Button>
           }
           sx={{
