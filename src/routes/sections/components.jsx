@@ -9,7 +9,7 @@ import { SplashScreen } from 'src/components/loading-screen';
 
 const IndexPage = lazy(() => import('src/pages/components'));
 // FOUNDATION
-const ColorsPage = lazy(() => import('src/pages/components/foundation/colors'));
+// const ColorsPage = lazy(() => import('src/pages/components/foundation/colors'));
 const TypographyPage = lazy(() => import('src/pages/components/foundation/typography'));
 const ShadowsPage = lazy(() => import('src/pages/components/foundation/shadows'));
 const GridPage = lazy(() => import('src/pages/components/foundation/grid'));
@@ -89,7 +89,7 @@ export const componentsRoutes = [
                 element: <Navigate to="/components/foundation/colors" replace />,
                 index: true,
               },
-              { path: 'colors', element: <ColorsPage /> },
+              // { path: 'colors', element: <ColorsPage /> },
               { path: 'typography', element: <TypographyPage /> },
               { path: 'shadows', element: <ShadowsPage /> },
               { path: 'grid', element: <GridPage /> },
