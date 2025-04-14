@@ -98,17 +98,22 @@ export default function Footer() {
           }}
         >
           <Grid xs={8} md={3}>
-            <Typography
-              variant="body2"
-              sx={{
-                maxWidth: 270,
-                mx: { xs: 'auto', md: 'unset' },
-              }}
-            >
-              Temukan solusi digital terbaik untuk bisnis Anda dan proyek Anda. Jelajahi berbagai
-              kategori website modern yang siap digunakan, mulai dari e-commerce, e-learning, dan
-              banyak lagi.
-            </Typography>
+          <Typography
+  variant="body2"
+  sx={{
+    maxWidth: { xs: 320, sm: 400, md: 480 },
+    mx: { xs: 'auto', md: 'unset' },
+    textAlign: { xs: 'center', md: 'left' },
+    fontSize: { xs: '0.875rem', sm: '0.95rem', md: '1rem' },
+    lineHeight: 1.8,
+    color: 'text.secondary',
+  }}
+>
+  Temukan solusi digital terbaik untuk bisnis Anda dan proyek Anda. Jelajahi berbagai
+  kategori website modern yang siap digunakan, mulai dari e-commerce, e-learning, dan
+  banyak lagi.
+</Typography>
+
 
             <Stack
               direction="row"
