@@ -11,12 +11,28 @@ export const _carouselsMembers = [...Array(6)].map((_, index) => ({
 
 // ----------------------------------------------------------------------
 
-export const _faqs = [...Array(8)].map((_, index) => ({
-  id: _mock.id(index),
-  value: `panel${index + 1}`,
-  heading: `Questions ${index + 1}`,
-  detail: _mock.description(index),
-}));
+export const _faqs = [
+  {
+    id: '1',
+    value: 'panel1',
+    heading: 'Bagaimana cara reset password?',
+    detail: 'Untuk mereset password, silakan buka halaman pengaturan akun dan klik "Reset Password".',
+  },
+  {
+    id: '2',
+    value: 'panel2',
+    heading: 'Apakah bisa membatalkan pesanan?',
+    detail: 'Pesanan dapat dibatalkan sebelum statusnya berubah menjadi "Sedang dikirim".',
+  },
+  {
+    id: '3',
+    value: 'panel3',
+    heading: 'Bagaimana cara menghubungi customer service?',
+    detail: 'Kamu bisa menghubungi kami melalui halaman kontak atau via email ke PPLGCreationsSupportCenter@Gmail.com.',
+  },
+  // Tambah pertanyaan lainnya sesuai kebutuhan
+];
+
 
 // ----------------------------------------------------------------------
 

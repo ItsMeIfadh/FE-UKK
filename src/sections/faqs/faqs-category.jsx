@@ -22,36 +22,37 @@ import { MotionViewport, varFade } from 'src/components/animate';
 
 const CATEGORIES = [
   {
-    label: 'Managing your account',
+    label: 'Kelola Akun Anda',
     icon: '/assets/icons/faqs/ic_account.svg',
     href: '#',
   },
   {
-    label: 'Payment',
+    label: 'Pembayaran',
     icon: '/assets/icons/faqs/ic_payment.svg',
     href: '#',
   },
   {
-    label: 'Delivery',
+    label: 'Pengiriman',
     icon: '/assets/icons/faqs/ic_delivery.svg',
     href: '#',
   },
   {
-    label: 'Problem with the Product',
+    label: 'Masalah pada Produk',
     icon: '/assets/icons/faqs/ic_package.svg',
     href: '#',
   },
   {
-    label: 'Return & Refund',
+    label: 'Pengembalian & Dana',
     icon: '/assets/icons/faqs/ic_refund.svg',
     href: '#',
   },
   {
-    label: 'Guarantees and assurances',
+    label: 'Jaminan & Kepastian',
     icon: '/assets/icons/faqs/ic_assurances.svg',
     href: '#',
   },
 ];
+
 
 // ----------------------------------------------------------------------
 

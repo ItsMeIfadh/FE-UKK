@@ -41,21 +41,25 @@ export default function FaqsHero() {
           }}
         >
           <div>
-            <TextAnimate text="How" sx={{ color: 'primary.main' }} variants={varFade().inRight} />
+            <TextAnimate
+              text="Penasaran?"
+              sx={{ color: 'primary.main' }}
+              variants={varFade().inRight}
+            />
             <br />
 
             <Stack spacing={2} display="inline-flex" direction="row" sx={{ color: 'common.white' }}>
-              <TextAnimate text="can" />
-              <TextAnimate text="we" />
-              <TextAnimate text="help" />
-              <TextAnimate text="you?" />
+              <TextAnimate text="Yuk," />
+              <TextAnimate text="kita" />
+              <TextAnimate text="kupas" />
+              <TextAnimate text="tuntas!" />
             </Stack>
           </div>
 
           <m.div variants={varFade().in}>
             <TextField
               fullWidth
-              placeholder="Search support..."
+              placeholder="Butuh solusi? Cari aja di sini!"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
