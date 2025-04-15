@@ -1,5 +1,5 @@
 import isEqual from 'lodash/isEqual';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
@@ -17,7 +17,7 @@ import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 // _mock
-import { _userList, _roles, USER_STATUS_OPTIONS } from 'src/_mock';
+// import { _userList, USER_STATUS_OPTIONS } from 'src/_mock';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
@@ -39,17 +39,23 @@ import {
 } from 'src/components/table';
 //
 import { useFetchAllUser } from 'src/hooks/user/useFetchAllUser';
+import { LoadingScreen } from 'src/components/loading-screen';
 import UserTableRow from '../user-table-row';
 import UserTableToolbar from '../user-table-toolbar';
 import UserTableFiltersResult from '../user-table-filters-result';
 
 // ----------------------------------------------------------------------
+const USER_STATUS_OPTIONS = [
+  { value: 'online', label: 'Online' },
+  { value: 'offline', label: 'Offline' }
+]
 
+const _roles = ['admin', 'pengguna', 'kelas']
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...USER_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   { id: 'username', label: 'Nama Pengguna' },
-  { id: 'email', label: 'Email', width: 180 },
+  { id: 'no_telp', label: 'No Telp', width: 180 },
   { id: 'address', label: 'Alamat Rumah', width: 220 },
   { id: 'role', label: 'Role', width: 180 },
   { id: 'is_active', label: 'Status', width: 100 },
@@ -57,7 +63,7 @@ const TABLE_HEAD = [
 ];
 
 const defaultFilters = {
-  name: '',
+  username: '',
   role: [],
   status: 'all',
 };
@@ -73,12 +79,15 @@ export default function UserListView() {
 
   const confirm = useBoolean();
 
-  const [tableData, setTableData] = useState(_userList);
+  // console.log('tableData', tableData);
 
+  const { data: userList = [], isLoading, isFetching } = useFetchAllUser();
+  const [tableData, setTableData] = useState(userList || []);
   const [filters, setFilters] = useState(defaultFilters);
+  useEffect(() => {
+    setTableData(userList || []);
+  }, [userList]);
 
-  const { data } = useFetchAllUser();
-  console.log(data);
 
   const dataFiltered = applyFilter({
     inputData: tableData,
@@ -147,6 +156,13 @@ export default function UserListView() {
     setFilters(defaultFilters);
   }, []);
 
+  if (isLoading || isFetching) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -173,47 +189,42 @@ export default function UserListView() {
         />
 
         <Card>
-          <Tabs
-            value={filters.status}
-            onChange={handleFilterStatus}
-            sx={{
-              px: 2.5,
-              boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
-            }}
-          >
-            {STATUS_OPTIONS.map((tab) => (
-              <Tab
-                key={tab.value}
-                iconPosition="end"
-                value={tab.value}
-                label={tab.label}
-                icon={
-                  <Label
-                    variant={
-                      ((tab.value === 'all' || tab.value === filters.status) && 'filled') || 'soft'
-                    }
-                    color={
-                      (tab.value === 'active' && 'success') ||
-                      (tab.value === 'pending' && 'warning') ||
-                      (tab.value === 'banned' && 'error') ||
-                      'default'
-                    }
-                  >
-                    {tab.value === 'all' && _userList.length}
-                    {tab.value === 'active' &&
-                      _userList.filter((user) => user.status === 'active').length}
+        <Tabs
+  value={filters.status}
+  onChange={handleFilterStatus}
+  sx={{
+    px: 2.5,
+    boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
+  }}
+>
+  {STATUS_OPTIONS.map((tab) => (
+    <Tab
+      key={tab.value}
+      iconPosition="end"
+      value={tab.value}
+      label={tab.label}
+      icon={
+        <Label
+          variant={
+            ((tab.value === 'all' || tab.value === filters.status) && 'filled') || 'soft'
+          }
+          color={
+            (tab.value === 'online' && 'success') ||
+            (tab.value === 'offline' && 'error') ||
+            'default'
+          }
+        >
+          {tab.value === 'all' && userList?.length}  {/* Count all users */}
+          {tab.value === 'online' &&
+            userList?.filter((user) => user.is_active).length}  {/* Count online users */}
+          {tab.value === 'offline' &&
+            userList?.filter((user) => !user.is_active).length}  {/* Count offline users */}
+        </Label>
+      }
+    />
+  ))}
+</Tabs>
 
-                    {tab.value === 'pending' &&
-                      _userList.filter((user) => user.status === 'pending').length}
-                    {tab.value === 'banned' &&
-                      _userList.filter((user) => user.status === 'banned').length}
-                    {tab.value === 'rejected' &&
-                      _userList.filter((user) => user.status === 'rejected').length}
-                  </Label>
-                }
-              />
-            ))}
-          </Tabs>
 
           <UserTableToolbar
             filters={filters}
@@ -339,9 +350,10 @@ export default function UserListView() {
 }
 
 // ----------------------------------------------------------------------
+function applyFilter({ inputData = [], comparator, filters }) {
+  if (!Array.isArray(inputData)) return [];
 
-function applyFilter({ inputData, comparator, filters }) {
-  const { name, status, role } = filters;
+  const { username: name, status, role } = filters;
 
   const stabilizedThis = inputData.map((el, index) => [el, index]);
 
@@ -351,21 +363,28 @@ function applyFilter({ inputData, comparator, filters }) {
     return a[1] - b[1];
   });
 
-  inputData = stabilizedThis.map((el) => el[0]);
+  let filteredUsers = stabilizedThis.map((el) => el[0]);
 
+  // Filter berdasarkan nama pengguna
   if (name) {
-    inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+    filteredUsers = filteredUsers.filter(
+      (user) => user.username?.toLowerCase().includes(name.toLowerCase())
     );
   }
 
+  // Filter berdasarkan status
   if (status !== 'all') {
-    inputData = inputData.filter((user) => user.status === status);
+    if (status === 'online') {
+      filteredUsers = filteredUsers.filter((user) => user.is_active); // hanya yang online
+    } else if (status === 'offline') {
+      filteredUsers = filteredUsers.filter((user) => !user.is_active); // hanya yang offline
+    }
   }
 
-  if (role.length) {
-    inputData = inputData.filter((user) => role.includes(user.role));
+  // Filter berdasarkan role
+  if (role?.length) {
+    filteredUsers = filteredUsers.filter((user) => role.includes(user.role));
   }
 
-  return inputData;
+  return filteredUsers;
 }

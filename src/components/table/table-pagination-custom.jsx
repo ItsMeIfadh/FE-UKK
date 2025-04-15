@@ -19,6 +19,8 @@ export default function TablePaginationCustom({
       <TablePagination
         rowsPerPageOptions={rowsPerPageOptions}
         component="div"
+        labelRowsPerPage="Baris per halaman"
+
         {...other}
         sx={{
           borderTopColor: 'transparent',
@@ -27,7 +29,7 @@ export default function TablePaginationCustom({
 
       {onChangeDense && (
         <FormControlLabel
-          label="Dense"
+          label="Hemat Ruang"
           control={<Switch checked={dense} onChange={onChangeDense} />}
           sx={{
             pl: 2,

@@ -41,6 +41,11 @@ export const endpoints = {
     register: '/api/auth/register',
     logout: '/api/logout',
   },
+  user : {
+    list: '/api/users',
+    create: '/api/users',
+    details: '/api/user/id',
+  },
   mail: {
     list: '/api/mail/list',
     details: '/api/mail/details',
@@ -56,9 +61,5 @@ export const endpoints = {
     list: '/api/product/list',
     details: '/api/product/details',
     search: '/api/product/search',
-  },
-  user : {
-    list: '/api/user',
-    details: '/api/user/id',
   }
 };

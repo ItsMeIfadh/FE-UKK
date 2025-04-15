@@ -62,7 +62,7 @@ export function AuthProvider({ children }) {
         setSession(accessToken);
 
         const response = await axios.get(endpoints.auth.me);
-
+        console.log('response', response);
         const user = response && response.data ? response.data.user : null;
 
         console.log('response', user);
@@ -105,7 +105,7 @@ export function AuthProvider({ children }) {
 
     const response = await axios.post(endpoints.auth.login, data);
 
-    const { access_token, user } = response.data;
+    const { token: access_token, user } = response.data;
 
     setSession(access_token);
 

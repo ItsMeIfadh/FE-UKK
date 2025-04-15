@@ -64,7 +64,15 @@ export default function App() {
   useScrollToTop();
 
   // Create a client
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      }
+    }
+  });
+
+
 
   return (
     <AuthProvider>

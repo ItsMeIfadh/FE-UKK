@@ -22,7 +22,7 @@ import UserQuickEditForm from './user-quick-edit-form';
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
-  const { name, avatarUrl, company, role, status, email, phoneNumber } = row;
+  const { username: name, profile_photo: avatarUrl, address, role, is_active: status, email, phone_number: phoneNumber } = row;
 
   const confirm = useBoolean();
 
@@ -34,7 +34,7 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
     <>
       <TableRow hover selected={selected}>
         <TableCell padding="checkbox">
-          <Checkbox checked={selected} onClick={onSelectRow} />
+          <Checkbox checked={selected} onClick={() => onSelectRow()} />
         </TableCell>
 
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
@@ -50,10 +50,10 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
             }}
           />
         </TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{phoneNumber || 'Tidak Ada'}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{phoneNumber}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{address || 'Belum ada Alamat'}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{company}</TableCell>
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{role}</TableCell>
 
@@ -61,13 +61,11 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
           <Label
             variant="soft"
             color={
-              (status === 'active' && 'success') ||
-              (status === 'pending' && 'warning') ||
-              (status === 'banned' && 'error') ||
-              'default'
+              (status === 1 && 'success') ||
+              'error'
             }
           >
-            {status}
+            {status === 1 ? 'Online' : 'Offline'}
           </Label>
         </TableCell>
 
