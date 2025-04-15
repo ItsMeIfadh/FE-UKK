@@ -14,6 +14,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // utils
+import { useQueryClient } from '@tanstack/react-query';
 import { fData } from 'src/utils/format-number';
 // routes
 import { paths } from 'src/routes/paths';
@@ -31,7 +32,6 @@ import FormProvider, {
   RHFAutocomplete,
 } from 'src/components/hook-form';
 import { useMutationCreateUser } from 'src/hooks/user/useMutationCreateUser';
-import { useQueryClient } from '@tanstack/react-query';
 
 // ----------------------------------------------------------------------
 
