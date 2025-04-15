@@ -41,10 +41,11 @@ export const endpoints = {
     register: '/api/auth/register',
     logout: '/api/logout',
   },
-  user : {
+  user: {
     list: '/api/users',
     create: '/api/users',
     details: '/api/user/id',
+    delete: '/api/users',
   },
   mail: {
     list: '/api/mail/list',

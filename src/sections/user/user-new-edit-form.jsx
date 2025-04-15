@@ -30,6 +30,8 @@ import FormProvider, {
   RHFUploadAvatar,
   RHFAutocomplete,
 } from 'src/components/hook-form';
+import { useMutationCreateUser } from 'src/hooks/user/useMutationCreateUser';
+import { useQueryClient } from '@tanstack/react-query';
 
 // ----------------------------------------------------------------------
 
@@ -45,32 +47,42 @@ export default function UserNewEditForm({ currentUser }) {
 
   const { enqueueSnackbar } = useSnackbar();
 
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: createUser } = useMutationCreateUser({
+    onSuccess: (data) => {
+      console.log('Create User Success', data);
+      // enqueueSnackbar('Create user success!');
+      router.push(paths.dashboard.user.list);
+      queryClient.invalidateQueries(['fetch.all.users']);
+    },
+    onError: (error) => {
+      console.error('Create User Error', error);
+      enqueueSnackbar(error.message, { variant: 'error' });
+    },
+  })
+
   const NewUserSchema = Yup.object().shape({
-    username: Yup.string().required('username is required'),
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    phone_number: Yup.string().required('Phone number is required'),
-    password: Yup.string().required('Password is required'),
-    address: Yup.string().required('Address is required'),
+    username: Yup.string().required('Username is required'),
+    email: Yup.string().required('Email is required').email('Email must be valid'),
+    password: Yup.string().required('Password is required').min(8, 'Min 8 characters'),
     role: Yup.string().required('Role is required'),
-    profile_photo: Yup.mixed().nullable().required('Avatar is required'),
-    // not required
-    is_active: Yup.string(),
+    phone_number: Yup.string().nullable(),
+    profile_photo: Yup.mixed().nullable(),
+    is_active: Yup.boolean(),
   });
 
-  const defaultValues = useMemo(
-    () => ({
-      username: currentUser?.username || '',
-      city: currentUser?.city || '',
-      email: currentUser?.email || '',
-      phone_number: currentUser?.phone_number || '',
-      password: currentUser?.password || '',
-      address: currentUser?.address || '',
-      role: currentUser?.role || '',
-      profile_photo: currentUser?.profile_photo || '',
-      is_active: currentUser?.is_active || '',
-    }),
-    [currentUser]
-  );
+
+  const defaultValues = useMemo(() => ({
+    username: currentUser?.username || '',
+    email: currentUser?.email || '',
+    password: '',
+    role: currentUser?.role || '',
+    phone_number: currentUser?.phone_number || '',
+    profile_photo: currentUser?.profile_photo || null,
+    is_active: currentUser?.is_active ?? false,
+  }), [currentUser]);
+
 
   const methods = useForm({
     resolver: yupResolver(NewUserSchema),
@@ -89,8 +101,20 @@ export default function UserNewEditForm({ currentUser }) {
   const values = watch();
 
   const onSubmit = handleSubmit(async (data) => {
+
+    const formData = new FormData();
+    formData.append('username', data.username);
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    formData.append('role', data.role);
+    formData.append('is_active', data.is_active ? '1' : '0');
+    if (data.phone_number) formData.append('phone_number', data.phone_number);
+    if (data.profile_photo instanceof File) {
+      formData.append('profile_photo', data.profile_photo);
+    }
+    
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await createUser(formData);
       reset();
       enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
       router.push(paths.dashboard.user.list);
@@ -99,17 +123,14 @@ export default function UserNewEditForm({ currentUser }) {
       console.error(error);
     }
   });
-
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
-
-      const newFile = Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      });
-
       if (file) {
-        setValue('avatarUrl', newFile, { shouldValidate: true });
+        const newFile = Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        });
+        setValue('profile_photo', newFile, { shouldValidate: true });
       }
     },
     [setValue]
@@ -135,7 +156,7 @@ export default function UserNewEditForm({ currentUser }) {
 
             <Box sx={{ mb: 5 }}>
               <RHFUploadAvatar
-                name="avatarUrl"
+                name="profile_photo"
                 maxSize={3145728}
                 onDrop={handleDrop}
                 helperText={
@@ -225,11 +246,11 @@ export default function UserNewEditForm({ currentUser }) {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="name" label="Full Name" />
+              <RHFTextField name="username" label="Username" />
               <RHFTextField name="email" label="Email Address" />
-              <RHFTextField name="phoneNumber" label="Phone Number" />
+              <RHFTextField name="password" label="Password" type="password" />
 
-              <RHFAutocomplete
+              {/* <RHFAutocomplete
                 name="country"
                 label="Country"
                 options={countries.map((country) => country.label)}
@@ -256,13 +277,9 @@ export default function UserNewEditForm({ currentUser }) {
                     </li>
                   );
                 }}
-              />
+              /> */}
 
-              <RHFTextField name="state" label="State/Region" />
-              <RHFTextField name="city" label="City" />
-              <RHFTextField name="address" label="Address" />
-              <RHFTextField name="zipCode" label="Zip/Code" />
-              <RHFTextField name="company" label="Company" />
+
               <RHFTextField name="role" label="Role" />
             </Box>
 

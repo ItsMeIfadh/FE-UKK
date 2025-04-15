@@ -13,6 +13,8 @@ import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
 // routes
+import { useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
@@ -40,9 +42,12 @@ import {
 //
 import { useFetchAllUser } from 'src/hooks/user/useFetchAllUser';
 import { LoadingScreen } from 'src/components/loading-screen';
+import { useMutationCreateUser } from 'src/hooks/user/useMutationCreateUser';
+import { useMutationDeleteUser } from 'src/hooks/user/useMutationDeleteUser';
 import UserTableRow from '../user-table-row';
 import UserTableToolbar from '../user-table-toolbar';
 import UserTableFiltersResult from '../user-table-filters-result';
+
 
 // ----------------------------------------------------------------------
 const USER_STATUS_OPTIONS = [
@@ -75,6 +80,10 @@ export default function UserListView() {
 
   const settings = useSettingsContext();
 
+  const { enqueueSnackbar } = useSnackbar();
+
+  const queryClient = useQueryClient();
+
   const router = useRouter();
 
   const confirm = useBoolean();
@@ -87,6 +96,21 @@ export default function UserListView() {
   useEffect(() => {
     setTableData(userList || []);
   }, [userList]);
+
+
+
+  const { mutateAsync: deleteUser } = useMutationDeleteUser({
+    onSuccess: (data) => {
+      console.log('user berhasil dihapus', data);
+      enqueueSnackbar('user berhasil dihapus!');
+      router.push(paths.dashboard.user.list);
+      queryClient.invalidateQueries(['fetch.all.users']);
+    },
+    onError: (error) => {
+      console.error('Create User Error', error);
+      enqueueSnackbar(error.message, { variant: 'error' });
+    },
+  })
 
 
   const dataFiltered = applyFilter({
@@ -118,14 +142,23 @@ export default function UserListView() {
   );
 
   const handleDeleteRow = useCallback(
-    (id) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
-      setTableData(deleteRow);
-
-      table.onUpdatePageDeleteRow(dataInPage.length);
+    async (id) => {
+      try {
+        await deleteUser(id); // Panggil API untuk hapus user di server
+        setTableData((prevData) => {
+          const newData = prevData.filter((row) => row.id !== id);
+          table.onUpdatePageDeleteRow(newData.length); // pakai newData.length
+          return newData;
+        });
+        // enqueueSnackbar('User berhasil dihapus!', { variant: 'success' });
+      } catch (error) {
+        console.error('Gagal menghapus user:', error);
+        enqueueSnackbar('Gagal menghapus user', { variant: 'error' });
+      }
     },
-    [dataInPage.length, table, tableData]
+    [deleteUser, table, enqueueSnackbar]
   );
+  
 
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
@@ -189,41 +222,41 @@ export default function UserListView() {
         />
 
         <Card>
-        <Tabs
-  value={filters.status}
-  onChange={handleFilterStatus}
-  sx={{
-    px: 2.5,
-    boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
-  }}
->
-  {STATUS_OPTIONS.map((tab) => (
-    <Tab
-      key={tab.value}
-      iconPosition="end"
-      value={tab.value}
-      label={tab.label}
-      icon={
-        <Label
-          variant={
-            ((tab.value === 'all' || tab.value === filters.status) && 'filled') || 'soft'
-          }
-          color={
-            (tab.value === 'online' && 'success') ||
-            (tab.value === 'offline' && 'error') ||
-            'default'
-          }
-        >
-          {tab.value === 'all' && userList?.length}  {/* Count all users */}
-          {tab.value === 'online' &&
-            userList?.filter((user) => user.is_active).length}  {/* Count online users */}
-          {tab.value === 'offline' &&
-            userList?.filter((user) => !user.is_active).length}  {/* Count offline users */}
-        </Label>
-      }
-    />
-  ))}
-</Tabs>
+          <Tabs
+            value={filters.status}
+            onChange={handleFilterStatus}
+            sx={{
+              px: 2.5,
+              boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
+            }}
+          >
+            {STATUS_OPTIONS.map((tab) => (
+              <Tab
+                key={tab.value}
+                iconPosition="end"
+                value={tab.value}
+                label={tab.label}
+                icon={
+                  <Label
+                    variant={
+                      ((tab.value === 'all' || tab.value === filters.status) && 'filled') || 'soft'
+                    }
+                    color={
+                      (tab.value === 'online' && 'success') ||
+                      (tab.value === 'offline' && 'error') ||
+                      'default'
+                    }
+                  >
+                    {tab.value === 'all' && userList?.length}  {/* Count all users */}
+                    {tab.value === 'online' &&
+                      userList?.filter((user) => user.is_active).length}  {/* Count online users */}
+                    {tab.value === 'offline' &&
+                      userList?.filter((user) => !user.is_active).length}  {/* Count offline users */}
+                  </Label>
+                }
+              />
+            ))}
+          </Tabs>
 
 
           <UserTableToolbar
