@@ -34,42 +34,40 @@ import FormProvider, {
 // ----------------------------------------------------------------------
 
 export default function UserNewEditForm({ currentUser }) {
+  // 'username' => 'required|string|max:255|unique:users',
+  //           'email' => 'required|string|email|max:255|unique:users',
+  //           'password' => 'required|string|min:8',
+  //           'role' => 'required|in:admin,kelas,pengguna',
+  //           'phone_number' => 'nullable|string|max:20',
+  //           'is_active' => 'boolean',
+  //           'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
   const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
 
   const NewUserSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    username: Yup.string().required('username is required'),
     email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    phoneNumber: Yup.string().required('Phone number is required'),
+    phone_number: Yup.string().required('Phone number is required'),
+    password: Yup.string().required('Password is required'),
     address: Yup.string().required('Address is required'),
-    country: Yup.string().required('Country is required'),
-    company: Yup.string().required('Company is required'),
-    state: Yup.string().required('State is required'),
-    city: Yup.string().required('City is required'),
     role: Yup.string().required('Role is required'),
-    zipCode: Yup.string().required('Zip code is required'),
-    avatarUrl: Yup.mixed().nullable().required('Avatar is required'),
+    profile_photo: Yup.mixed().nullable().required('Avatar is required'),
     // not required
-    status: Yup.string(),
-    isVerified: Yup.boolean(),
+    is_active: Yup.string(),
   });
 
   const defaultValues = useMemo(
     () => ({
-      name: currentUser?.name || '',
+      username: currentUser?.username || '',
       city: currentUser?.city || '',
-      role: currentUser?.role || '',
       email: currentUser?.email || '',
-      state: currentUser?.state || '',
-      status: currentUser?.status || '',
+      phone_number: currentUser?.phone_number || '',
+      password: currentUser?.password || '',
       address: currentUser?.address || '',
-      country: currentUser?.country || '',
-      zipCode: currentUser?.zipCode || '',
-      company: currentUser?.company || '',
-      avatarUrl: currentUser?.avatarUrl || null,
-      phoneNumber: currentUser?.phoneNumber || '',
-      isVerified: currentUser?.isVerified || true,
+      role: currentUser?.role || '',
+      profile_photo: currentUser?.profile_photo || '',
+      is_active: currentUser?.is_active || '',
     }),
     [currentUser]
   );
