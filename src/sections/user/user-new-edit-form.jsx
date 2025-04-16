@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
+import MenuItem from '@mui/material/MenuItem';
 import { useCallback, useMemo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -29,6 +30,7 @@ import FormProvider, {
   // RHFSwitch,
   RHFTextField,
   RHFUploadAvatar,
+  RHFSelect,
   // RHFAutocomplete,
 } from 'src/components/hook-form';
 import { useMutationCreateUser } from 'src/hooks/user/useMutationCreateUser';
@@ -77,7 +79,7 @@ export default function UserNewEditForm({ currentUser }) {
     username: currentUser?.username || '',
     email: currentUser?.email || '',
     password: '',
-    role: currentUser?.role || '',
+    role: currentUser?.role || 'pengguna',
     phone_number: currentUser?.phone_number || '',
     profile_photo: currentUser?.profile_photo || null,
     is_active: currentUser?.is_active ?? false,
@@ -112,7 +114,7 @@ export default function UserNewEditForm({ currentUser }) {
     if (data.profile_photo instanceof File) {
       formData.append('profile_photo', data.profile_photo);
     }
-    
+
     try {
       await createUser(formData);
       reset();
@@ -248,44 +250,21 @@ export default function UserNewEditForm({ currentUser }) {
             >
               <RHFTextField name="username" label="Username" />
               <RHFTextField name="email" label="Email Address" />
+              <RHFTextField name="phone_number" label="Nomor Telepon" />
               <RHFTextField name="password" label="Password" type="password" />
-
-              {/* <RHFAutocomplete
-                name="country"
-                label="Country"
-                options={countries.map((country) => country.label)}
-                getOptionLabel={(option) => option}
-                isOptionEqualToValue={(option, value) => option === value}
-                renderOption={(props, option) => {
-                  const { code, label, phone } = countries.filter(
-                    (country) => country.label === option
-                  )[0];
-
-                  if (!label) {
-                    return null;
-                  }
-
-                  return (
-                    <li {...props} key={label}>
-                      <Iconify
-                        key={label}
-                        icon={`circle-flags:${code.toLowerCase()}`}
-                        width={28}
-                        sx={{ mr: 1 }}
-                      />
-                      {label} ({code}) +{phone}
-                    </li>
-                  );
-                }}
-              /> */}
+              <RHFSelect name="role" label="Role">
+                <MenuItem value="kelas">Kelas</MenuItem>
+                <MenuItem value="admin">Admin</MenuItem>
+                <MenuItem value="pengguna">Pengguna</MenuItem>
+              </RHFSelect>
 
 
-              <RHFTextField name="role" label="Role" />
             </Box>
+            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
+              <RHFTextField name="address" multiline rows={4} label="address" />
 
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                {!currentUser ? 'Create User' : 'Save Changes'}
+              <LoadingButton type="submit" variant="contained" >
+                Simpan Perubahan
               </LoadingButton>
             </Stack>
           </Card>

@@ -36,7 +36,7 @@ export const endpoints = {
   kanban: '/api/kanban',
   calendar: '/api/calendar',
   auth: {
-    me: '/api/user',
+    me: '/api/user', // untuk profile
     login: '/api/login',
     register: '/api/auth/register',
     logout: '/api/logout',
@@ -44,8 +44,9 @@ export const endpoints = {
   user: {
     list: '/api/users',
     create: '/api/users',
-    details: '/api/user/id',
-    delete: '/api/users',
+    details: (id) => `/api/users/${id}`,  // id sudah bisa langsung dipakai di JS
+    delete: (id) => `/api/users/${id}`,
+    edit: (id) => `/api/users/${id}`,  // seperti ini supaya id-nya dinamis
   },
   mail: {
     list: '/api/mail/list',

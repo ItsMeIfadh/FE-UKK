@@ -12,12 +12,14 @@ import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
+// import { useFetchAuthenticatedUser } from 'src/hooks/auth/useFetchAuthenticatedUser';
+import { useAuthContext } from 'src/auth/hooks';
+// import { LoadingScreen } from 'src/components/loading-screen';
 import AccountGeneral from '../account-general';
 import AccountBilling from '../account-billing';
 import AccountSocialLinks from '../account-social-links';
 import AccountNotifications from '../account-notifications';
 import AccountChangePassword from '../account-change-password';
-
 // ----------------------------------------------------------------------
 
 const TABS = [
@@ -52,7 +54,8 @@ const TABS = [
 
 export default function AccountView() {
   const settings = useSettingsContext();
-
+  const { user } = useAuthContext()
+  // console.log(user)
   const [currentTab, setCurrentTab] = useState('general');
 
   const handleChangeTab = useCallback((event, newValue) => {
@@ -62,11 +65,11 @@ export default function AccountView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Account"
+        heading="Profile"
         links={[
           { name: 'Dashboard', href: paths.dashboard.root },
           { name: 'User', href: paths.dashboard.user.root },
-          { name: 'Account' },
+          { name: 'Profile' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
@@ -85,7 +88,7 @@ export default function AccountView() {
         ))}
       </Tabs>
 
-      {currentTab === 'general' && <AccountGeneral />}
+      {currentTab === 'general' && <AccountGeneral user={user} />}
 
       {currentTab === 'billing' && (
         <AccountBilling

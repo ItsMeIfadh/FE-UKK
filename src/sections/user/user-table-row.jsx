@@ -23,7 +23,7 @@ import UserQuickEditForm from './user-quick-edit-form';
 
 export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const { username: name, profile_photo: avatarUrl, address, role, is_active: status, email, phone_number: phoneNumber } = row;
-
+  console.log(row);
   const confirm = useBoolean();
 
   const quickEdit = useBoolean();

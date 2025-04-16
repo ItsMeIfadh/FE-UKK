@@ -200,7 +200,7 @@ export default function UserListView() {
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="List"
+          heading="List user"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
             { name: 'User', href: paths.dashboard.user.root },
@@ -355,29 +355,29 @@ export default function UserListView() {
           />
         </Card>
       </Container>
-
       <ConfirmDialog
-        open={confirm.value}
-        onClose={confirm.onFalse}
-        title="Delete"
-        content={
-          <>
-            Are you sure want to delete <strong> {table.selected.length} </strong> items?
-          </>
-        }
-        action={
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
-              handleDeleteRows();
-              confirm.onFalse();
-            }}
-          >
-            Delete
-          </Button>
-        }
-      />
+  open={confirm.value}
+  onClose={confirm.onFalse}
+  title="Hapus"
+  content={
+    <>
+      Apakah Anda yakin ingin menghapus <strong>{table.selected.length}</strong> item?
+    </>
+  }
+  action={
+    <Button
+      variant="contained"
+      color="error"
+      onClick={() => {
+        handleDeleteRows();
+        confirm.onFalse();
+      }}
+    >
+      Hapus
+    </Button>
+  }
+/>
+
     </>
   );
 }
