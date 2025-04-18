@@ -16,7 +16,7 @@ export default function ProductCreateView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Create a new product"
+        heading="Tambah Produk Baru"
         links={[
           {
             name: 'Dashboard',
@@ -26,7 +26,7 @@ export default function ProductCreateView() {
             name: 'Product',
             href: paths.dashboard.product.root,
           },
-          { name: 'New product' },
+          { name: 'Tambah product' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

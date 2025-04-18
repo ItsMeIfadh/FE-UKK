@@ -8,48 +8,37 @@ import { isValidToken, setSession } from './utils';
 
 // ----------------------------------------------------------------------
 
-// NOTE:
-// We only build demo at basic level.
-// Customer will need to do some extra handling yourself if you want to extend the logic and other features...
-
-// ----------------------------------------------------------------------
-
 const initialState = {
   user: null,
   loading: true,
 };
 
 const reducer = (state, action) => {
-  if (action.type === 'INITIAL') {
-    return {
-      loading: false,
-      user: action.payload.user,
-    };
+  switch (action.type) {
+    case 'INITIAL':
+      return {
+        loading: false,
+        user: action.payload.user,
+      };
+    case 'LOGIN':
+    case 'REGISTER':
+      return {
+        ...state,
+        user: action.payload.user,
+      };
+    case 'LOGOUT':
+      return {
+        ...state,
+        user: null,
+      };
+    default:
+      return state;
   }
-  if (action.type === 'LOGIN') {
-    return {
-      ...state,
-      user: action.payload.user,
-    };
-  }
-  if (action.type === 'REGISTER') {
-    return {
-      ...state,
-      user: action.payload.user,
-    };
-  }
-  if (action.type === 'LOGOUT') {
-    return {
-      ...state,
-      user: null,
-    };
-  }
-  return state;
 };
 
-// ----------------------------------------------------------------------
-
 const STORAGE_KEY = 'accessToken';
+
+// ----------------------------------------------------------------------
 
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -62,10 +51,7 @@ export function AuthProvider({ children }) {
         setSession(accessToken);
 
         const response = await axios.get(endpoints.auth.me);
-        console.log('response', response);
-        const user = response && response.data ? response.data.user : null;
-
-        console.log('response', user);
+        const user = response?.data?.user || null;
 
         dispatch({
           type: 'INITIAL',
@@ -98,91 +84,55 @@ export function AuthProvider({ children }) {
 
   // LOGIN
   const login = useCallback(async (email, password) => {
-    const data = {
-      email,
-      password,
-    };
+    const data = { email, password };
 
     const response = await axios.post(endpoints.auth.login, data);
-
-    const { token: access_token, user } = response.data;
+    const { token: access_token } = response.data;
 
     setSession(access_token);
 
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        user,
-      },
-    });
-  }, []);
+    // Jangan dispatch manual, biarkan initialize mengambil user terbaru
+    await initialize();
+  }, [initialize]);
 
   // REGISTER
   const register = useCallback(async (email, password, firstName, lastName) => {
-    const data = {
-      email,
-      password,
-      firstName,
-      lastName,
-    };
+    const data = { email, password, firstName, lastName };
 
     const response = await axios.post(endpoints.auth.register, data);
-
-    const { accessToken, user } = response.data;
+    const { accessToken } = response.data;
 
     sessionStorage.setItem(STORAGE_KEY, accessToken);
 
-    dispatch({
-      type: 'REGISTER',
-      payload: {
-        user,
-      },
-    });
-  }, []);
+    await initialize(); // Sama seperti login, fetch data user yang lengkap
+  }, [initialize]);
 
   // LOGOUT
   const logout = useCallback(async () => {
     try {
-      // Make an API call to the logout endpoint to invalidate the session on the server
-      await axios.post(endpoints.auth.logout); // Adjust the endpoint if necessary
-
-      // Clear the session on the client side
-      setSession(null);
-
-      // Dispatch the logout action to update the state
-      dispatch({
-        type: 'LOGOUT',
-      });
+      await axios.post(endpoints.auth.logout); // API endpoint logout
     } catch (error) {
       console.error('Error during logout:', error);
-      // In case of error, just clear the session and update state
+    } finally {
       setSession(null);
-      dispatch({
-        type: 'LOGOUT',
-      });
+      dispatch({ type: 'LOGOUT' });
     }
   }, []);
 
-  // ----------------------------------------------------------------------
-
+  // STATUS
   const checkAuthenticated = state.user ? 'authenticated' : 'unauthenticated';
-
   const status = state.loading ? 'loading' : checkAuthenticated;
 
-  const memoizedValue = useMemo(
-    () => ({
-      user: state.user,
-      method: 'jwt',
-      loading: status === 'loading',
-      authenticated: status === 'authenticated',
-      unauthenticated: status === 'unauthenticated',
-      //
-      login,
-      register,
-      logout,
-    }),
-    [login, logout, register, state.user, status]
-  );
+  const memoizedValue = useMemo(() => ({
+    user: state.user,
+    method: 'jwt',
+    loading: status === 'loading',
+    authenticated: status === 'authenticated',
+    unauthenticated: status === 'unauthenticated',
+    login,
+    register,
+    logout,
+  }), [login, logout, register, state.user, status]);
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;
 }

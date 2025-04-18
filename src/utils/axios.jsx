@@ -44,24 +44,19 @@ export const endpoints = {
   user: {
     list: '/api/users',
     create: '/api/users',
-    details: (id) => `/api/users/${id}`,  // id sudah bisa langsung dipakai di JS
-    delete: (id) => `/api/users/${id}`,
-    edit: (id) => `/api/users/${id}`,  // seperti ini supaya id-nya dinamis
-  },
-  mail: {
-    list: '/api/mail/list',
-    details: '/api/mail/details',
-    labels: '/api/mail/labels',
-  },
-  post: {
-    list: '/api/post/list',
-    details: '/api/post/details',
-    latest: '/api/post/latest',
-    search: '/api/post/search',
+    update: '/api/users',
+    delete: '/api/users',
+    getById: '/api/users',
   },
   product: {
-    list: '/api/product/list',
+    list: '/api/products',
+    create:'/api/products',
     details: '/api/product/details',
     search: '/api/product/search',
   }
+  // mail: {
+  //   list: '/api/mail/list',
+  //   details: '/api/mail/details',
+  //   labels: '/api/mail/labels',
+  // },
 };

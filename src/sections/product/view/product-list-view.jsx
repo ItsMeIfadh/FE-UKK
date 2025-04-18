@@ -1,5 +1,5 @@
 import isEqual from 'lodash/isEqual';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 // @mui
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
@@ -9,6 +9,7 @@ import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
+
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -37,6 +38,7 @@ import Scrollbar from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
+import { useFetchAllProduct } from 'src/hooks/product/useFetchAllProduct';
 import ProductTableRow from '../product-table-row';
 import ProductTableToolbar from '../product-table-toolbar';
 import ProductTableFiltersResult from '../product-table-filters-result';
@@ -44,9 +46,9 @@ import ProductTableFiltersResult from '../product-table-filters-result';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Product' },
-  { id: 'createdAt', label: 'Create at', width: 160 },
-  { id: 'inventoryType', label: 'Stock', width: 160 },
+  { id: 'title', label: 'Produk' },
+  { id: 'created_at', label: 'Tanggal dibuat', width: 160 },
+  { id: 'user_id', label: 'Pembuat', width: 160 },
   { id: 'price', label: 'Price', width: 140 },
   { id: 'publish', label: 'Publish', width: 110 },
   { id: '', width: 88 },
@@ -76,7 +78,15 @@ export default function ProductListView() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  const { products, productsLoading, productsEmpty } = useGetProducts();
+  const { data: response, isLoading: productsLoading } = useFetchAllProduct();
+
+  const products = useMemo(() => response?.products || [], [response]);
+  
+
+  console.log(response);
+  const productsEmpty = products.length === 0;
+
+  // const { products, productsLoading, productsEmpty } = useGetProducts();
 
   const confirm = useBoolean();
 
@@ -173,7 +183,7 @@ export default function ProductListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New Product
+              Tambah Produk
             </Button>
           }
           sx={{ mb: { xs: 3, md: 5 } }}

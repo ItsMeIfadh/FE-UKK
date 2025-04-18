@@ -50,11 +50,14 @@ export default function AccountGeneral({ user: AuthUser }) {
   const defaultValues = {
     username: AuthUser?.username || '',
     email: AuthUser?.email || '',
-    profile_photo: AuthUser?.profile_photo || null,
+    profile_photo: typeof AuthUser?.profile_photo === 'string'
+      ? AuthUser.profile_photo.replace(/\\\//g, '/')
+      : AuthUser?.profile_photo || null,
     phone_number: AuthUser?.phone_number || '',
     address: AuthUser?.address || '',
     role: AuthUser?.role || '',
   };
+
 
   // console.log(AuthUser)
 
@@ -147,7 +150,7 @@ export default function AccountGeneral({ user: AuthUser }) {
             />
 
             <Button variant="soft" color="error" sx={{ mt: 3 }}>
-              Delete User
+              Hapus Akun
             </Button>
           </Card>
         </Grid>
@@ -181,7 +184,7 @@ export default function AccountGeneral({ user: AuthUser }) {
               <RHFTextField name="address" multiline rows={4} label="address" />
 
               <LoadingButton type="submit" variant="contained" loading={isPending}>
-                Save Changes
+                Simpan Perubahan
               </LoadingButton>
             </Stack>
           </Card>

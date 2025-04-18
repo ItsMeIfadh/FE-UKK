@@ -203,11 +203,11 @@ export default function HomeHero() {
       </m.div>
 
       <m.div variants={varFade().in}>
-  <Typography variant="body2" sx={{ textAlign: 'center' }}>
-    Temukan solusi digital terbaik untuk Anda. Software siap pakai yang dirancang untuk 
-    efisiensi, performa, dan kemudahan penggunaan.
-  </Typography>
-</m.div>
+        <Typography variant="body2" sx={{ textAlign: 'center' }}>
+          Temukan solusi digital terbaik untuk Anda. Software siap pakai yang dirancang untuk
+          efisiensi, performa, dan kemudahan penggunaan.
+        </Typography>
+      </m.div>
 
 
       <m.div variants={varFade().in}>
@@ -218,13 +218,13 @@ export default function HomeHero() {
           justifyContent="center"
           sx={{ my: 3 }}
         >
-          <Rating readOnly value={4.95} precision={0.1} max={5} />
+          {/* <Rating readOnly value={4.95} precision={0.1} max={5} />
           <Typography variant="caption" sx={{ color: 'text.secondary' }}>
             <Box component="strong" sx={{ mr: 0.5, color: 'text.primary' }}>
               4.96/5
             </Box>
             (99+ reviews)
-          </Typography>
+          </Typography> */}
         </Stack>
       </m.div>
 
@@ -241,7 +241,7 @@ export default function HomeHero() {
             >
               Ayo Mulai
             </Button>
-{/* 
+            {/* 
             <Link
               color="inherit"
               variant="caption"

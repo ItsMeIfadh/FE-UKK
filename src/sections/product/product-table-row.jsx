@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 // @mui
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -33,13 +33,13 @@ export default function ProductTableRow({
   onViewRow,
 }) {
   const {
-    name,
+    title,
     price,
     publish,
     coverUrl,
     category,
-    quantity,
-    createdAt,
+    user_id,
+    created_at,
     available,
     inventoryType,
   } = row;
@@ -57,7 +57,7 @@ export default function ProductTableRow({
 
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
           <Avatar
-            alt={name}
+            alt={title}
             src={coverUrl}
             variant="rounded"
             sx={{ width: 64, height: 64, mr: 2 }}
@@ -73,12 +73,12 @@ export default function ProductTableRow({
                 onClick={onViewRow}
                 sx={{ cursor: 'pointer' }}
               >
-                {name}
+                {title}
               </Link>
             }
             secondary={
               <Box component="div" sx={{ typography: 'body2', color: 'text.disabled' }}>
-                {category}
+                {category.name}
               </Box>
             }
           />
@@ -86,8 +86,8 @@ export default function ProductTableRow({
 
         <TableCell>
           <ListItemText
-            primary={format(new Date(createdAt), 'dd MMM yyyy')}
-            secondary={format(new Date(createdAt), 'p')}
+            primary={format(parse(created_at, 'dd-MM-yyyy HH:mm', new Date()), 'dd MMM yyyy')}
+            secondary={format(parse(created_at, 'dd-MM-yyyy HH:mm', new Date()), 'p')}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
             secondaryTypographyProps={{
               mt: 0.5,
@@ -97,19 +97,8 @@ export default function ProductTableRow({
           />
         </TableCell>
 
-        <TableCell sx={{ typography: 'caption', color: 'text.secondary' }}>
-          <LinearProgress
-            value={(available * 100) / quantity}
-            variant="determinate"
-            color={
-              (inventoryType === 'out of stock' && 'error') ||
-              (inventoryType === 'low stock' && 'warning') ||
-              'success'
-            }
-            sx={{ mb: 1, height: 6, maxWidth: 80 }}
-          />
-          {!!available && available} {inventoryType}
-        </TableCell>
+        <TableCell>{fCurrency(user_id)}</TableCell>
+
 
         <TableCell>{fCurrency(price)}</TableCell>
 

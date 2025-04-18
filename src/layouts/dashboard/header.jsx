@@ -51,8 +51,8 @@ export default function Header({ onOpenNav }) {
           <SvgColor src="/assets/icons/navbar/ic_menu_item.svg" />
         </IconButton>
       )}
-
-      <Searchbar />
+      
+      {/* <Searchbar /> */} 
 
       <Stack
         flexGrow={1}
@@ -63,7 +63,7 @@ export default function Header({ onOpenNav }) {
       >
         {/* <LanguagePopover /> */}
 
-        {/* <NotificationsPopover /> */}
+        <NotificationsPopover />
 
         {/* <ContactsPopover /> */}
 

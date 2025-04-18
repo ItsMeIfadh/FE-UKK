@@ -60,7 +60,7 @@ const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...USER_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   { id: 'username', label: 'Nama Pengguna' },
-  { id: 'no_telp', label: 'No Telp', width: 180 },
+  { id: 'no_telp', label: 'No Telepon', width: 180 },
   { id: 'address', label: 'Alamat Rumah', width: 220 },
   { id: 'role', label: 'Role', width: 180 },
   { id: 'is_active', label: 'Status', width: 100 },
@@ -107,7 +107,7 @@ export default function UserListView() {
       queryClient.invalidateQueries(['fetch.all.users']);
     },
     onError: (error) => {
-      console.error('Create User Error', error);
+      console.error('Gagal menambah User', error);
       enqueueSnackbar(error.message, { variant: 'error' });
     },
   })

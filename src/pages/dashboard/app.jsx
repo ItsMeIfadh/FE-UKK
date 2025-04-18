@@ -8,7 +8,7 @@ export default function OverviewAppPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: App</title>
+        <title> PPLG Creators: Admin Dashboard</title>
       </Helmet>
 
       <OverviewAppView />

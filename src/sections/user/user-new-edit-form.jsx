@@ -34,10 +34,14 @@ import FormProvider, {
   // RHFAutocomplete,
 } from 'src/components/hook-form';
 import { useMutationCreateUser } from 'src/hooks/user/useMutationCreateUser';
+import { useMutationUpdateUser } from 'src/hooks/user/useMutationUpdateUser';
 
 // ----------------------------------------------------------------------
 
 export default function UserNewEditForm({ currentUser }) {
+  // console.log(currentUser.username)
+  console.log(currentUser?.username);
+
   // 'username' => 'required|string|max:255|unique:users',
   //           'email' => 'required|string|email|max:255|unique:users',
   //           'password' => 'required|string|min:8',
@@ -64,16 +68,30 @@ export default function UserNewEditForm({ currentUser }) {
     },
   })
 
+  const { mutateAsync: updateUser } = useMutationUpdateUser({
+    onSuccess: (data) => {
+      console.log('Update User Success', data);
+      // enqueueSnackbar('Create user success!');
+      router.push(paths.dashboard.user.list);
+      queryClient.invalidateQueries(['fetch.all.users']);
+    },
+    onError: (error) => {
+      console.error('Update User Error', error);
+      enqueueSnackbar(error.message, { variant: 'error' });
+    },
+  })
+
   const NewUserSchema = Yup.object().shape({
     username: Yup.string().required('Username is required'),
     email: Yup.string().required('Email is required').email('Email must be valid'),
-    password: Yup.string().required('Password is required').min(8, 'Min 8 characters'),
+    password: currentUser
+      ? Yup.string()
+      : Yup.string().required('Password is required').min(8, 'Min 8 characters'),
     role: Yup.string().required('Role is required'),
     phone_number: Yup.string().nullable(),
     profile_photo: Yup.mixed().nullable(),
     is_active: Yup.boolean(),
   });
-
 
   const defaultValues = useMemo(() => ({
     username: currentUser?.username || '',
@@ -81,8 +99,9 @@ export default function UserNewEditForm({ currentUser }) {
     password: '',
     role: currentUser?.role || 'pengguna',
     phone_number: currentUser?.phone_number || '',
-    profile_photo: currentUser?.profile_photo || null,
+    profile_photo: currentUser?.profile_photo_url || null,
     is_active: currentUser?.is_active ?? false,
+    address: currentUser?.address || '',
   }), [currentUser]);
 
 
@@ -103,20 +122,32 @@ export default function UserNewEditForm({ currentUser }) {
   const values = watch();
 
   const onSubmit = handleSubmit(async (data) => {
-
-    const formData = new FormData();
-    formData.append('username', data.username);
-    formData.append('email', data.email);
-    formData.append('password', data.password);
-    formData.append('role', data.role);
-    formData.append('is_active', data.is_active ? '1' : '0');
-    if (data.phone_number) formData.append('phone_number', data.phone_number);
-    if (data.profile_photo instanceof File) {
-      formData.append('profile_photo', data.profile_photo);
-    }
-
     try {
-      await createUser(formData);
+
+      const formData = new FormData();
+      formData.append('username', data.username);
+      formData.append('email', data.email);
+      // formData.append('password', data.password);
+      formData.append('role', data.role);
+      formData.append('is_active', data.is_active ? '1' : '0');
+      formData.append('phone_number', data.phone_number);
+      formData.append('address', data.address);
+      if (data.password) {
+        formData.append('password', data.password);
+      }
+
+      formData.append('Method', 'PUT');
+      if (data.profile_photo instanceof File) {
+        formData.append('profile_photo', data.profile_photo);
+      }
+
+
+      console.log(data)
+      if (currentUser?.id) {
+        await updateUser({ id: currentUser.id, data: formData });
+      } else {
+        await createUser(formData);
+      }
       reset();
       enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
       router.push(paths.dashboard.user.list);
@@ -251,7 +282,13 @@ export default function UserNewEditForm({ currentUser }) {
               <RHFTextField name="username" label="Username" />
               <RHFTextField name="email" label="Email Address" />
               <RHFTextField name="phone_number" label="Nomor Telepon" />
-              <RHFTextField name="password" label="Password" type="password" />
+              <RHFTextField
+                name="password"
+                label="Password"
+                type="password"
+                helperText={currentUser ? 'Kosongkan jika tidak ingin mengubah password' : ''}
+              />
+
               <RHFSelect name="role" label="Role">
                 <MenuItem value="kelas">Kelas</MenuItem>
                 <MenuItem value="admin">Admin</MenuItem>
