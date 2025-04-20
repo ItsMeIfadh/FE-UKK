@@ -48,7 +48,7 @@ import ProductTableFiltersResult from '../product-table-filters-result';
 const TABLE_HEAD = [
   { id: 'title', label: 'Produk' },
   { id: 'created_at', label: 'Tanggal dibuat', width: 160 },
-  { id: 'user_id', label: 'Pembuat', width: 160 },
+  { id: 'creator_name', label: 'Pembuat', width: 160 },
   { id: 'price', label: 'Price', width: 140 },
   { id: 'publish', label: 'Publish', width: 110 },
   { id: '', width: 88 },
@@ -247,39 +247,34 @@ export default function ProductListView() {
                   }
                 />
 
-                <TableBody>
-                  {productsLoading ? (
-                    [...Array(table.rowsPerPage)].map((i, index) => (
-                      <TableSkeleton key={index} sx={{ height: denseHeight }} />
-                    ))
-                  ) : (
-                    <>
-                      {dataFiltered
-                        .slice(
-                          table.page * table.rowsPerPage,
-                          table.page * table.rowsPerPage + table.rowsPerPage
-                        )
-                        .map((row) => (
-                          <ProductTableRow
-                            key={row.id}
-                            row={row}
-                            selected={table.selected.includes(row.id)}
-                            onSelectRow={() => table.onSelectRow(row.id)}
-                            onDeleteRow={() => handleDeleteRow(row.id)}
-                            onEditRow={() => handleEditRow(row.id)}
-                            onViewRow={() => handleViewRow(row.id)}
-                          />
-                        ))}
-                    </>
-                  )}
+<TableBody>
+  {productsLoading ? (
+    [...Array(table.rowsPerPage)].map((i, index) => (
+      <TableSkeleton key={index} sx={{ height: denseHeight }} />
+    ))
+  ) : (
+    <>
+      {dataFiltered
+        .slice(
+          table.page * table.rowsPerPage,
+          table.page * table.rowsPerPage + table.rowsPerPage
+        )
+        .map((row) => (
+          <ProductTableRow
+            key={row.id}
+            row={row}
+            selected={table.selected.includes(row.id)}
+            onSelectRow={() => table.onSelectRow(row.id)}
+            onDeleteRow={() => handleDeleteRow(row.id)}
+            onEditRow={() => handleEditRow(row.id)}
+            onViewRow={() => handleViewRow(row.id)}
+            creatorName={row.creator_name} // Menambahkan properti creator_name
+          />
+        ))}
+    </>
+  )}
+</TableBody>
 
-                  <TableEmptyRows
-                    height={denseHeight}
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, tableData.length)}
-                  />
-
-                  <TableNoData notFound={notFound} />
-                </TableBody>
               </Table>
             </Scrollbar>
           </TableContainer>

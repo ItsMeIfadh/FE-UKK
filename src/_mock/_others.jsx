@@ -28,7 +28,7 @@ export const _faqs = [
     id: '3',
     value: 'panel3',
     heading: 'Bagaimana cara menghubungi customer service?',
-    detail: 'Kamu bisa menghubungi kami melalui halaman kontak atau via email ke PPLGCreationsSupportCenter@Gmail.com.',
+    detail: 'Kamu bisa menghubungi kami melalui halaman kontak atau via email ke pplgcreationssupportcenter@gmail.com.',
   },
   // Tambah pertanyaan lainnya sesuai kebutuhan
 ];

@@ -26,7 +26,7 @@ const CONTACTS = [
   {
     country: 'WhatsApp',
     address: 'Hubungi kami langsung via WhatsApp',
-    phoneNumber: '08xx-xxxx-xxxx',
+    phoneNumber: '0821-2244-0455',
   },
   {
     country: 'Email',

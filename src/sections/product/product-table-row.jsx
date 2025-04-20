@@ -11,7 +11,6 @@ import Checkbox from '@mui/material/Checkbox';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
-import LinearProgress from '@mui/material/LinearProgress';
 // utils
 import { fCurrency } from 'src/utils/format-number';
 // hooks
@@ -36,16 +35,14 @@ export default function ProductTableRow({
     title,
     price,
     publish,
+    status,
     coverUrl,
     category,
-    user_id,
     created_at,
-    available,
-    inventoryType,
+    creator_name,
   } = row;
 
   const confirm = useBoolean();
-
   const popover = usePopover();
 
   return (
@@ -78,7 +75,7 @@ export default function ProductTableRow({
             }
             secondary={
               <Box component="div" sx={{ typography: 'body2', color: 'text.disabled' }}>
-                {category.name}
+                {category?.name || 'Tidak ada kategori'}
               </Box>
             }
           />
@@ -97,16 +94,30 @@ export default function ProductTableRow({
           />
         </TableCell>
 
-        <TableCell>{fCurrency(user_id)}</TableCell>
-
+        <TableCell align="left">{creator_name}</TableCell>
 
         <TableCell>{fCurrency(price)}</TableCell>
 
         <TableCell>
+          <Label
+            variant="soft"
+            color={
+              status === 'active'
+                ? 'success'
+                : status === 'inactive'
+                ? 'warning'
+                : 'default'
+            }
+          >
+            {status}
+          </Label>
+        </TableCell>
+
+        {/* <TableCell>
           <Label variant="soft" color={(publish === 'published' && 'info') || 'default'}>
             {publish}
           </Label>
-        </TableCell>
+        </TableCell> */}
 
         <TableCell align="right">
           <IconButton color={popover.open ? 'primary' : 'default'} onClick={popover.onOpen}>
