@@ -101,8 +101,8 @@ export default function UserListView() {
 
   const { mutateAsync: deleteUser } = useMutationDeleteUser({
     onSuccess: (data) => {
-      console.log('user berhasil dihapus', data);
-      enqueueSnackbar('user berhasil dihapus!');
+      console.log('User berhasil dihapus', data);
+      enqueueSnackbar('User berhasil dihapus!');
       router.push(paths.dashboard.user.list);
       queryClient.invalidateQueries(['fetch.all.users']);
     },

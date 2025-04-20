@@ -49,9 +49,10 @@ export const mainRoutes = [
           { element: <ProductListPage />, index: true },
           { path: 'list', element: <ProductListPage /> },
           { path: ':id', element: <ProductDetailsPage /> },
-          { path: 'checkout', element: <ProductCheckoutPage /> },
         ],
       },
+      { path: 'checkout', element: <ProductCheckoutPage /> },
+
       // {
       //   path: 'post',
       //   children: [

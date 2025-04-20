@@ -57,41 +57,42 @@ export default function UserNewEditForm({ currentUser }) {
 
   const { mutateAsync: createUser } = useMutationCreateUser({
     onSuccess: (data) => {
-      console.log('Create User Success', data);
+      console.log('Tambah User Berhasil', data);
       // enqueueSnackbar('Create user success!');
       router.push(paths.dashboard.user.list);
       queryClient.invalidateQueries(['fetch.all.users']);
     },
     onError: (error) => {
-      console.error('Create User Error', error);
+      console.error('Gagal Menambah User', error);
       enqueueSnackbar(error.message, { variant: 'error' });
     },
   })
 
   const { mutateAsync: updateUser } = useMutationUpdateUser({
     onSuccess: (data) => {
-      console.log('Update User Success', data);
+      console.log('Edit User Berhasil', data);
       // enqueueSnackbar('Create user success!');
       router.push(paths.dashboard.user.list);
       queryClient.invalidateQueries(['fetch.all.users']);
     },
     onError: (error) => {
-      console.error('Update User Error', error);
+      console.error('Edit User Gagal', error);
       enqueueSnackbar(error.message, { variant: 'error' });
     },
   })
 
   const NewUserSchema = Yup.object().shape({
-    username: Yup.string().required('Username is required'),
-    email: Yup.string().required('Email is required').email('Email must be valid'),
+    username: Yup.string().required('Username wajib diisi'),
+    email: Yup.string().required('Email wajib diisi').email('Email harus valid'),
     password: currentUser
       ? Yup.string()
-      : Yup.string().required('Password is required').min(8, 'Min 8 characters'),
-    role: Yup.string().required('Role is required'),
+      : Yup.string().required('Password wajib diisi').min(8, 'Password minimal 8 karakter'),
+    role: Yup.string().required('Role wajib diisi'),
     phone_number: Yup.string().nullable(),
     profile_photo: Yup.mixed().nullable(),
     is_active: Yup.boolean(),
   });
+  
 
   const defaultValues = useMemo(() => ({
     username: currentUser?.username || '',
@@ -149,7 +150,7 @@ export default function UserNewEditForm({ currentUser }) {
         await createUser(formData);
       }
       reset();
-      enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
+      enqueueSnackbar(currentUser ? 'Edit User Sukses!' : 'Tambah User Suksess!');
       router.push(paths.dashboard.user.list);
       console.info('DATA', data);
     } catch (error) {
@@ -299,10 +300,13 @@ export default function UserNewEditForm({ currentUser }) {
             </Box>
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
               <RHFTextField name="address" multiline rows={4} label="address" />
-
-              <LoadingButton type="submit" variant="contained" >
-                Simpan Perubahan
+              <LoadingButton
+                type="submit"
+                variant="contained"
+              >
+                {currentUser ? 'Simpan Perubahan' : 'Tambah User'}
               </LoadingButton>
+
             </Stack>
           </Card>
         </Grid>

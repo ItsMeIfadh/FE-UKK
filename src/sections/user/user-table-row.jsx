@@ -118,8 +118,8 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
-        title="Delete"
-        content="Are you sure want to delete?"
+        title="Hapus"
+        content="Apakah anda yakin ingin menghapus user ini?"
         action={
           <Button variant="contained" color="error" onClick={onDeleteRow}>
             Delete
