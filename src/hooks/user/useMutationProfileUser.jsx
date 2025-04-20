@@ -1,16 +1,15 @@
 // src/hooks/user/useMutationProfileUser.js
-
 import { useMutation } from '@tanstack/react-query';
 import axiosInstance, { endpoints } from 'src/utils/axios';
 
-export const useMutationProfileUser = ({ onSuccess,
-  onError }) =>
+export const useMutationProfileUser = ({ onSuccess, onError }) =>
   useMutation({
-    mutationKey: ['profile'],
+    mutationKey: ['profile'], // untuk caching dan tracking data profile
     mutationFn: async (data) => {
-      const response = await axiosInstance.post(endpoints.user.update, data);
+      const response = await axiosInstance.put(endpoints.auth.meUpdate, data);
       return response.data;
     },
-    onSuccess,
-    onError
+    onSuccess, // fungsi callback jika berhasil
+    onError,   // fungsi callback jika gagal
   });
+

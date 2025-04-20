@@ -20,6 +20,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { paths } from 'src/routes/paths';
 // hooks
 import { useResponsive } from 'src/hooks/use-responsive';
+import { useMutationCreateProduct } from 'src/hooks/product/useMutationCreateProduct';
+
 // _mock
 import {
   _tags,
@@ -170,37 +172,29 @@ export default function ProductNewEditForm({ currentProduct }) {
 
   const renderDetails = (
     <>
-      {mdUp && (
-        <Grid md={4}>
-          <Typography variant="h6" sx={{ mb: 0.5 }}>
-            Details
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Title, short description, image...
-          </Typography>
-        </Grid>
-      )}
+{mdUp && (
+  <Grid md={4}>
+    <Typography variant="h6" sx={{ mb: 0.5 }}>
+      Detail
+    </Typography>
+    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+      Foto website, judul, dan deskripsi website.
+    </Typography>
+  </Grid>
+)}
+
 
       <Grid xs={12} md={8}>
         <Card>
           {!mdUp && <CardHeader title="Details" />}
 
           <Stack spacing={3} sx={{ p: 3 }}>
-            <RHFTextField name="name" label="Product Name" />
-
-            <RHFTextField name="subDescription" label="Sub Description" multiline rows={4} />
-
-            <Stack spacing={1.5}>
-              <Typography variant="subtitle2">Content</Typography>
-              <RHFEditor simple name="description" />
-            </Stack>
-
-            <Stack spacing={1.5}>
-              <Typography variant="subtitle2">Images</Typography>
+          <Stack spacing={1.5}>
+              <Typography variant="subtitle2">Foto Website (untuk logo)</Typography>
               <RHFUpload
                 multiple
                 thumbnail
-                name="images"
+                name="image"
                 maxSize={3145728}
                 onDrop={handleDrop}
                 onRemove={handleRemoveFile}
@@ -208,6 +202,13 @@ export default function ProductNewEditForm({ currentProduct }) {
                 onUpload={() => console.info('ON UPLOAD')}
               />
             </Stack>
+            <RHFTextField name="title" label="Nama Website" />
+
+            <RHFTextField name="description" label="Sub Description" multiline rows={4} />
+            {/* <Stack spacing={1.5}>
+              <Typography variant="subtitle2">Deskripsi</Typography>
+              <RHFEditor simple name="description"/>
+            </Stack> */}
           </Stack>
         </Card>
       </Grid>
@@ -219,11 +220,10 @@ export default function ProductNewEditForm({ currentProduct }) {
       {mdUp && (
         <Grid md={4}>
           <Typography variant="h6" sx={{ mb: 0.5 }}>
-            Properties
+            Lengkapi Data
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Additional functions and attributes...
-          </Typography>
+          Kategori, url demo website, url video website.         </Typography>
         </Grid>
       )}
 
@@ -241,19 +241,15 @@ export default function ProductNewEditForm({ currentProduct }) {
                 md: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="code" label="Product Code" />
-
-              <RHFTextField name="sku" label="Product SKU" />
-
-              <RHFTextField
-                name="quantity"
-                label="Quantity"
+              {/* <RHFTextField
+                name="price"
+                label="Harga"
                 placeholder="0"
                 type="number"
                 InputLabelProps={{ shrink: true }}
-              />
+              /> */}
 
-              <RHFSelect native name="category" label="Category" InputLabelProps={{ shrink: true }}>
+              <RHFSelect native name="category_id" label="Kategori" InputLabelProps={{ shrink: true }}>
                 {PRODUCT_CATEGORY_GROUP_OPTIONS.map((category) => (
                   <optgroup key={category.group} label={category.group}>
                     {category.classify.map((classify) => (
@@ -264,18 +260,12 @@ export default function ProductNewEditForm({ currentProduct }) {
                   </optgroup>
                 ))}
               </RHFSelect>
+            <RHFTextField name="url" label="url demo website" />
 
-              <RHFMultiSelect
-                checkbox
-                name="colors"
-                label="Colors"
-                options={PRODUCT_COLOR_NAME_OPTIONS}
-              />
-
-              <RHFMultiSelect checkbox name="sizes" label="Sizes" options={PRODUCT_SIZE_OPTIONS} />
             </Box>
+            <RHFTextField name="video_url" label="url video website" />
 
-            <RHFAutocomplete
+            {/* <RHFAutocomplete
               name="tags"
               label="Tags"
               placeholder="+ Tags"
@@ -300,16 +290,16 @@ export default function ProductNewEditForm({ currentProduct }) {
                   />
                 ))
               }
-            />
+            /> */}
 
-            <Stack spacing={1}>
+            {/* <Stack spacing={1}>
               <Typography variant="subtitle2">Gender</Typography>
               <RHFMultiCheckbox row name="gender" spacing={2} options={PRODUCT_GENDER_OPTIONS} />
-            </Stack>
+            </Stack> */}
 
             <Divider sx={{ borderStyle: 'dashed' }} />
 
-            <Stack direction="row" alignItems="center" spacing={3}>
+            {/* <Stack direction="row" alignItems="center" spacing={3}>
               <RHFSwitch name="saleLabel.enabled" label={null} sx={{ m: 0 }} />
               <RHFTextField
                 name="saleLabel.content"
@@ -317,9 +307,9 @@ export default function ProductNewEditForm({ currentProduct }) {
                 fullWidth
                 disabled={!values.saleLabel.enabled}
               />
-            </Stack>
+            </Stack> */}
 
-            <Stack direction="row" alignItems="center" spacing={3}>
+            {/* <Stack direction="row" alignItems="center" spacing={3}>
               <RHFSwitch name="newLabel.enabled" label={null} sx={{ m: 0 }} />
               <RHFTextField
                 name="newLabel.content"
@@ -327,7 +317,7 @@ export default function ProductNewEditForm({ currentProduct }) {
                 fullWidth
                 disabled={!values.newLabel.enabled}
               />
-            </Stack>
+            </Stack> */}
           </Stack>
         </Card>
       </Grid>
@@ -339,10 +329,10 @@ export default function ProductNewEditForm({ currentProduct }) {
       {mdUp && (
         <Grid md={4}>
           <Typography variant="h6" sx={{ mb: 0.5 }}>
-            Pricing
+            Mengatur Harga
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Price related inputs
+           Harga website, diskon, dll.
           </Typography>
         </Grid>
       )}
@@ -354,15 +344,15 @@ export default function ProductNewEditForm({ currentProduct }) {
           <Stack spacing={3} sx={{ p: 3 }}>
             <RHFTextField
               name="price"
-              label="Regular Price"
-              placeholder="0.00"
+              label="Harga Normal"
+              placeholder="000.000"
               type="number"
               InputLabelProps={{ shrink: true }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
                     <Box component="span" sx={{ color: 'text.disabled' }}>
-                      $
+                      Rp.
                     </Box>
                   </InputAdornment>
                 ),
@@ -370,28 +360,25 @@ export default function ProductNewEditForm({ currentProduct }) {
             />
 
             <RHFTextField
-              name="priceSale"
-              label="Sale Price"
-              placeholder="0.00"
+              name="price_sale"
+              label="Harga setelah diskon"
+              placeholder="000.000"
               type="number"
               InputLabelProps={{ shrink: true }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
                     <Box component="span" sx={{ color: 'text.disabled' }}>
-                      $
+                      Rp.
                     </Box>
                   </InputAdornment>
                 ),
               }}
             />
 
-            <FormControlLabel
-              control={<Switch checked={includeTaxes} onChange={handleChangeIncludeTaxes} />}
-              label="Price includes taxes"
-            />
+ 
 
-            {!includeTaxes && (
+            {/* {!includeTaxes && (
               <RHFTextField
                 name="taxes"
                 label="Tax (%)"
@@ -408,7 +395,7 @@ export default function ProductNewEditForm({ currentProduct }) {
                   ),
                 }}
               />
-            )}
+            )} */}
           </Stack>
         </Card>
       </Grid>

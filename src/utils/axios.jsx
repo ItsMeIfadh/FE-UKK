@@ -37,6 +37,7 @@ export const endpoints = {
   calendar: '/api/calendar',
   auth: {
     me: '/api/user', // untuk profile
+    meUpdate: '/api/user/update-profile', // untuk profile
     login: '/api/login',
     register: '/api/auth/register',
     logout: '/api/logout',

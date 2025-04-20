@@ -98,7 +98,6 @@ export function useNavData() {
             children: [
               { title: t('list'), path: paths.dashboard.product.root },
               { title: t('create'), path: paths.dashboard.product.new },
-              { title: t('edit'), path: paths.dashboard.product.demo.edit },
             ],
           },
 
@@ -109,7 +108,7 @@ export function useNavData() {
             icon: ICONS.order,
             children: [
               { title: t('list'), path: paths.dashboard.order.root },
-              { title: t('details'), path: paths.dashboard.order.demo.details },
+              // { title: t('details'), path: paths.dashboard.order.demo.details },
             ],
           },
 

@@ -37,14 +37,9 @@ export default function AccountGeneral({ user: AuthUser }) {
   // const { user } = useMockedUser();
 
   const UpdateUserSchema = Yup.object().shape({
-    // username: Yup.string().required('Name is required'),
-    // email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    // profile_photo: Yup.mixed().nullable().required('Avatar is required'),
-    // phone_number: Yup.string().required('Phone number is required'),
-    // address: Yup.string().required('Address is required'),
-    // not required
-    isPublic: Yup.boolean(),
+    isPublic: Yup.boolean(), // contoh validasi, bisa kamu tambahkan lainnya
   });
+
 
 
   const defaultValues = {
@@ -57,6 +52,7 @@ export default function AccountGeneral({ user: AuthUser }) {
     address: AuthUser?.address || '',
     role: AuthUser?.role || '',
   };
+
 
 
   // console.log(AuthUser)
@@ -87,16 +83,22 @@ export default function AccountGeneral({ user: AuthUser }) {
 
   const { mutate, isPending } = useMutationProfileUser({
     onSuccess: () => {
-      enqueueSnackbar('Tambah user success', { variant: 'success' });
+      enqueueSnackbar('Profil berhasil diperbarui', { variant: 'success' });
     },
     onError: (error) => {
       enqueueSnackbar(error.message, { variant: 'error' });
     },
   })
 
+  
+
   const onSubmit = (data) => {
     const formData = new FormData();
+  
     Object.entries(data).forEach(([key, value]) => {
+      // Lewatin role agar tidak dikirim
+      if (key === 'role') return;
+  
       if (key === 'profile_photo') {
         if (value && typeof value === 'object' && value instanceof File) {
           formData.append(key, value);
@@ -105,15 +107,24 @@ export default function AccountGeneral({ user: AuthUser }) {
         formData.append(key, value);
       }
     });
-    mutate(formData)
-  }
+  
+    // Debug lagi kalau perlu
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+  
+    mutate(formData);
+  };
+  
+  
+
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
 
       const newFile = Object.assign(file, {
-        preview: URL.createObjectURL(file),
+        preview: URL.createObjectURL(file), // agar bisa tampilkan preview gambar
       });
 
       if (file) {
@@ -122,6 +133,7 @@ export default function AccountGeneral({ user: AuthUser }) {
     },
     [setValue]
   );
+
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -149,9 +161,9 @@ export default function AccountGeneral({ user: AuthUser }) {
               }
             />
 
-            <Button variant="soft" color="error" sx={{ mt: 3 }}>
+            {/* <Button variant="soft" color="error" sx={{ mt: 3 }}>
               Hapus Akun
-            </Button>
+            </Button> */}
           </Card>
         </Grid>
 
@@ -186,6 +198,7 @@ export default function AccountGeneral({ user: AuthUser }) {
               <LoadingButton type="submit" variant="contained" loading={isPending}>
                 Simpan Perubahan
               </LoadingButton>
+
             </Stack>
           </Card>
         </Grid>
