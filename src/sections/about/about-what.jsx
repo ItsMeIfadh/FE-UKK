@@ -77,7 +77,7 @@ export default function AboutWhat() {
         <Grid xs={12} md={6} lg={5}>
           <m.div variants={varFade().inRight}>
             <Typography variant="h2" sx={{ mb: 3 }}>
-              Apa itu PPLG Creations?
+              Apa itu WebKu?
             </Typography>
           </m.div>
 
@@ -87,7 +87,7 @@ export default function AboutWhat() {
                 color: theme.palette.mode === 'light' ? 'text.secondary' : 'common.white',
               }}
             >
-              PPLG Creations adalah platform untuk menampilkan karya siswa-siswi jurusan PPLG SMK
+              WebKu adalah platform untuk menampilkan karya siswa-siswi jurusan PPLG SMK
               Negeri 1 Ciomas. Di sini, kamu bisa melihat berbagai project digital seperti website,
               aplikasi, dan software lainnya. Beberapa karya juga tersedia untuk digunakan atau
               dibeli oleh umum.

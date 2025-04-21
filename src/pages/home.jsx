@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <>
       <Helmet>
-        <title> PPLG Creations: Dari Ide ke Inovasi, Semua Ada di Sini !</title>
+        <title> WebKu: Dari Ide ke Inovasi, Semua Ada di Sini !</title>
       </Helmet>
 
       <HomeView />

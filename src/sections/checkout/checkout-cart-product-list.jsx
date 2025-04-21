@@ -27,6 +27,7 @@ export default function CheckoutCartProductList({
   onIncreaseQuantity,
   onDecreaseQuantity,
 }) {
+  console.log(products)
   return (
     <TableContainer sx={{ overflow: 'unset' }}>
       <Scrollbar>

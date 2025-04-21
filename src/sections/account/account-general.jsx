@@ -27,6 +27,9 @@ import FormProvider, {
   RHFAutocomplete,
 } from 'src/components/hook-form';
 import { useMutationProfileUser } from 'src/hooks/user/useMutationProfileUser';
+import { useFetchByIdUser } from 'src/hooks/user/useFetchByIdUser';
+import { LoadingScreen } from 'src/components/loading-screen';
+import { useQueryClient } from '@tanstack/react-query';
 // import { register } from 'numeral';
 
 // ----------------------------------------------------------------------
@@ -35,6 +38,9 @@ export default function AccountGeneral({ user: AuthUser }) {
   const { enqueueSnackbar } = useSnackbar();
   // console.log(AuthUser.email);
   // const { user } = useMockedUser();
+  const queryClient = useQueryClient();
+
+  const { data: userLogeddin, isLoading, isFetching } = useFetchByIdUser(AuthUser?.id)
 
   const UpdateUserSchema = Yup.object().shape({
     isPublic: Yup.boolean(), // contoh validasi, bisa kamu tambahkan lainnya
@@ -70,19 +76,20 @@ export default function AccountGeneral({ user: AuthUser }) {
   } = methods;
 
 
-  // useEffect(() => {
-  //   if (AuthUser) {
-  //     setValue('username', AuthUser.username || '');
-  //     setValue('email', AuthUser.email || '');
-  //     setValue('profile_photo', AuthUser.profile_photo || null);
-  //     setValue('phone_number', AuthUser.phone_number || '');
-  //     setValue('address', AuthUser.address || '');
-  //     setValue('role', AuthUser.role || '');
-  //   }
-  // }, [AuthUser, setValue]);
+  useEffect(() => {
+    if (userLogeddin) {
+      setValue('username', userLogeddin.username || '');
+      setValue('email', userLogeddin.email || '');
+      setValue('profile_photo', userLogeddin.profile_photo_url || null);
+      setValue('phone_number', userLogeddin.phone_number || '');
+      setValue('address', userLogeddin.address || '');
+      setValue('role', userLogeddin.role || '');
+    }
+  }, [userLogeddin, setValue]);
 
   const { mutate, isPending } = useMutationProfileUser({
     onSuccess: () => {
+      queryClient.invalidateQueries(['fetch.user.by.id', AuthUser?.id]);
       enqueueSnackbar('Profil berhasil diperbarui', { variant: 'success' });
     },
     onError: (error) => {
@@ -90,15 +97,15 @@ export default function AccountGeneral({ user: AuthUser }) {
     },
   })
 
-  
+
 
   const onSubmit = (data) => {
     const formData = new FormData();
-  
+
     Object.entries(data).forEach(([key, value]) => {
       // Lewatin role agar tidak dikirim
       if (key === 'role') return;
-  
+
       if (key === 'profile_photo') {
         if (value && typeof value === 'object' && value instanceof File) {
           formData.append(key, value);
@@ -107,16 +114,16 @@ export default function AccountGeneral({ user: AuthUser }) {
         formData.append(key, value);
       }
     });
-  
+
     // Debug lagi kalau perlu
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
-  
+    formData.append('_method', 'PUT'); // tambahkan method ke formData
     mutate(formData);
   };
-  
-  
+
+
 
 
   const handleDrop = useCallback(
@@ -134,6 +141,10 @@ export default function AccountGeneral({ user: AuthUser }) {
     [setValue]
   );
 
+  // console.log(data)
+  if (isLoading || isFetching) {
+    return <LoadingScreen />;
+  }
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>

@@ -64,9 +64,7 @@ const StyledThumbnailsContainer = styled('div')(({ length, theme }) => ({
 export default function ProductDetailsCarousel({ product }) {
   const theme = useTheme();
 
-  const slides = product.images.map((img) => ({
-    src: img,
-  }));
+  const slides = product.images_url
 
   const lightbox = useLightBox(slides);
 
@@ -83,7 +81,7 @@ export default function ProductDetailsCarousel({ product }) {
     focusOnSelect: true,
     variableWidth: true,
     centerPadding: '0px',
-    slidesToShow: slides.length > 3 ? 3 : slides.length,
+    slidesToShow: 1,
   });
 
   useEffect(() => {
@@ -111,21 +109,21 @@ export default function ProductDetailsCarousel({ product }) {
         asNavFor={carouselThumb.nav}
         ref={carouselLarge.carouselRef}
       >
-        {slides.map((slide) => (
-          <Image
-            key={slide.src}
-            alt={slide.src}
-            src={slide.src}
-            ratio="1/1"
-            onClick={() => lightbox.onOpen(slide.src)}
-            sx={{ cursor: 'zoom-in' }}
-          />
-        ))}
+        {/* {slides.map((slide) => ( */}
+        <Image
+          key={slides}
+          alt={`asdasd`}
+          src={slides}
+          ratio="1/1"
+          onClick={() => lightbox.onOpen(slide.src)}
+          sx={{ cursor: 'zoom-in' }}
+        />
+        {/* ))} */}
       </Carousel>
 
       <CarouselArrowIndex
         index={carouselLarge.currentIndex}
-        total={slides.length}
+        total={1}
         onNext={carouselThumb.onNext}
         onPrev={carouselThumb.onPrev}
       />
@@ -133,32 +131,29 @@ export default function ProductDetailsCarousel({ product }) {
   );
 
   const renderThumbnails = (
-    <StyledThumbnailsContainer length={slides.length}>
+    <StyledThumbnailsContainer length={1}>
       <Carousel
         {...carouselThumb.carouselSettings}
         asNavFor={carouselLarge.nav}
         ref={carouselThumb.carouselRef}
       >
-        {slides.map((item, index) => (
-          <Box key={item.src} sx={{ px: 0.5 }}>
-            <Avatar
-              key={item.src}
-              alt={item.src}
-              src={item.src}
-              variant="rounded"
-              sx={{
-                width: THUMB_SIZE,
-                height: THUMB_SIZE,
-                opacity: 0.48,
-                cursor: 'pointer',
-                ...(carouselLarge.currentIndex === index && {
-                  opacity: 1,
-                  border: `solid 2.5px ${theme.palette.primary.main}`,
-                }),
-              }}
-            />
-          </Box>
-        ))}
+        {/* {slides.map((item, index) => ( */}
+        <Box key={slides} sx={{ px: 0.5 }}>
+          <Avatar
+            key={slides}
+            alt={`shadjsad`}
+            src={slides}
+            variant="rounded"
+            sx={{
+              width: THUMB_SIZE,
+              height: THUMB_SIZE,
+              opacity: 0.48,
+              cursor: 'pointer',
+              opacity: 1,
+              border: `solid 2.5px ${theme.palette.primary.main}`,
+            }}
+          />
+        </Box>
       </Carousel>
     </StyledThumbnailsContainer>
   );

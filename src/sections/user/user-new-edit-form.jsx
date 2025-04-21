@@ -92,7 +92,7 @@ export default function UserNewEditForm({ currentUser }) {
     profile_photo: Yup.mixed().nullable(),
     is_active: Yup.boolean(),
   });
-  
+
 
   const defaultValues = useMemo(() => ({
     username: currentUser?.username || '',
@@ -137,7 +137,6 @@ export default function UserNewEditForm({ currentUser }) {
         formData.append('password', data.password);
       }
 
-      formData.append('Method', 'PUT');
       if (data.profile_photo instanceof File) {
         formData.append('profile_photo', data.profile_photo);
       }
@@ -145,6 +144,7 @@ export default function UserNewEditForm({ currentUser }) {
 
       console.log(data)
       if (currentUser?.id) {
+        formData.append('_method', 'PUT');
         await updateUser({ id: currentUser.id, data: formData });
       } else {
         await createUser(formData);
@@ -211,7 +211,7 @@ export default function UserNewEditForm({ currentUser }) {
               />
             </Box>
 
-      
+
 
             {/* <RHFSwitch
               name="isVerified"

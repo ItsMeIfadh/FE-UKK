@@ -14,13 +14,20 @@ import EmptyContent from 'src/components/empty-content';
 import { useCheckoutContext } from './context';
 import CheckoutSummary from './checkout-summary';
 import CheckoutCartProductList from './checkout-cart-product-list';
+import { useFetchAllCarts } from 'src/hooks/cart/useFetchAllCarts';
+import { LoadingScreen } from 'src/components/loading-screen';
 
 // ----------------------------------------------------------------------
 
 export default function CheckoutCart() {
   const checkout = useCheckoutContext();
+  const { data, isLoading, isFetching } = useFetchAllCarts()
+  console.log(data?.cart)
+  const empty = !data?.cart?.length;
 
-  const empty = !checkout.items.length;
+  if (isLoading || isFetching) {
+    return <LoadingScreen />
+  }
 
   return (
     <Grid container spacing={3}>
@@ -47,7 +54,7 @@ export default function CheckoutCart() {
             />
           ) : (
             <CheckoutCartProductList
-              products={checkout.items}
+              products={data.cart}
               onDelete={checkout.onDeleteCart}
               onIncreaseQuantity={checkout.onIncreaseQuantity}
               onDecreaseQuantity={checkout.onDecreaseQuantity}

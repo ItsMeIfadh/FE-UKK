@@ -8,7 +8,7 @@ export default function ContactPage() {
   return (
     <>
       <Helmet>
-        <title> PPLG Creations: Contact us</title>
+        <title> WebKu: Contact us</title>
       </Helmet>
 
       <ContactView />

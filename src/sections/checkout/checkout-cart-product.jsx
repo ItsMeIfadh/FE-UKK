@@ -20,6 +20,7 @@ import IncrementerButton from '../product/common/incrementer-button';
 // ----------------------------------------------------------------------
 
 export default function CheckoutCartProduct({ row, onDelete, onDecrease, onIncrease }) {
+  console.log(row)
   const { name, size, price, colors, coverUrl, quantity, available } = row;
 
   return (
@@ -29,10 +30,10 @@ export default function CheckoutCartProduct({ row, onDelete, onDecrease, onIncre
 
         <Stack spacing={0.5}>
           <Typography noWrap variant="subtitle2" sx={{ maxWidth: 240 }}>
-            {name}
+            {row?.product?.title}
           </Typography>
 
-          <Stack
+          {/* <Stack
             direction="row"
             alignItems="center"
             sx={{ typography: 'body2', color: 'text.secondary' }}
@@ -40,11 +41,11 @@ export default function CheckoutCartProduct({ row, onDelete, onDecrease, onIncre
             size: <Label sx={{ ml: 0.5 }}> {size} </Label>
             <Divider orientation="vertical" sx={{ mx: 1, height: 16 }} />
             <ColorPreview colors={colors} />
-          </Stack>
+          </Stack> */}
         </Stack>
       </TableCell>
 
-      <TableCell>{fCurrency(price)}</TableCell>
+      <TableCell>{fCurrency(row?.product?.price)}</TableCell>
 
       <TableCell>
         <Box sx={{ width: 88, textAlign: 'right' }}>
@@ -57,12 +58,12 @@ export default function CheckoutCartProduct({ row, onDelete, onDecrease, onIncre
           />
 
           <Typography variant="caption" component="div" sx={{ color: 'text.secondary', mt: 1 }}>
-            available: {available}
+            Kategori: {row?.product?.category?.name}
           </Typography>
         </Box>
       </TableCell>
 
-      <TableCell align="right">{fCurrency(price * quantity)}</TableCell>
+      <TableCell align="right">{fCurrency(row?.product?.price * quantity)}</TableCell>
 
       <TableCell align="right" sx={{ px: 1 }}>
         <IconButton onClick={onDelete}>

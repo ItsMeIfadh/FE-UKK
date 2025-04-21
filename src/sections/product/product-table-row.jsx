@@ -20,6 +20,11 @@ import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import { useMutationDeleteProduct } from 'src/hooks/product/useMutationDeleteProduct';
+import { useRouter } from 'src/routes/hooks';
+import { useSnackbar } from 'notistack';
+import { paths } from 'src/routes/paths';
+import { useQueryClient } from '@tanstack/react-query';
 
 // ----------------------------------------------------------------------
 
@@ -36,14 +41,33 @@ export default function ProductTableRow({
     price,
     publish,
     status,
-    coverUrl,
+    images_url,
     category,
     created_at,
     creator_name,
   } = row;
-
+  const { enqueueSnackbar } = useSnackbar();
   const confirm = useBoolean();
+  const router = useRouter();
   const popover = usePopover();
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutationDeleteProduct({
+    onSuccess: () => {
+      console.log('Produk berhasil dihapus, invalidate dimulai');
+      queryClient.invalidateQueries(['chart.products']);
+      enqueueSnackbar('product berhasil dihapus!');
+      // router.push(paths.dashboard.product.root);
+    },
+    onError: (error) => {
+      console.error(error);
+      enqueueSnackbar(error.message, { variant: 'error' });
+    },
+
+  })
+
+  const handleDeleteProduct = () => {
+    mutate(row.id);
+  };
 
   return (
     <>
@@ -55,7 +79,7 @@ export default function ProductTableRow({
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
           <Avatar
             alt={title}
-            src={coverUrl}
+            src={images_url}
             variant="rounded"
             sx={{ width: 64, height: 64, mr: 2 }}
           />
@@ -105,8 +129,8 @@ export default function ProductTableRow({
               status === 'active'
                 ? 'success'
                 : status === 'inactive'
-                ? 'warning'
-                : 'default'
+                  ? 'warning'
+                  : 'default'
             }
           >
             {status}
@@ -170,8 +194,8 @@ export default function ProductTableRow({
         title="Delete"
         content="Are you sure want to delete?"
         action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
-            Delete
+          <Button variant="contained" color="error" onClick={handleDeleteProduct}>
+            {isPending ? 'Menghapus' : 'Delete'}
           </Button>
         }
       />

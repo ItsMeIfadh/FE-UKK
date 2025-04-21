@@ -8,7 +8,7 @@ export default function FaqsPage() {
   return (
     <>
       <Helmet>
-        <title> PPLG Creations: Faqs</title>
+        <title> WebKu: Faqs</title>
       </Helmet>
 
       <FaqsView />

@@ -20,8 +20,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { paths } from 'src/routes/paths';
 // hooks
 import { useResponsive } from 'src/hooks/use-responsive';
-import { useMutationCreateProduct } from 'src/hooks/product/useMutationCreateProduct';
-
 // _mock
 import {
   _tags,
@@ -43,10 +41,18 @@ import FormProvider, {
   RHFAutocomplete,
   RHFMultiCheckbox,
 } from 'src/components/hook-form';
+import { useMutationCreateProduct } from 'src/hooks/product/useMutationCreateProduct';
+import { useFetchAllCategory } from 'src/hooks/kategori/useFetchAllCategory';
+import { LoadingScreen } from 'src/components/loading-screen';
+import { useMutationUpdateProduct } from 'src/hooks/product';
 
 // ----------------------------------------------------------------------
 
-export default function ProductNewEditForm({ currentProduct }) {
+export default function ProductNewEditForm({ currentProduct = '' }) {
+  // console.log(currentProduct)
+
+  const { data: detailProduct } = currentProduct
+  console.log(detailProduct?.id)
   const router = useRouter();
 
   const mdUp = useResponsive('up', 'md');
@@ -55,48 +61,60 @@ export default function ProductNewEditForm({ currentProduct }) {
 
   const [includeTaxes, setIncludeTaxes] = useState(false);
 
-  const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    images: Yup.array().min(1, 'Images is required'),
-    tags: Yup.array().min(2, 'Must have at least 2 tags'),
-    category: Yup.string().required('Category is required'),
-    price: Yup.number().moreThan(0, 'Price should not be $0.00'),
-    description: Yup.string().required('Description is required'),
-    // not required
-    taxes: Yup.number(),
-    newLabel: Yup.object().shape({
-      enabled: Yup.boolean(),
-      content: Yup.string(),
-    }),
-    saleLabel: Yup.object().shape({
-      enabled: Yup.boolean(),
-      content: Yup.string(),
-    }),
+  const { data, isLoading, isFetching, isError } = useFetchAllCategory();
+  console.log(data)
+
+  const { mutateAsync: createProduct } = useMutationCreateProduct({
+    onSuccess: () => {
+      enqueueSnackbar('Create product success!');
+      router.push(paths.dashboard.product.root);
+    },
+    onError: (error) => {
+      console.error(error);
+      enqueueSnackbar(error.message, { variant: 'error' });
+    },
+
+  });
+  const { mutate: updateMutation } = useMutationUpdateProduct({
+    onSuccess: () => {
+      enqueueSnackbar('Create product success!');
+      router.push(paths.dashboard.product.root);
+    },
+    onError: (error) => {
+      console.error(error);
+      enqueueSnackbar(error.message, { variant: 'error' });
+    },
   });
 
-  const defaultValues = useMemo(
-    () => ({
-      name: currentProduct?.name || '',
-      description: currentProduct?.description || '',
-      subDescription: currentProduct?.subDescription || '',
-      images: currentProduct?.images || [],
-      //
-      code: currentProduct?.code || '',
-      sku: currentProduct?.sku || '',
-      price: currentProduct?.price || 0,
-      quantity: currentProduct?.quantity || 0,
-      priceSale: currentProduct?.priceSale || 0,
-      tags: currentProduct?.tags || [],
-      taxes: currentProduct?.taxes || 0,
-      gender: currentProduct?.gender || '',
-      category: currentProduct?.category || '',
-      colors: currentProduct?.colors || [],
-      sizes: currentProduct?.sizes || [],
-      newLabel: currentProduct?.newLabel || { enabled: false, content: '' },
-      saleLabel: currentProduct?.saleLabel || { enabled: false, content: '' },
-    }),
-    [currentProduct]
-  );
+  const NewProductSchema = Yup.object().shape({
+    title: Yup.string().required('Judul wajib diisi'),
+    description: Yup.string().required('Deskripsi wajib diisi'),
+    url: Yup.string().required('URL website wajib diisi'),
+    video_url: Yup.string().required('URL video wajib diisi'),
+    image: Yup.mixed()
+      .required('Gambar wajib diunggah'),
+    category_id: Yup.string().required('Kategori wajib di isi'),
+    price: Yup.number().typeError('Harga harus berupa angka').moreThan(0, 'Harga tidak boleh 0'),
+    status: Yup.string()
+      .oneOf(['active', 'inactive'], 'Status tidak valid')  // Mengubah validasi status ke 'active' atau 'inactive'
+      .required('Status wajib diisi'),
+  });
+
+
+
+
+  const defaultValues = useMemo(() => ({
+    title: detailProduct?.title || '',
+    description: detailProduct?.description || '',
+    url: detailProduct?.url || '',
+    video_url: detailProduct?.video_url || '',
+    image: detailProduct?.images_url ? [detailProduct.images_url] : [],
+    category_id: detailProduct?.category?.id || '',
+    price: detailProduct?.price || 0,
+    status: detailProduct?.status === 'draft' ? 'inactive' : detailProduct?.status || 'active',
+  }), [detailProduct]);
+
+
 
   const methods = useForm({
     resolver: yupResolver(NewProductSchema),
@@ -127,44 +145,68 @@ export default function ProductNewEditForm({ currentProduct }) {
     }
   }, [currentProduct?.taxes, includeTaxes, setValue]);
 
+
+
   const onSubmit = handleSubmit(async (data) => {
+    console.log(data)
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      reset();
-      enqueueSnackbar(currentProduct ? 'Update success!' : 'Create success!');
-      router.push(paths.dashboard.product.root);
-      console.info('DATA', data);
+      const formData = new FormData();
+
+      formData.append('title', data.title);
+      formData.append('description', data.description);
+      formData.append('price', data.price.toString());
+      formData.append('url', data.url);
+      formData.append('video_url', data.video_url);
+
+
+      if (data.category_id && data.category_id.length) {
+        formData.append('category_id', data.category_id[0].toString());
+      }
+
+      // Set status menjadi 'active' atau 'inactive'
+      formData.append('status', data.status === 'draft' ? 'inactive' : data.status);
+      if (data.image && data.image.length && data.image[0] instanceof File) {
+        formData.append('image', data.image[0]);
+      }
+
+      if (detailProduct?.id) {
+        formData.append('_method', 'PUT');
+        updateMutation({ id: detailProduct?.id, data: formData });
+      } else {
+        await createProduct(formData);
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Error submitting form:', error);
     }
   });
 
+
   const handleDrop = useCallback(
     (acceptedFiles) => {
-      const files = values.images || [];
+      const newFile = acceptedFiles[0]; // Ambil satu file saja (karena 1 gambar)
 
-      const newFiles = acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      );
+      const previewFile = Object.assign(newFile, {
+        preview: URL.createObjectURL(newFile),
+      });
 
-      setValue('images', [...files, ...newFiles], { shouldValidate: true });
+      setValue('image', [previewFile], { shouldValidate: true }); // Replace gambar lama
     },
-    [setValue, values.images]
+    [setValue]
   );
 
   const handleRemoveFile = useCallback(
     (inputFile) => {
-      const filtered = values.images && values.images?.filter((file) => file !== inputFile);
-      setValue('images', filtered);
+      const filtered = values.image && values.image.filter((file) => file !== inputFile);
+      setValue('image', filtered);
     },
-    [setValue, values.images]
+    [setValue, values.image]
   );
 
+
   const handleRemoveAllFiles = useCallback(() => {
-    setValue('images', []);
+    setValue('image', []);
   }, [setValue]);
+
 
   const handleChangeIncludeTaxes = useCallback((event) => {
     setIncludeTaxes(event.target.checked);
@@ -172,25 +214,34 @@ export default function ProductNewEditForm({ currentProduct }) {
 
   const renderDetails = (
     <>
-{mdUp && (
-  <Grid md={4}>
-    <Typography variant="h6" sx={{ mb: 0.5 }}>
-      Detail
-    </Typography>
-    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-      Foto website, judul, dan deskripsi website.
-    </Typography>
-  </Grid>
-)}
+      {mdUp && (
+        <Grid md={4}>
+          <Typography variant="h6" sx={{ mb: 0.5 }}>
+            Detail
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Judul, deskripsi singkat, gambar...
+          </Typography>
+        </Grid>
 
+      )}
 
       <Grid xs={12} md={8}>
         <Card>
           {!mdUp && <CardHeader title="Details" />}
 
           <Stack spacing={3} sx={{ p: 3 }}>
-          <Stack spacing={1.5}>
-              <Typography variant="subtitle2">Foto Website (untuk logo)</Typography>
+            <RHFTextField name="title" label="Nama Website" />
+
+            <RHFTextField name="description" label="Deskripsi" multiline rows={4} />
+
+            {/* <Stack spacing={1.5}>
+              <Typography variant="subtitle2">Content</Typography>
+              <RHFEditor simple name="description" />
+            </Stack> */}
+
+            <Stack spacing={1.5}>
+              <Typography variant="subtitle2">Gambar</Typography>
               <RHFUpload
                 multiple
                 thumbnail
@@ -202,13 +253,6 @@ export default function ProductNewEditForm({ currentProduct }) {
                 onUpload={() => console.info('ON UPLOAD')}
               />
             </Stack>
-            <RHFTextField name="title" label="Nama Website" />
-
-            <RHFTextField name="description" label="Sub Description" multiline rows={4} />
-            {/* <Stack spacing={1.5}>
-              <Typography variant="subtitle2">Deskripsi</Typography>
-              <RHFEditor simple name="description"/>
-            </Stack> */}
           </Stack>
         </Card>
       </Grid>
@@ -220,11 +264,13 @@ export default function ProductNewEditForm({ currentProduct }) {
       {mdUp && (
         <Grid md={4}>
           <Typography variant="h6" sx={{ mb: 0.5 }}>
-            Lengkapi Data
+            Informasi Tambahan
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Kategori, url demo website, url video website.         </Typography>
+            Kategori, URL website, dan URL video demo...
+          </Typography>
         </Grid>
+
       )}
 
       <Grid xs={12} md={8}>
@@ -241,31 +287,49 @@ export default function ProductNewEditForm({ currentProduct }) {
                 md: 'repeat(2, 1fr)',
               }}
             >
+              <RHFTextField name="url" label="Link Website" />
+
+              <RHFTextField name="video_url" label="Link Youtube Website" />
+
               {/* <RHFTextField
-                name="price"
-                label="Harga"
+                name="quantity"
+                label="Quantity"
                 placeholder="0"
                 type="number"
                 InputLabelProps={{ shrink: true }}
               /> */}
 
               <RHFSelect native name="category_id" label="Kategori" InputLabelProps={{ shrink: true }}>
-                {PRODUCT_CATEGORY_GROUP_OPTIONS.map((category) => (
-                  <optgroup key={category.group} label={category.group}>
-                    {category.classify.map((classify) => (
-                      <option key={classify} value={classify}>
-                        {classify}
-                      </option>
-                    ))}
-                  </optgroup>
+                <option value={``}>- Pilih Kategori -</option>
+                {data?.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
                 ))}
               </RHFSelect>
-            <RHFTextField name="url" label="url demo website" />
+              <RHFSelect native name="status" label="Status" InputLabelProps={{ shrink: true }}>
+                <option value={``} selected>- Status -</option>
+                <option value='active'>
+                  Aktif
+                </option>
+                <option value='inactive'>
+                  Tidak Aktif
+                </option>
+              </RHFSelect>
 
+
+
+              {/* <RHFMultiSelect
+                checkbox
+                name="colors"
+                label="Colors"
+                options={PRODUCT_COLOR_NAME_OPTIONS}
+              /> */}
+
+              {/* <RHFMultiSelect checkbox name="sizes" label="Sizes" options={PRODUCT_SIZE_OPTIONS} /> */}
             </Box>
-            <RHFTextField name="video_url" label="url video website" />
-
-            {/* <RHFAutocomplete
+            {/* 
+            <RHFAutocomplete
               name="tags"
               label="Tags"
               placeholder="+ Tags"
@@ -329,12 +393,13 @@ export default function ProductNewEditForm({ currentProduct }) {
       {mdUp && (
         <Grid md={4}>
           <Typography variant="h6" sx={{ mb: 0.5 }}>
-            Mengatur Harga
+            Pengaturan Harga
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-           Harga website, diskon, dll.
+            Input terkait harga website
           </Typography>
         </Grid>
+
       )}
 
       <Grid xs={12} md={8}>
@@ -344,58 +409,22 @@ export default function ProductNewEditForm({ currentProduct }) {
           <Stack spacing={3} sx={{ p: 3 }}>
             <RHFTextField
               name="price"
-              label="Harga Normal"
-              placeholder="000.000"
+              label="Harga"
+              placeholder="000000"
               type="number"
               InputLabelProps={{ shrink: true }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
                     <Box component="span" sx={{ color: 'text.disabled' }}>
-                      Rp.
+                      Rp
                     </Box>
                   </InputAdornment>
                 ),
               }}
             />
 
-            <RHFTextField
-              name="price_sale"
-              label="Harga setelah diskon"
-              placeholder="000.000"
-              type="number"
-              InputLabelProps={{ shrink: true }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Box component="span" sx={{ color: 'text.disabled' }}>
-                      Rp.
-                    </Box>
-                  </InputAdornment>
-                ),
-              }}
-            />
 
- 
-
-            {/* {!includeTaxes && (
-              <RHFTextField
-                name="taxes"
-                label="Tax (%)"
-                placeholder="0.00"
-                type="number"
-                InputLabelProps={{ shrink: true }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Box component="span" sx={{ color: 'text.disabled' }}>
-                        %
-                      </Box>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            )} */}
           </Stack>
         </Card>
       </Grid>
@@ -406,19 +435,17 @@ export default function ProductNewEditForm({ currentProduct }) {
     <>
       {mdUp && <Grid md={4} />}
       <Grid xs={12} md={8} sx={{ display: 'flex', alignItems: 'center' }}>
-        <FormControlLabel
-          control={<Switch defaultChecked />}
-          label="Publish"
-          sx={{ flexGrow: 1, pl: 3 }}
-        />
 
         <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
-          {!currentProduct ? 'Create Product' : 'Save Changes'}
+          {!currentProduct ? 'Tambah Produk' : 'Simpan Perubahan'}
         </LoadingButton>
       </Grid>
     </>
   );
 
+  if (isLoading || isFetching) {
+    return <LoadingScreen />;
+  }
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Grid container spacing={3}>

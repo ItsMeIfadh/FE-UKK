@@ -24,17 +24,16 @@ import { useCheckoutContext } from '../checkout/context';
 export default function ProductItem({ product }) {
   const { onAddToCart } = useCheckoutContext();
 
-  const { id, name, coverUrl, price, colors, available, sizes, priceSale, newLabel, saleLabel } =
-    product;
+  const { id, title, images_url, price, colors, sizes, priceSale } = product;
 
   const linkTo = paths.product.details(id);
+  console.log('Generated link:', linkTo); // Periksa URL yang dihasilkan
 
   const handleAddCart = async () => {
     const newProduct = {
       id,
-      name,
-      coverUrl,
-      available,
+      title,
+      images_url,
       price,
       colors: [colors[0]],
       size: sizes[0],
@@ -47,29 +46,9 @@ export default function ProductItem({ product }) {
     }
   };
 
-  // const renderLabels = (newLabel.enabled || saleLabel.enabled) && (
-  //   <Stack
-  //     direction="row"
-  //     alignItems="center"
-  //     spacing={1}
-  //     sx={{ position: 'absolute', zIndex: 9, top: 16, right: 16 }}
-  //   >
-  //     {newLabel.enabled && (
-  //       <Label variant="filled" color="info">
-  //         {newLabel.content}
-  //       </Label>
-  //     )}
-  //     {saleLabel.enabled && (
-  //       <Label variant="filled" color="error">
-  //         {saleLabel.content}
-  //       </Label>
-  //     )}
-  //   </Stack>
-  // );
-
   const renderImg = (
     <Box sx={{ position: 'relative', p: 1 }}>
-      {!!available && (
+      <Tooltip title="Tambah ke keranjang" placement="bottom-end">
         <Fab
           color="warning"
           size="medium"
@@ -90,44 +69,38 @@ export default function ProductItem({ product }) {
         >
           <Iconify icon="solar:cart-plus-bold" width={24} />
         </Fab>
-      )}
-
-      <Tooltip title={!available && 'Out of stock'} placement="bottom-end">
-        <Image
-          alt={name}
-          src={coverUrl}
-          ratio="1/1"
-          sx={{
-            borderRadius: 1.5,
-            ...(!available && {
-              opacity: 0.48,
-              filter: 'grayscale(1)',
-            }),
-          }}
-        />
       </Tooltip>
+
+      <Image
+        alt={title}
+        src={images_url}
+        ratio="1/1"
+        sx={{
+          borderRadius: 1.5,
+        }}
+      />
     </Box>
   );
 
   const renderContent = (
     <Stack spacing={2.5} sx={{ p: 3, pt: 2 }}>
       <Link component={RouterLink} href={linkTo} color="inherit" variant="subtitle2" noWrap>
-        {name}
-      </Link>
+        {title}
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        {/* <ColorPreview colors={colors} /> */}
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          {/* <ColorPreview colors={colors} /> */}
 
-        <Stack direction="row" spacing={0.5} sx={{ typography: 'subtitle1' }}>
-          {priceSale && (
-            <Box component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>
-              {fCurrency(priceSale)}
-            </Box>
-          )}
+          <Stack direction="row" spacing={0.5} sx={{ typography: 'subtitle1' }}>
+            {priceSale && (
+              <Box component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>
+                {fCurrency(priceSale)}
+              </Box>
+            )}
 
-          <Box component="span">{fCurrency(price)}</Box>
+            <Box component="span">{fCurrency(price)}</Box>
+          </Stack>
         </Stack>
-      </Stack>
+      </Link>
     </Stack>
   );
 
@@ -139,8 +112,6 @@ export default function ProductItem({ product }) {
         },
       }}
     >
-      {/* {renderLabels} */}
-
       {renderImg}
 
       {renderContent}

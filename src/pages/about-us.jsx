@@ -8,7 +8,7 @@ export default function AboutPage() {
   return (
     <>
       <Helmet>
-        <title> PPLG Creations: About us</title>
+        <title> WebKu: About us</title>
       </Helmet>
 
       <AboutView />

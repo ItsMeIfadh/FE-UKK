@@ -8,7 +8,7 @@ export default function OverviewAppPage() {
   return (
     <>
       <Helmet>
-        <title> PPLG Creators: Admin Dashboard</title>
+        <title> WebKu: Admin Dashboard</title>
       </Helmet>
 
       <OverviewAppView />

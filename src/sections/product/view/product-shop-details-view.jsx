@@ -27,6 +27,8 @@ import ProductDetailsSummary from '../product-details-summary';
 import ProductDetailsCarousel from '../product-details-carousel';
 import ProductDetailsDescription from '../product-details-description';
 import { useCheckoutContext } from '../../checkout/context';
+import { useParams } from 'react-router';
+import { useFetchProductById } from 'src/hooks/product/useFetchProductById';
 
 // ----------------------------------------------------------------------
 
@@ -50,15 +52,19 @@ const SUMMARY = [
 
 // ----------------------------------------------------------------------
 
-export default function ProductShopDetailsView({ id }) {
+export default function ProductShopDetailsView() {
+  const { id } = useParams();
   const settings = useSettingsContext();
 
   const checkout = useCheckoutContext();
 
   const [currentTab, setCurrentTab] = useState('description');
 
-  const { product, productLoading, productError } = useGetProduct(id);
-
+  const { data, isLoading, isFetching, error } = useFetchProductById(id);
+  // console.log('Product:', product); // Periksa data produk yang diterima
+  // const { data: product } = data
+  // console.log(product)
+  console.log(data?.data?.description)
   const handleChangeTab = useCallback((event, newValue) => {
     setCurrentTab(newValue);
   }, []);
@@ -68,7 +74,7 @@ export default function ProductShopDetailsView({ id }) {
   const renderError = (
     <EmptyContent
       filled
-      title={`${productError?.message}`}
+      title={`sajdsak`}
       action={
         <Button
           component={RouterLink}
@@ -83,7 +89,7 @@ export default function ProductShopDetailsView({ id }) {
     />
   );
 
-  const renderProduct = product && (
+  const renderProduct = data && (
     <>
       <CustomBreadcrumbs
         links={[
@@ -92,22 +98,22 @@ export default function ProductShopDetailsView({ id }) {
             name: 'Shop',
             href: paths.product.root,
           },
-          { name: product?.name },
+          { name: data?.data?.title },
         ]}
         sx={{ mb: 5 }}
       />
 
       <Grid container spacing={{ xs: 3, md: 5, lg: 8 }}>
         <Grid xs={12} md={6} lg={7}>
-          <ProductDetailsCarousel product={product} />
+          <ProductDetailsCarousel product={data?.data} />
         </Grid>
 
         <Grid xs={12} md={6} lg={5}>
           <ProductDetailsSummary
-            product={product}
-            items={checkout.items}
-            onAddCart={checkout.onAddToCart}
-            onGotoStep={checkout.onGotoStep}
+            product={data?.data}
+            items={''}
+            onAddCart={''}
+            onGotoStep={''}
           />
         </Grid>
       </Grid>
@@ -152,7 +158,7 @@ export default function ProductShopDetailsView({ id }) {
             },
             {
               value: 'reviews',
-              label: `Reviews (${product.reviews.length})`,
+              label: `Reviews (3)`,
             },
           ].map((tab) => (
             <Tab key={tab.value} value={tab.value} label={tab.label} />
@@ -160,17 +166,17 @@ export default function ProductShopDetailsView({ id }) {
         </Tabs>
 
         {currentTab === 'description' && (
-          <ProductDetailsDescription description={product?.description} />
+          <ProductDetailsDescription description={data?.data?.description} />
         )}
 
-        {currentTab === 'reviews' && (
+        {/* {currentTab === 'reviews' && (
           <ProductDetailsReview
             ratings={product.ratings}
             reviews={product.reviews}
             totalRatings={product.totalRatings}
             totalReviews={product.totalReviews}
           />
-        )}
+        )} */}
       </Card>
     </>
   );
@@ -185,11 +191,11 @@ export default function ProductShopDetailsView({ id }) {
     >
       <CartIcon totalItems={checkout.totalItems} />
 
-      {productLoading && renderSkeleton}
+      {isLoading && renderSkeleton}
 
-      {productError && renderError}
+      {error && renderError}
 
-      {product && renderProduct}
+      {data && renderProduct}
     </Container>
   );
 }

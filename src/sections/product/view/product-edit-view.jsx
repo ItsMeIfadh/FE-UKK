@@ -10,14 +10,20 @@ import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
 import ProductNewEditForm from '../product-new-edit-form';
+import { useFetchProductById } from 'src/hooks/product/useFetchProductById';
+import { LoadingScreen } from 'src/components/loading-screen';
+import { useParams } from 'react-router';
 
 // ----------------------------------------------------------------------
 
-export default function ProductEditView({ id }) {
+export default function ProductEditView() {
   const settings = useSettingsContext();
-
-  const { product: currentProduct } = useGetProduct(id);
-
+  const { id } = useParams();
+  const { data: currentProduct, isLoading, isFetching } = useFetchProductById(id);
+  // console.log(currentProduct)
+  if (isLoading || isFetching) {
+    return <LoadingScreen />; // You can replace this with a loading spinner or skeleton component
+  }
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs

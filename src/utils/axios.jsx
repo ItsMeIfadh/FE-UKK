@@ -44,17 +44,32 @@ export const endpoints = {
   },
   user: {
     list: '/api/users',
-    create: '/api/users',
-    update: '/api/users',
-    delete: '/api/users',
-    getById: '/api/users',
+    create: '/api/users/create',
+    update: '/api/users/update',
+    delete: '/api/users/delete',
+    getById: '/api/users/detail',
   },
   product: {
     list: '/api/products',
-    create:'/api/products',
+    create: '/api/products',
+    delete: '/api/products',
+    update: '/api/products',
+    details: '/api/products',
+    search: '/api/product/search',
+  },
+  kategori: {
+    list: '/api/categories',
+    create: '/api/products',
     details: '/api/product/details',
     search: '/api/product/search',
-  }
+  },
+  cart: {
+    all: '/api/cart',
+    add: '/api/cart/add',
+    update: '/api/cart/update',
+    delete: '/api/cart/delete',
+  },
+
   // mail: {
   //   list: '/api/mail/list',
   //   details: '/api/mail/details',

@@ -22,7 +22,7 @@ import Iconify from 'src/components/iconify';
 
 const LINKS = [
   {
-    headline: 'PPLG Creations',
+    headline: 'WebKu',
     children: [
       { name: 'About us', href: paths.about },
       { name: 'Contact us', href: paths.contact },
