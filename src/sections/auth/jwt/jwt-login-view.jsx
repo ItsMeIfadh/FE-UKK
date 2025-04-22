@@ -61,12 +61,19 @@ export default function JwtLoginView() {
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
-
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await login?.(data.email, data.password);
-
-      router.push(returnTo || PATH_AFTER_LOGIN);
+      const user = await login?.(data.email, data.password); // pastikan login return user data
+  
+      let redirectPath = '/'; // default fallback
+  
+      if (user?.role === 'pengguna') {
+        redirectPath = '/main';
+      } else if (user?.role === 'admin' || user?.role === 'kelas') {
+        redirectPath = '/dashboard';
+      }
+  
+      router.push(returnTo || redirectPath);
       enqueueSnackbar('Login berhasil', { variant: 'success' });
     } catch (error) {
       console.error(error);
@@ -74,6 +81,7 @@ export default function JwtLoginView() {
       setErrorMsg(typeof error === 'string' ? error : error.message);
     }
   });
+  
 
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5 }}>
