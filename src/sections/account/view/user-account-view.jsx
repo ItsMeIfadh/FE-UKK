@@ -28,21 +28,7 @@ const TABS = [
     label: 'General',
     icon: <Iconify icon="solar:user-id-bold" width={24} />,
   },
-  {
-    value: 'billing',
-    label: 'Billing',
-    icon: <Iconify icon="solar:bill-list-bold" width={24} />,
-  },
-  {
-    value: 'notifications',
-    label: 'Notifications',
-    icon: <Iconify icon="solar:bell-bing-bold" width={24} />,
-  },
-  {
-    value: 'social',
-    label: 'Social links',
-    icon: <Iconify icon="solar:share-bold" width={24} />,
-  },
+
   {
     value: 'security',
     label: 'Security',
@@ -54,7 +40,7 @@ const TABS = [
 
 export default function AccountView() {
   const settings = useSettingsContext();
-  const { user } = useAuthContext()
+  const { user } = useAuthContext();
   // console.log(user)
   const [currentTab, setCurrentTab] = useState('general');
 

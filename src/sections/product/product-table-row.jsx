@@ -41,7 +41,7 @@ export default function ProductTableRow({
     price,
     publish,
     status,
-    images_url,
+    image_url,
     category,
     created_at,
     creator_name,
@@ -79,7 +79,7 @@ export default function ProductTableRow({
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
           <Avatar
             alt={title}
-            src={images_url}
+            src={image_url}
             variant="rounded"
             sx={{ width: 64, height: 64, mr: 2 }}
           />

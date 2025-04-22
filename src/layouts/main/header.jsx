@@ -24,12 +24,18 @@ import { navConfig } from './config-navigation';
 import NavMobile from './nav/mobile';
 import NavDesktop from './nav/desktop';
 //
-import { SettingsButton, HeaderShadow, LoginButton } from '../_common';
+import { SettingsButton, HeaderShadow, LoginButton, AccountPopover } from '../_common';
+import { useAuthContext } from 'src/auth/hooks';
+import { Button } from '@mui/material';
+import { RouterLink } from 'src/routes/components';
+import { paths } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
 export default function Header() {
   const theme = useTheme();
+
+  const { authenticated } = useAuthContext();
 
   const mdUp = useResponsive('up', 'md');
 
@@ -92,8 +98,21 @@ export default function Header() {
               Purchase Now
             </Button> */}
 
-            {mdUp && <LoginButton />}
-
+            {authenticated ? (
+              <Box sx={{ spacing: 1, display: 'flex', alignItems: 'center' }}>
+                {/* <NotificationsPopoverUser /> */}
+                <AccountPopover />
+              </Box>
+            ) : (
+              <Button
+                component={RouterLink}
+                href={paths.auth.jwt.login}
+                variant="outlined"
+                color="primary"
+              >
+                Login
+              </Button>
+            )}
             <SettingsButton
               sx={{
                 ml: { xs: 1, md: 0 },

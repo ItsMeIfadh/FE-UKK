@@ -24,7 +24,7 @@ import { useCheckoutContext } from '../checkout/context';
 export default function ProductItem({ product }) {
   const { onAddToCart } = useCheckoutContext();
 
-  const { id, title, images_url, price, colors, sizes, priceSale } = product;
+  const { id, title, image_url, price, colors, sizes, priceSale } = product;
 
   const linkTo = paths.product.details(id);
   console.log('Generated link:', linkTo); // Periksa URL yang dihasilkan
@@ -33,7 +33,7 @@ export default function ProductItem({ product }) {
     const newProduct = {
       id,
       title,
-      images_url,
+      image_url,
       price,
       colors: [colors[0]],
       size: sizes[0],
@@ -73,7 +73,7 @@ export default function ProductItem({ product }) {
 
       <Image
         alt={title}
-        src={images_url}
+        src={image_url}
         ratio="1/1"
         sx={{
           borderRadius: 1.5,

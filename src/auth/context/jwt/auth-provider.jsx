@@ -83,29 +83,35 @@ export function AuthProvider({ children }) {
   }, [initialize]);
 
   // LOGIN
-  const login = useCallback(async (email, password) => {
-    const data = { email, password };
+  const login = useCallback(
+    async (email, password) => {
+      const data = { email, password };
 
-    const response = await axios.post(endpoints.auth.login, data);
-    const { token: access_token } = response.data;
+      const response = await axios.post(endpoints.auth.login, data);
+      const { token: access_token } = response.data;
 
-    setSession(access_token);
+      setSession(access_token);
 
-    // Jangan dispatch manual, biarkan initialize mengambil user terbaru
-    await initialize();
-  }, [initialize]);
+      // Jangan dispatch manual, biarkan initialize mengambil user terbaru
+      await initialize();
+    },
+    [initialize]
+  );
 
   // REGISTER
-  const register = useCallback(async (email, password, firstName, lastName) => {
-    const data = { email, password, firstName, lastName };
+  const register = useCallback(
+    async (email, password, firstName, lastName) => {
+      const data = { email, password, firstName, lastName };
 
-    const response = await axios.post(endpoints.auth.register, data);
-    const { accessToken } = response.data;
+      const response = await axios.post(endpoints.auth.register, data);
+      const { accessToken } = response.data;
 
-    sessionStorage.setItem(STORAGE_KEY, accessToken);
+      sessionStorage.setItem(STORAGE_KEY, accessToken);
 
-    await initialize(); // Sama seperti login, fetch data user yang lengkap
-  }, [initialize]);
+      await initialize(); // Sama seperti login, fetch data user yang lengkap
+    },
+    [initialize]
+  );
 
   // LOGOUT
   const logout = useCallback(async () => {
@@ -123,16 +129,20 @@ export function AuthProvider({ children }) {
   const checkAuthenticated = state.user ? 'authenticated' : 'unauthenticated';
   const status = state.loading ? 'loading' : checkAuthenticated;
 
-  const memoizedValue = useMemo(() => ({
-    user: state.user,
-    method: 'jwt',
-    loading: status === 'loading',
-    authenticated: status === 'authenticated',
-    unauthenticated: status === 'unauthenticated',
-    login,
-    register,
-    logout,
-  }), [login, logout, register, state.user, status]);
+  const memoizedValue = useMemo(
+    () => ({
+      user: state.user,
+      method: 'jwt',
+      loading: status === 'loading',
+      authenticated: status === 'authenticated',
+      unauthenticated: status === 'unauthenticated',
+      login,
+      register,
+      logout,
+      initialize,
+    }),
+    [login, logout, register, state.user, status, initialize]
+  );
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;
 }

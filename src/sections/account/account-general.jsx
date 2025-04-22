@@ -30,6 +30,7 @@ import { useMutationProfileUser } from 'src/hooks/user/useMutationProfileUser';
 import { useFetchByIdUser } from 'src/hooks/user/useFetchByIdUser';
 import { LoadingScreen } from 'src/components/loading-screen';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAuthContext } from 'src/auth/hooks';
 // import { register } from 'numeral';
 
 // ----------------------------------------------------------------------
@@ -39,6 +40,8 @@ export default function AccountGeneral({ user: AuthUser }) {
   // console.log(AuthUser.email);
   // const { user } = useMockedUser();
   const queryClient = useQueryClient();
+  const { initialize } = useAuthContext();
+
 
   const { data: userLogeddin, isLoading, isFetching } = useFetchByIdUser(AuthUser?.id)
 
@@ -88,9 +91,11 @@ export default function AccountGeneral({ user: AuthUser }) {
   }, [userLogeddin, setValue]);
 
   const { mutate, isPending } = useMutationProfileUser({
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries(['fetch.user.by.id', AuthUser?.id]);
       enqueueSnackbar('Profil berhasil diperbarui', { variant: 'success' });
+      await initialize();
+
     },
     onError: (error) => {
       enqueueSnackbar(error.message, { variant: 'error' });
