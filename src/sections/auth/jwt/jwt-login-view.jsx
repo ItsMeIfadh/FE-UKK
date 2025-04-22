@@ -61,38 +61,19 @@ export default function JwtLoginView() {
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
-
-
   const onSubmit = handleSubmit(async (data) => {
     try {
-      // Melakukan login
-      await login?.(data.email, data.password);
-      
-      // Debugging: Cek status login dan peran pengguna
-      const user = useAuthContext().user;
-      console.log("User data after login:", user);  // Debugging user object
-      const userRole = user?.role;
-      console.log("User role:", userRole);  // Debugging role value
-      
-      // Pastikan userRole ada sebelum melanjutkan
-      if (userRole) {
-        // Arahkan pengguna berdasarkan peran
-        if (userRole === 'pengguna') {
-          console.log("Redirecting to homepage...");
-          router.push('/');  // Pengguna biasa diarahkan ke halaman utama
-        } else if (userRole === 'kelas' || userRole === 'admin') {
-          console.log("Redirecting to dashboard...");
-          router.push('/dashboard');  // Admin dan kelas diarahkan ke halaman dashboard
-        } else {
-          console.log("Redirecting to default page...");
-          router.push(returnTo || PATH_AFTER_LOGIN);  // Halaman default setelah login
-        }
-      } else {
-        // Jika peran pengguna tidak ditemukan, arahkan ke halaman login ulang
-        console.log("User role not found. Please login again.");
-        enqueueSnackbar('Peran pengguna tidak ditemukan.', { variant: 'error' });
+      const user = await login?.(data.email, data.password); // pastikan login return user data
+  
+      let redirectPath = '/'; // default fallback
+  
+      if (user?.role === 'pengguna') {
+        redirectPath = '/main';
+      } else if (user?.role === 'admin' || user?.role === 'kelas') {
+        redirectPath = '/dashboard';
       }
-      
+  
+      router.push(returnTo || redirectPath);
       enqueueSnackbar('Login berhasil', { variant: 'success' });
     } catch (error) {
       console.error(error);
@@ -100,7 +81,6 @@ export default function JwtLoginView() {
       setErrorMsg(typeof error === 'string' ? error : error.message);
     }
   });
-  
   
 
   const renderHead = (
