@@ -10,7 +10,7 @@
       "type": "vector"
     }
   },
-  "sprite": "mapbox://sprites/mapbox/basic-v8",
+"sprite": "https://yourdomain.com/sprites/your-sprite",
   "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
   "layers": [
     {
