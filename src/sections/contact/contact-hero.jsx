@@ -18,7 +18,7 @@ const CONTACTS = [
     address: 'Jl. Raya Laladon No.88, Ciomas, Bogor, Jawa Barat',
     // phoneNumber: '08xx-xxxx-xxxx',
   },
-  {
+  { 
     country: 'Instagram',
     address: '@pplgcreations',
     phoneNumber: '-',

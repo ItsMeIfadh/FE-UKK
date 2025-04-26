@@ -22,7 +22,7 @@ import Iconify from 'src/components/iconify';
 
 const LINKS = [
   {
-    headline: 'WebKu',
+    headline: 'PPLG Creations',
     children: [
       { name: 'About us', href: paths.about },
       { name: 'Contact us', href: paths.contact },
@@ -169,7 +169,7 @@ export default function Footer() {
         </Grid>
 
         <Typography variant="body2" sx={{ mt: 10 }}>
-          © 2021. All rights reserved
+        © 2021 PPLG CREATIONS. All rights reserved.
         </Typography>
       </Container>
     </Box>

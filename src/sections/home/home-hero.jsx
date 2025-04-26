@@ -198,7 +198,7 @@ export default function HomeHero() {
             repeat: Infinity,
           }}
         >
-          WebKu
+          PPLG Creations
         </StyledTextGradient>
       </m.div>
 

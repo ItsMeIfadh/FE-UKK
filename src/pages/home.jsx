@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <>
       <Helmet>
-        <title> WebKu: Dari Ide ke Inovasi, Semua Ada di Sini !</title>
+      <title>PPLG Creations | Showcase & Marketplace Karya Siswa SMKN 1 Ciomas</title>
       </Helmet>
 
       <HomeView />

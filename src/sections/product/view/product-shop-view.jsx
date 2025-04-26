@@ -159,7 +159,7 @@ export default function ProductShopView() {
           my: { xs: 1, md: 5 },
         }}
       >
-        Projects WebKu
+        Projects PPLG Creations
       </Typography>
 
       <Stack

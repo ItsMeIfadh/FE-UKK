@@ -36,10 +36,10 @@ export const endpoints = {
   kanban: '/api/kanban',
   calendar: '/api/calendar',
   auth: {
-    me: '/api/user', // untuk profile
-    meUpdate: '/api/user/update-profile', // untuk profile
+    me: '/api/user', 
+    meUpdate: '/api/user/update-profile', 
     login: '/api/login',
-    register: '/api/auth/register',
+    register: '/api/register',
     logout: '/api/logout',
   },
   user: {

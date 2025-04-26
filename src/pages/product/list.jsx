@@ -8,7 +8,7 @@ export default function ShopPage() {
   return (
     <>
       <Helmet>
-        <title> WebKu: Projects</title>
+        <title> PPLG Creations: Projects</title>
       </Helmet>
 
       <ProductShopView />
