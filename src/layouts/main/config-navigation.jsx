@@ -13,11 +13,11 @@ export const navConfig = [
     icon: <Iconify icon="solar:home-2-bold-duotone" />,
     path: '/',
   },
-  {
-    title: 'Products',
-    icon: <Iconify icon="solar:home-2-bold-duotone" />,
-    path: paths.projects,
-  },
+  // {
+  //   title: 'Products',
+  //   icon: <Iconify icon="solar:home-2-bold-duotone" />,
+  //   path: paths.projects,
+  // },
   {
     title: 'About Us',
     icon: <Iconify icon="solar:home-2-bold-duotone" />,
