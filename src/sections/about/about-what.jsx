@@ -47,9 +47,17 @@ export default function AboutWhat() {
         textAlign: { xs: 'center', md: 'unset' },
       }}
     >
-      <Grid container columnSpacing={{ md: 3 }} alignItems="flex-start">
+      <Grid container spacing={3} alignItems="flex-start">
         {mdUp && (
-          <Grid container xs={12} md={6} lg={7} alignItems="center" sx={{ pr: { md: 7 } }}>
+          <Grid
+            container
+            xs={12}
+            md={6}
+            lg={7}
+            spacing={3}
+            alignItems="center"
+            sx={{ pr: { md: 7 } }}
+          >
             <Grid xs={6}>
               <m.div variants={varFade().inUp}>
                 <Image
@@ -122,6 +130,9 @@ export default function AboutWhat() {
               color="inherit"
               size="large"
               endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+              }}
             >
               Lihat Karya Kami
             </Button>
@@ -129,6 +140,5 @@ export default function AboutWhat() {
         </Grid>
       </Grid>
     </Container>
-    // </Box>
   );
 }
