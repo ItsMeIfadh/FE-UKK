@@ -24,13 +24,12 @@ export default function HomeLookingFor() {
       color="inherit"
       size="large"
       variant="outlined"
-      target="_blank"
+      // target="_blank"
       rel="noopener"
-      href={paths.zoneUI}
+      href={paths.product.root}
       endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
     >
-      Visit Zone Landing Page
-    </Button>
+Lihat Karya Kami    </Button>
   );
 
   const renderDescription = (
@@ -43,12 +42,6 @@ export default function HomeLookingFor() {
       }}
     >
       <m.div variants={varFade().inDown}>
-        <Typography variant="overline" component="div" sx={{ color: 'text.disabled' }}>
-          Looking For a
-        </Typography>
-      </m.div>
-
-      <m.div variants={varFade().inDown}>
         <Typography
           variant="h2"
           sx={{
@@ -56,7 +49,14 @@ export default function HomeLookingFor() {
             mb: { md: 5 },
           }}
         >
-          Landing Page Template?
+          Kreativitas dari SMKN 1 Ciomas
+        </Typography>
+      </m.div>
+
+      <m.div variants={varFade().inDown}>
+        <Typography sx={{ color: 'text.secondary', mb: 3 }}>
+          Website ini memamerkan berbagai produk digital karya siswa dan alumni SMKN 1 Ciomas, seperti aplikasi web, e-learning, e-commerce, dan masih banyak lagi.
+          Temukan inspirasi, dukung talenta muda, dan jangan ragu untuk menjelajahi atau membeli karya mereka.
         </Typography>
       </m.div>
 

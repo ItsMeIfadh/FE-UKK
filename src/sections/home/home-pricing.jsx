@@ -34,21 +34,21 @@ export default function HomePricing() {
 
   const renderDescription = (
     <Stack spacing={3} sx={{ mb: 10, textAlign: 'center' }}>
-      <m.div variants={varFade().inUp}>
+      {/* <m.div variants={varFade().inUp}>
         <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
-          Paket harga
+          Rencana Harga
         </Typography>
-      </m.div>
+      </m.div> */}
 
       <m.div variants={varFade().inDown}>
         <Typography variant="h2">
-        Pilih Paket yang <br /> Sesuai dengan Kebutuhan Anda
+          Pilih Rencana yang Tepat <br /> untuk Platform Anda
         </Typography>
       </m.div>
 
       <m.div variants={varFade().inDown}>
         <Typography sx={{ color: 'text.secondary' }}>
-        Dapatkan website profesional sesuai kebutuhan bisnis Anda. <br /> Paket fleksibel untuk pertumbuhan Anda.
+          Pilih rencana yang sesuai dengan kebutuhan Anda. Fleksibel dan siap berkembang!
         </Typography>
       </m.div>
     </Stack>
@@ -103,40 +103,6 @@ export default function HomePricing() {
         </>
       )}
 
-      <m.div variants={varFade().in}>
-        <Box
-          sx={{
-            textAlign: 'center',
-            mt: {
-              xs: 5,
-              md: 10,
-            },
-          }}
-        >
-          <m.div variants={varFade().inDown}>
-            <Typography variant="h4">Masih Memiliki Pertanyaan?</Typography>
-          </m.div>
-
-          <m.div variants={varFade().inDown}>
-            <Typography sx={{ mt: 2, mb: 5, color: 'text.secondary' }}>
-            Kami siap membantu! Jika Anda memiliki pertanyaan tentang layanan kami,<br /> fitur software, atau 
-            paket harga, jangan ragu untuk menghubungi kami.
-            </Typography>
-          </m.div>
-
-          <m.div variants={varFade().inUp}>
-            <Button
-              color="inherit"
-              size="large"
-              variant="contained"
-              // href="mailto:support@minimals.cc?subject=[Feedback] from Customer"
-              href="#"
-            >
-              Hubungi kami
-            </Button>
-          </m.div>
-        </Box>
-      </m.div>
     </>
   );
 
@@ -181,7 +147,7 @@ function PlanCard({ plan, sx, ...other }) {
     >
       <Stack spacing={2}>
         <Typography variant="overline" component="div" sx={{ color: 'text.disabled' }}>
-          License
+          Lisensi
         </Typography>
 
         <Box sx={{ position: 'relative' }}>
@@ -245,19 +211,18 @@ function PlanCard({ plan, sx, ...other }) {
           );
         })}
       </Stack>
-
       <Stack alignItems="flex-end">
         <Button
           color="inherit"
           size="small"
-          target="_blank"
           rel="noopener"
-          href={paths.minimalUI}
+          href={paths.contactus}  // Mengarah ke halaman Contact Us
           endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
         >
-          Lihat Paket
+          Pelajari lebih lanjut
         </Button>
       </Stack>
+
     </Stack>
   );
 }

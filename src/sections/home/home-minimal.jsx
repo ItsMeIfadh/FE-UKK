@@ -49,15 +49,15 @@ export default function HomeMinimal() {
           mb: { xs: 5, md: 10 },
         }}
       >
-<m.div variants={varFade().inUp}>
+{/* <m.div variants={varFade().inUp}>
   <Typography component="div" variant="overline" sx={{ color: 'text.disabled' }}>
   PPLG Creations
   </Typography>
-</m.div>
+</m.div> */}
 
 <m.div variants={varFade().inDown}>
   <Typography variant="h2">
-    Jelajahi & <br /> Miliki Software Terbaik
+    Jelajahi & Miliki<br /> Software Terbaik
   </Typography>
 </m.div>
 
