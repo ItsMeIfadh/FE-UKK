@@ -50,7 +50,7 @@ export default function CheckoutSummary({
             <Typography variant="subtitle2">{fCurrency(1000000)}</Typography>
           </Stack>
 
-          <Stack direction=s"row" justifyContent="space-between">
+          <Stack direction="row" justifyContent="space-between">
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Discount
             </Typography>
