@@ -14,7 +14,7 @@ import HomeForDesigner from '../home-for-designer';
 import HomeColorPresets from '../home-color-presets';
 import HomeAdvertisement from '../home-advertisement';
 import HomeCleanInterfaces from '../home-clean-interfaces';
-import HomeHugePackElements from '../home-hugepack-elements';
+// import HomeHugePackElements from '../home-hugepack-elements';
 
 // ----------------------------------------------------------------------
 

@@ -33,21 +33,22 @@ export default function HomePricing() {
   }, []);
 
   const renderDescription = (
-    <Stack spacing={3} sx={{ mb: 10, textAlign: 'center' }}>
-      {/* <m.div variants={varFade().inUp}>
-        <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
-          Rencana Harga
-        </Typography>
-      </m.div> */}
-
+    <Stack
+      spacing={3}
+      sx={{
+        mb: { xs: 5, md: 10 },
+        textAlign: { xs: 'left', md: 'center' },
+        px: { xs: 2, md: 0 },
+      }}
+    >
       <m.div variants={varFade().inDown}>
-        <Typography variant="h2">
+        <Typography variant="h4" sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
           Pilih Rencana yang Tepat <br /> untuk Platform Anda
         </Typography>
       </m.div>
 
       <m.div variants={varFade().inDown}>
-        <Typography sx={{ color: 'text.secondary' }}>
+        <Typography sx={{ color: 'text.secondary', fontSize: { xs: '0.875rem', md: '1rem' } }}>
           Pilih rencana yang sesuai dengan kebutuhan Anda. Fleksibel dan siap berkembang!
         </Typography>
       </m.div>

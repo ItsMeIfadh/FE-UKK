@@ -76,7 +76,7 @@ export default function HomeAdvertisement() {
             bgcolor: 'common.white',
           }}
         >
-          Lihat Project
+          Lihat Karya Kami
         </Button>
 
         {/* 
