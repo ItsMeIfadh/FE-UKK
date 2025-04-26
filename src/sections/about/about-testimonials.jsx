@@ -5,7 +5,7 @@ import Masonry from '@mui/lab/Masonry';
 import { alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-// import Button from '@mui/material/Button';
+import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -17,7 +17,7 @@ import { useResponsive } from 'src/hooks/use-responsive';
 // utils
 import { fDate } from 'src/utils/format-time';
 // _mock
-import { _testimonials } from 'src/_mock';
+import { _testimonials } from 'src/_mock';  // You can update this to fetch real testimonials data
 // theme
 import { bgBlur, bgGradient, hideScroll } from 'src/theme/css';
 // components
@@ -28,19 +28,18 @@ import { MotionViewport, varFade } from 'src/components/animate';
 
 export default function AboutTestimonials() {
   const theme = useTheme();
-
   const mdUp = useResponsive('up', 'md');
 
-  // const renderLink = (
-  //   <Button color="primary" endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}>
-  //     Read more testimonials
-  //   </Button>
-  // );
+  const renderLink = (
+    <Button color="primary" endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}>
+      Baca lebih banyak testimoni
+    </Button>
+  );
 
   const renderDescription = (
     <Box
       sx={{
-        maxWidth: { md: 360 },
+        maxWidth: { md: 700 },
         textAlign: { xs: 'center', md: 'unset' },
       }}
     >
@@ -51,17 +50,16 @@ export default function AboutTestimonials() {
       </m.div>
 
       <m.div variants={varFade().inUp}>
-        <Typography variant="h2" sx={{ my: 3, color: 'common.white' }}>
-          Siapa yang <br />
-          menyukai karya kami
+        <Typography variant="h2" sx={{ my:3, color: 'common.white' }}>
+          Apa kata mereka tentang <br />
+          PPLG Creations
         </Typography>
       </m.div>
 
       <m.div variants={varFade().inUp}>
         <Typography sx={{ color: 'common.white' }}>
-          Tujuan kami adalah menciptakan produk dan layanan yang memuaskan dan berguna bagi
-          pengguna. Karena itu, kami terus mendengarkan masukan dan memperbaiki karya kami setiap
-          hari.
+          Kami di PPLG Creations berkomitmen untuk memberikan karya terbaik yang bisa dinikmati oleh semua. 
+          Mendengarkan umpan balik dari pengguna adalah bagian penting dari perkembangan kami.
         </Typography>
       </m.div>
 
@@ -71,7 +69,7 @@ export default function AboutTestimonials() {
           variants={varFade().inUp}
           sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}
         >
-          {/* {renderLink} */}
+          {renderLink}
         </Box>
       )}
     </Box>
@@ -102,7 +100,7 @@ export default function AboutTestimonials() {
       sx={{
         ...bgGradient({
           color: alpha(theme.palette.grey[900], 0.9),
-          imgUrl: '/assets/images/about/testimonials.jpg',
+          imgUrl: '/assets/images/about/testimonials.jpg',  // You can replace with a more relevant image
         }),
         overflow: 'hidden',
         height: { md: 840 },
@@ -140,7 +138,7 @@ export default function AboutTestimonials() {
             variants={varFade().inUp}
             sx={{ bottom: 60, position: 'absolute' }}
           >
-            {/* {renderLink} */}
+            {renderLink}
           </Box>
         )}
       </Container>
@@ -152,7 +150,6 @@ export default function AboutTestimonials() {
 
 function TestimonialCard({ testimonial, sx, ...other }) {
   const theme = useTheme();
-
   const { name, ratingNumber, postedDate, content, avatarUrl } = testimonial;
 
   return (

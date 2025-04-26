@@ -5,7 +5,7 @@ import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-// import Button from '@mui/material/Button';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -43,28 +43,27 @@ export default function AboutTeam() {
     <Container component={MotionViewport} sx={{ textAlign: 'center', py: { xs: 10, md: 15 } }}>
       <m.div variants={varFade().inDown}>
         <Typography variant="overline" sx={{ color: 'text.disabled' }}>
-          Team impian
+          Tim PPLG Creations
         </Typography>
       </m.div>
 
       <m.div variants={varFade().inUp}>
         <Typography variant="h2" sx={{ my: 3 }}>
-          Team yang hebat adalah kunci nya
-        </Typography>
+          Tim yang hebat adalah kuncinya        </Typography>
       </m.div>
 
       <m.div variants={varFade().inUp}>
-  <Typography
-    sx={{
-      mx: 'auto',
-      maxWidth: 640,
-      color: 'text.secondary',
-    }}
-  >
-    Tim kami terdiri dari siswa-siswi PPLG SMKN 1 Ciomas yang kreatif, berdedikasi, dan penuh semangat.
-    Kami bekerja sama untuk menciptakan karya-karya digital yang bermanfaat, inovatif, dan siap digunakan oleh masyarakat luas.
-  </Typography>
-</m.div>
+        <Typography
+          sx={{
+            mx: 'auto',
+            maxWidth: 640,
+            color: 'text.secondary',
+          }}
+        >
+          Tim di balik PPLG Creations terdiri dari para siswa-siswi jurusan PPLG yang memiliki kemampuan
+          dalam pengembangan perangkat lunak, siap untuk menunjukkan karya terbaik mereka.
+        </Typography>
+      </m.div>
 
       <Box sx={{ position: 'relative' }}>
         <CarouselArrows

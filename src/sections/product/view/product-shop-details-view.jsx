@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { useCallback, useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
@@ -11,24 +11,27 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 // routes
+import { useParams } from 'react-router';
+
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
-import { useGetProduct } from 'src/api/product';
+// import { useGetProduct } from 'src/api/product';
 // components
 import Iconify from 'src/components/iconify';
 import EmptyContent from 'src/components/empty-content';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
+import { useFetchProductById } from 'src/hooks/product/useFetchProductById';
+
 import CartIcon from '../common/cart-icon';
-import ProductDetailsReview from '../product-details-review';
+// import ProductDetailsReview from '../product-details-review';
+
 import { ProductDetailsSkeleton } from '../product-skeleton';
 import ProductDetailsSummary from '../product-details-summary';
 import ProductDetailsCarousel from '../product-details-carousel';
 import ProductDetailsDescription from '../product-details-description';
 import { useCheckoutContext } from '../../checkout/context';
-import { useParams } from 'react-router';
-import { useFetchProductById } from 'src/hooks/product/useFetchProductById';
 
 // ----------------------------------------------------------------------
 
@@ -59,8 +62,8 @@ export default function ProductShopDetailsView() {
   const checkout = useCheckoutContext();
 
   const [currentTab, setCurrentTab] = useState('description');
-
-  const { data, isLoading, isFetching, error } = useFetchProductById(id);
+// isFetching,
+  const { data, isLoading,  error } = useFetchProductById(id);
   // console.log('Product:', product); // Periksa data produk yang diterima
   // const { data: product } = data
   // console.log(product)
@@ -74,7 +77,7 @@ export default function ProductShopDetailsView() {
   const renderError = (
     <EmptyContent
       filled
-      title={`sajdsak`}
+      title={`  error: PropTypes.object,`}
       action={
         <Button
           component={RouterLink}
@@ -111,9 +114,9 @@ export default function ProductShopDetailsView() {
         <Grid xs={12} md={6} lg={5}>
           <ProductDetailsSummary
             product={data?.data}
-            items={''}
-            onAddCart={''}
-            onGotoStep={''}
+            items={`  error: PropTypes.object,`}
+            onAddCart={`  error: PropTypes.object,`}
+            onGotoStep={`  error: PropTypes.object,`}
           />
         </Grid>
       </Grid>
@@ -201,5 +204,5 @@ export default function ProductShopDetailsView() {
 }
 
 ProductShopDetailsView.propTypes = {
-  id: PropTypes.string,
+  // id: PropTypes.string,
 };
