@@ -11,7 +11,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 // routes
-// import { paths } from 'src/routes/paths';
+import { paths } from 'src/routes/paths';
 // hooks
 import { useResponsive } from 'src/hooks/use-responsive';
 // theme
@@ -22,9 +22,6 @@ import { HEADER } from 'src/layouts/config-layout';
 import Iconify from 'src/components/iconify';
 import { RouterLink } from 'src/routes/components';
 import { MotionContainer, varFade } from 'src/components/animate';
-// tambahan
-import { PATH_AFTER_LOGIN } from 'src/config-global';
-
 
 // ----------------------------------------------------------------------
 
@@ -51,9 +48,10 @@ const StyledWrapper = styled('div')(({ theme }) => ({
     marginTop: HEADER.H_DESKTOP_OFFSET,
   },
 }));
+
 const StyledTextGradient = styled(m.h1)(({ theme }) => ({
   ...textGradient(
-    `300deg,rgba(0, 0, 153, 0.93) 0%,rgb(30, 101, 255) 50%`
+    `300deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 25%, ${theme.palette.primary.dark} 50%, ${theme.palette.primary.main} 75%, ${theme.palette.primary.light} 100%`
   ),
   padding: 0,
   marginTop: 8,
@@ -68,6 +66,7 @@ const StyledTextGradient = styled(m.h1)(({ theme }) => ({
     fontSize: `${96 / 16}rem`,
   },
 }));
+
 
 const StyledEllipseTop = styled('div')(({ theme }) => ({
   top: -80,
@@ -177,16 +176,7 @@ export default function HomeHero() {
         },
       }}
     >
-      {/* <m.div variants={varFade().in}>
-        <Typography
-          variant="h2"
-          sx={{
-            textAlign: 'center',
-          }}
-        >
-          Start a New Project with
-        </Typography>
-      </m.div> */}
+
 
       <m.div variants={varFade().in}>
         <StyledTextGradient
@@ -204,11 +194,9 @@ export default function HomeHero() {
 
       <m.div variants={varFade().in}>
         <Typography variant="body2" sx={{ textAlign: 'center' }}>
-          Temukan solusi digital terbaik untuk Anda. Software siap pakai yang dirancang untuk
-          efisiensi, performa, dan kemudahan penggunaan.
+          Temukan solusi digital terbaik untuk anda. Software siap pakai yang dirancang untuk efisiensi, performa, dan kemudahan penggunaan.
         </Typography>
       </m.div>
-
 
       <m.div variants={varFade().in}>
         <Stack
@@ -218,81 +206,32 @@ export default function HomeHero() {
           justifyContent="center"
           sx={{ my: 3 }}
         >
-          {/* <Rating readOnly value={4.95} precision={0.1} max={5} />
+          <Rating readOnly value={4.95} precision={0.1} max={5} />
           <Typography variant="caption" sx={{ color: 'text.secondary' }}>
             <Box component="strong" sx={{ mr: 0.5, color: 'text.primary' }}>
               4.96/5
             </Box>
             (99+ reviews)
-          </Typography> */}
-        </Stack>
-      </m.div>
-
-      <m.div variants={varFade().in}>
-        <Stack spacing={1.5} direction={{ xs: 'column-reverse', sm: 'row' }} sx={{ mb: 5 }}>
-          <Stack alignItems="center" spacing={2}>
-            <Button
-              component={RouterLink}
-              href={PATH_AFTER_LOGIN}
-              color="inherit"
-              size="large"
-              variant="contained"
-              startIcon={<Iconify icon="eva:rocket-launch" width={24} />}
-            >
-              Ayo Mulai
-            </Button>
-            {/* 
-            <Link
-              color="inherit"
-              variant="caption"
-              target="_blank"
-              rel="noopener"
-              href={paths.freeUI}
-              sx={{
-                textDecoration: 'underline',
-                display: 'inline-flex',
-                alignItems: 'center',
-              }}
-            >
-              <Iconify icon="eva:external-link-fill" width={16} sx={{ mr: 0.5 }} />
-              Get Free Version
-            </Link> */}
-          </Stack>
-
-          {/* <Button
-            color="inherit"
-            size="large"
-            variant="outlined"
-            startIcon={<Iconify icon="eva:external-link-fill" width={24} />}
-            target="_blank"
-            rel="noopener"
-            href={paths.figma}
-            sx={{ borderColor: 'text.primary' }}
-          >
-            Design Preview
-          </Button> */}
-        </Stack>
-      </m.div>
-
-      {/* <Stack spacing={3} sx={{ textAlign: 'center' }}>
-        <m.div variants={varFade().in}>
-          <Typography variant="overline" sx={{ opacity: 0.4 }}>
-            Available For
           </Typography>
-        </m.div>
-
-        <Stack spacing={2} direction="row" justifyContent="center">
-          {['figma', 'js', 'ts', 'nextjs', 'vite'].map((platform) => (
-            <m.div key={platform} variants={varFade().in}>
-              <Box
-                component="img"
-                src={`/assets/icons/platforms/ic_${platform}.svg`}
-                sx={{ width: 24, height: 24 }}
-              />
-            </m.div>
-          ))}
         </Stack>
-      </Stack> */}
+      </m.div>
+      <m.div variants={varFade().in}>
+  <Stack spacing={1.5} direction={{ xs: 'column-reverse', sm: 'row' }} sx={{ mb: 5 }}>
+    <Stack alignItems="center" spacing={2}>
+      <Button
+        component={RouterLink}
+        href={paths.dashboard.root}
+        size="large"
+        variant="contained"
+        color="primary" // <- ini bikin tombol jadi biru
+        startIcon={<Iconify icon="eva:flash-fill" width={24} />}
+      >
+        Ayo Mulai
+      </Button>
+    </Stack>
+  </Stack>
+</m.div>
+
     </Stack>
   );
 
