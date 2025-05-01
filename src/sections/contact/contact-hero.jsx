@@ -72,7 +72,7 @@ export default function ContactHero() {
       md: 'h1',    // Ukuran lebih besar lagi di laptop
     },
     fontWeight: 'bold',
-    textAlign: 'left', // Justify ke kiri
+    // textAlign: 'left', // Justify ke kiri
   }}
 />
 
@@ -96,7 +96,7 @@ export default function ContactHero() {
         sm: 'h1',   // Ukuran lebih besar di tablet
         md: 'h1',   // Ukuran lebih besar di laptop
       },
-      textAlign: 'left',  // Justify ke kiri
+      textAlign: 'center',  // Justify ke kiri
     }}
   />
   <TextAnimate
@@ -107,7 +107,7 @@ export default function ContactHero() {
         sm: 'h1',   // Ukuran lebih besar di tablet
         md: 'h1',   // Ukuran lebih besar di laptop
       },
-      textAlign: 'left',  // Justify ke kiri
+      textAlign: 'center',  // Justify ke kiri
     }}
   />
   <TextAnimate
@@ -118,7 +118,7 @@ export default function ContactHero() {
         sm: 'h1',   // Ukuran lebih besar di tablet
         md: 'h1',   // Ukuran lebih besar di laptop
       },
-      textAlign: 'left',  // Justify ke kiri
+      textAlign: 'center',  // Justify ke kiri
     }}
   />
   <TextAnimate
@@ -129,7 +129,7 @@ export default function ContactHero() {
         sm: 'h1',   // Ukuran lebih besar di tablet
         md: 'h1',   // Ukuran lebih besar di laptop
       },
-      textAlign: 'left',  // Justify ke kiri
+      textAlign: 'center',  // Justify ke kiri
     }}
   />
 </Stack>

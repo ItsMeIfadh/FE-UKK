@@ -17,28 +17,29 @@ import { RouterLink } from 'src/routes/components';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // _mock
-import { PRODUCT_STOCK_OPTIONS } from 'src/_mock';
+// import { PRODUCT_STOCK_OPTIONS } from 'src/_mock';
 // api
-import { useGetProducts } from 'src/api/product';
+// import { useGetProducts } from 'src/api/product';
 // components
 import { useSettingsContext } from 'src/components/settings';
 import {
   useTable,
   getComparator,
-  emptyRows,
-  TableNoData,
   TableSkeleton,
-  TableEmptyRows,
+  TableNoData,
   TableHeadCustom,
   TableSelectedAction,
   TablePaginationCustom,
 } from 'src/components/table';
+
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
 import { useFetchAllProduct } from 'src/hooks/product/useFetchAllProduct';
+import { useFetchAllCategory } from 'src/hooks/kategori/useFetchAllCategory';
+
 import ProductTableRow from '../product-table-row';
 import ProductTableToolbar from '../product-table-toolbar';
 import ProductTableFiltersResult from '../product-table-filters-result';
@@ -56,13 +57,14 @@ const TABLE_HEAD = [
 
 const PUBLISH_OPTIONS = [
   { value: 'published', label: 'Published' },
-  { value: 'draft', label: 'Draft' },
+  { value: 'unpublished', label: 'Unpublished' },
 ];
 
 const defaultFilters = {
-  name: '',
+  title: '',
   publish: [],
   stock: [],
+  category: [], // Add category to default filters
 };
 
 // ----------------------------------------------------------------------
@@ -81,9 +83,20 @@ export default function ProductListView() {
   const { data: response, isLoading: productsLoading } = useFetchAllProduct();
 
   const products = useMemo(() => response?.products || [], [response]);
-  
+  const { data: categories, isLoading: categoriesLoading } = useFetchAllCategory();
 
-  console.log(response);
+  // Extract unique categories from products
+  const categoryOptions = useMemo(() => {
+    if (categories && categories.length > 0) {
+      return categories.map((category) => ({
+        value: category.id,
+        label: category.name,
+      }));
+    }
+    return [];
+  }, [categories]);
+
+  // console.log(response);
   const productsEmpty = products.length === 0;
 
   // const { products, productsLoading, productsEmpty } = useGetProducts();
@@ -111,7 +124,10 @@ export default function ProductListView() {
 
   const canReset = !isEqual(defaultFilters, filters);
 
-  const notFound = (!dataFiltered.length && canReset) || productsEmpty;
+  // const notFound = !productsLoading && (dataFiltered.length === 0 || productsEmpty);
+  const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
+
+
 
   const handleFilters = useCallback(
     (name, value) => {
@@ -194,8 +210,9 @@ export default function ProductListView() {
             filters={filters}
             onFilters={handleFilters}
             //
-            stockOptions={PRODUCT_STOCK_OPTIONS}
+            // stockOptions={PRODUCT_STOCK_OPTIONS}
             publishOptions={PUBLISH_OPTIONS}
+            categoryOptions={categoryOptions} // Pass category options to toolbar
           />
 
           {canReset && (
@@ -247,33 +264,35 @@ export default function ProductListView() {
                   }
                 />
 
-<TableBody>
-  {productsLoading ? (
-    [...Array(table.rowsPerPage)].map((i, index) => (
-      <TableSkeleton key={index} sx={{ height: denseHeight }} />
-    ))
-  ) : (
-    <>
-      {dataFiltered
-        .slice(
-          table.page * table.rowsPerPage,
-          table.page * table.rowsPerPage + table.rowsPerPage
-        )
-        .map((row) => (
-          <ProductTableRow
-            key={row.id}
-            row={row}
-            selected={table.selected.includes(row.id)}
-            onSelectRow={() => table.onSelectRow(row.id)}
-            onDeleteRow={() => handleDeleteRow(row.id)}
-            onEditRow={() => handleEditRow(row.id)}
-            onViewRow={() => handleViewRow(row.id)}
-            creatorName={row.creator_name} // Menambahkan properti creator_name
-          />
-        ))}
-    </>
-  )}
-</TableBody>
+                <TableBody>
+                  {productsLoading ? (
+                    [...Array(table.rowsPerPage)].map((i, index) => (
+                      <TableSkeleton key={index} sx={{ height: denseHeight }} />
+                    ))
+                  ) : (
+                    <>
+                      {dataFiltered
+                        .slice(
+                          table.page * table.rowsPerPage,
+                          table.page * table.rowsPerPage + table.rowsPerPage
+                        )
+                        .map((row) => (
+                          <ProductTableRow
+                            key={row.id}
+                            row={row}
+                            selected={table.selected.includes(row.id)}
+                            onSelectRow={() => table.onSelectRow(row.id)}
+                            onDeleteRow={() => handleDeleteRow(row.id)}
+                            onEditRow={() => handleEditRow(row.id)}
+                            onViewRow={() => handleViewRow(row.id)}
+                            creatorName={row.creator_name} // Menambahkan properti creator_name
+                          />
+                        ))}
+                                          </>
+                  )}
+                                    <TableNoData notFound={notFound} />
+                  
+                </TableBody>
 
               </Table>
             </Scrollbar>
@@ -298,7 +317,7 @@ export default function ProductListView() {
         title="Delete"
         content={
           <>
-            Are you sure want to delete <strong> {table.selected.length} </strong> items?
+            Apakah Anda yakin ingin menghapus <strong> {table.selected.length} </strong> data ini?
           </>
         }
         action={
@@ -321,7 +340,7 @@ export default function ProductListView() {
 // ----------------------------------------------------------------------
 
 function applyFilter({ inputData, comparator, filters }) {
-  const { name, stock, publish } = filters;
+  const { title, stock, publish, category } = filters;
 
   const stabilizedThis = inputData.map((el, index) => [el, index]);
 
@@ -333,9 +352,9 @@ function applyFilter({ inputData, comparator, filters }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
-  if (name) {
+  if (title) {
     inputData = inputData.filter(
-      (product) => product.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+      (product) => product.title.toLowerCase().indexOf(title.toLowerCase()) !== -1
     );
   }
 
@@ -344,7 +363,14 @@ function applyFilter({ inputData, comparator, filters }) {
   }
 
   if (publish.length) {
-    inputData = inputData.filter((product) => publish.includes(product.publish));
+    inputData = inputData.filter((product) => publish.includes(product.status));
+  }
+  
+  // Add category filter
+  if (category.length) {
+    inputData = inputData.filter((product) => 
+      product.category && category.includes(product.category.id)
+    );
   }
 
   return inputData;

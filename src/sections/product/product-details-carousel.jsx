@@ -64,7 +64,9 @@ const StyledThumbnailsContainer = styled('div')(({ length, theme }) => ({
 export default function ProductDetailsCarousel({ product }) {
   const theme = useTheme();
 
-  const slides = product.images_url
+  const slides = [product.image]; // ubah jadi array agar kompatibel
+  console.log(product.image);
+
 
   const lightbox = useLightBox(slides);
 
@@ -109,26 +111,58 @@ export default function ProductDetailsCarousel({ product }) {
         asNavFor={carouselThumb.nav}
         ref={carouselLarge.carouselRef}
       >
-        {/* {slides.map((slide) => ( */}
         <Image
-          key={slides}
-          alt={`asdasd`}
-          src={slides}
+          key="amoled"
+          alt={slides[0]}
+          src={slides[0]}
           ratio="1/1"
-          onClick={() => lightbox.onOpen(slide.src)}
+          onClick={() => lightbox.onOpen(slides[0])}
           sx={{ cursor: 'zoom-in' }}
         />
-        {/* ))} */}
       </Carousel>
 
       <CarouselArrowIndex
         index={carouselLarge.currentIndex}
-        total={1}
+        total={slides.length}
         onNext={carouselThumb.onNext}
         onPrev={carouselThumb.onPrev}
       />
     </Box>
   );
+
+
+  // const renderLargeImg = (
+  //   <Box
+  //     sx={{
+  //       mb: 3,
+  //       borderRadius: 2,
+  //       overflow: 'hidden',
+  //       position: 'relative',
+  //     }}
+  //   >
+  //     <Carousel
+  //       {...carouselLarge.carouselSettings}
+  //       asNavFor={carouselThumb.nav}
+  //       ref={carouselLarge.carouselRef}
+  //     >
+  //       <Image
+  //         alt="product-image"
+  //         src={slides[0]} // ✅ fix
+  //         ratio="1/1"
+  //         onClick={() => lightbox.onOpen(0)} // karena cuma 1 gambar, index 0
+  //         sx={{ cursor: 'zoom-in' }}
+  //       />
+  //     </Carousel>
+
+  //     <CarouselArrowIndex
+  //       index={carouselLarge.currentIndex}
+  //       total={1}
+  //       onNext={carouselThumb.onNext}
+  //       onPrev={carouselThumb.onPrev}
+  //     />
+  //   </Box>
+  // );
+
 
   const renderThumbnails = (
     <StyledThumbnailsContainer length={1}>
@@ -137,26 +171,23 @@ export default function ProductDetailsCarousel({ product }) {
         asNavFor={carouselLarge.nav}
         ref={carouselThumb.carouselRef}
       >
-        {/* {slides.map((item, index) => ( */}
-        <Box key={slides} sx={{ px: 0.5 }}>
+        <Box sx={{ px: 0.5 }}>
           <Avatar
-            key={slides}
-            alt={`shadjsad`}
-            src={slides}
+            alt="o"
+            src={slides[0]} // ✅ fix
             variant="rounded"
             sx={{
               width: THUMB_SIZE,
               height: THUMB_SIZE,
-              opacity: 0.48,
-              cursor: 'pointer',
-              opacity: 1,
               border: `solid 2.5px ${theme.palette.primary.main}`,
+              cursor: 'pointer',
             }}
           />
         </Box>
       </Carousel>
     </StyledThumbnailsContainer>
   );
+
 
   return (
     <Box

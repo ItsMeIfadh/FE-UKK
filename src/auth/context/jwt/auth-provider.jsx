@@ -85,17 +85,31 @@ export function AuthProvider({ children }) {
   // LOGIN
   const login = useCallback(
     async (email, password) => {
-      const data = { email, password };
+      try {
+        const data = { email, password };
 
-      const response = await axios.post(endpoints.auth.login, data);
-      const { token: access_token } = response.data;
+        const response = await axios.post(endpoints.auth.login, data);
+        const { token: access_token } = response.data;
 
-      setSession(access_token);
+        setSession(access_token);
 
-      // Jangan dispatch manual, biarkan initialize mengambil user terbaru
-      await initialize();
+        // Get user data
+        const userResponse = await axios.get(endpoints.auth.me);
+        const user = userResponse?.data?.user || null;
+
+        dispatch({
+          type: 'LOGIN',
+          payload: {
+            user,
+          },
+        });
+
+        return user; // Return user data for redirection based on role
+      } catch (error) {
+        throw error;
+      }
     },
-    [initialize]
+    []
   );
 
   // REGISTER
@@ -108,7 +122,7 @@ export function AuthProvider({ children }) {
 
       sessionStorage.setItem(STORAGE_KEY, accessToken);
 
-      await initialize(); // Sama seperti login, fetch data user yang lengkap
+      await initialize(); // Fetch complete user data
     },
     [initialize]
   );

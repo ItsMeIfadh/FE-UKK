@@ -21,32 +21,44 @@ export default function ProductTableToolbar({
   filters,
   onFilters,
   //
-  stockOptions,
+  // stockOptions,
   publishOptions,
+  categoryOptions, // Add category options
 }) {
   const popover = usePopover();
 
   const handleFilterName = useCallback(
     (event) => {
-      onFilters('name', event.target.value);
+      onFilters('title', event.target.value);
     },
     [onFilters]
   );
 
-  const handleFilterStock = useCallback(
+  // const handleFilterStock = useCallback(
+  //   (event) => {
+  //     onFilters(
+  //       'stock',
+  //       typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value
+  //     );
+  //   },
+  //   [onFilters]
+  // );
+
+  const handleFilterPublish = useCallback(
     (event) => {
       onFilters(
-        'stock',
+        'publish',
         typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value
       );
     },
     [onFilters]
   );
 
-  const handleFilterPublish = useCallback(
+  // Add handler for category filter
+  const handleFilterCategory = useCallback(
     (event) => {
       onFilters(
-        'publish',
+        'category',
         typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value
       );
     },
@@ -67,28 +79,36 @@ export default function ProductTableToolbar({
           pr: { xs: 2.5, md: 1 },
         }}
       >
+        {/* Category Filter */}
         <FormControl
           sx={{
             flexShrink: 0,
             width: { xs: 1, md: 200 },
           }}
         >
-          <InputLabel>Stock</InputLabel>
+          <InputLabel>Kategori</InputLabel>
 
           <Select
             multiple
-            value={filters.stock}
-            onChange={handleFilterStock}
-            input={<OutlinedInput label="Stock" />}
-            renderValue={(selected) => selected.map((value) => value).join(', ')}
+            value={filters.category}
+            onChange={handleFilterCategory}
+            input={<OutlinedInput label="Kategori" />}
+            renderValue={(selected) => {
+              // Map selected ids to their names
+              const selectedLabels = selected.map(id => {
+                const option = categoryOptions.find(opt => opt.value === id);
+                return option ? option.label : id;
+              }).join(', ');
+              return selectedLabels;
+            }}
             sx={{ textTransform: 'capitalize' }}
           >
-            {stockOptions.map((option) => (
+            {categoryOptions.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 <Checkbox
                   disableRipple
                   size="small"
-                  checked={filters.stock.includes(option.value)}
+                  checked={filters.category.includes(option.value)}
                 />
                 {option.label}
               </MenuItem>
@@ -128,7 +148,7 @@ export default function ProductTableToolbar({
         <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
           <TextField
             fullWidth
-            value={filters.name}
+            value={filters.title}
             onChange={handleFilterName}
             placeholder="Search..."
             InputProps={{
@@ -187,5 +207,6 @@ ProductTableToolbar.propTypes = {
   filters: PropTypes.object,
   onFilters: PropTypes.func,
   publishOptions: PropTypes.array,
-  stockOptions: PropTypes.array,
+  // stockOptions: PropTypes.array,
+  categoryOptions: PropTypes.array, // Add propType for categoryOptions
 };

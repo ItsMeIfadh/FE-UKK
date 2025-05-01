@@ -14,7 +14,7 @@ import CheckoutCartProduct from './checkout-cart-product';
 const TABLE_HEAD = [
   { id: 'product', label: 'Product' },
   { id: 'price', label: 'Price' },
-  { id: 'quantity', label: 'Quantity' },
+  { id: 'kategori', label: 'Kategori' },
   { id: 'totalAmount', label: 'Total Price', align: 'right' },
   { id: '' },
 ];

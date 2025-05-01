@@ -28,7 +28,11 @@ export function RHFUploadAvatar({ name, ...other }) {
     />
   );
 }
-
+// RHFUpload.propTypes = {
+//   helperText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]), // Mendukung string atau elemen React
+//   multiple: PropTypes.bool,
+//   name: PropTypes.string,
+// };
 RHFUploadAvatar.propTypes = {
   name: PropTypes.string,
 };
@@ -103,3 +107,8 @@ RHFUpload.propTypes = {
   multiple: PropTypes.bool,
   name: PropTypes.string,
 };
+// RHFUpload.propTypes = {
+//   helperText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]), // Mendukung string atau elemen React
+//   multiple: PropTypes.bool,
+//   name: PropTypes.string,
+// };

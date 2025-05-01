@@ -12,6 +12,9 @@ import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 // utils
+import { useSnackbar } from 'notistack';
+import { useQueryClient } from '@tanstack/react-query';
+
 import { fCurrency } from 'src/utils/format-number';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -22,9 +25,7 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { useMutationDeleteProduct } from 'src/hooks/product/useMutationDeleteProduct';
 import { useRouter } from 'src/routes/hooks';
-import { useSnackbar } from 'notistack';
 import { paths } from 'src/routes/paths';
-import { useQueryClient } from '@tanstack/react-query';
 
 // ----------------------------------------------------------------------
 
@@ -32,14 +33,14 @@ export default function ProductTableRow({
   row,
   selected,
   onSelectRow,
-  onDeleteRow,
+  // onDeleteRow,
   onEditRow,
   onViewRow,
 }) {
   const {
     title,
     price,
-    publish,
+    // publish,
     status,
     image_url,
     category,
@@ -123,20 +124,22 @@ export default function ProductTableRow({
         <TableCell>{fCurrency(price)}</TableCell>
 
         <TableCell>
-          <Label
-            variant="soft"
-            color={
-              status === 'active'
-                ? 'success'
-                : status === 'inactive'
-                  ? 'warning'
-                  : 'default'
-            }
-          >
-            {status}
-          </Label>
+          {(() => {
+            const getStatusColor = () => {
+              if (status === 'published') return 'success';
+              if (status === 'unpublished') return 'warning';
+              return 'default';
+            };
+
+            return (
+              <Label variant="soft" color={getStatusColor()}>
+                {status === 'published' ? 'Dipublikasikan' : 'Tidak Dipublikasikan'}
+              </Label>
+            );
+          })()}
         </TableCell>
 
+        {/* <TableCell align="right"></TableCell> */}
         {/* <TableCell>
           <Label variant="soft" color={(publish === 'published' && 'info') || 'default'}>
             {publish}
@@ -192,10 +195,10 @@ export default function ProductTableRow({
         open={confirm.value}
         onClose={confirm.onFalse}
         title="Delete"
-        content="Are you sure want to delete?"
+        content="Apa Anda yakin ingin menghapus produk ini?"
         action={
           <Button variant="contained" color="error" onClick={handleDeleteProduct}>
-            {isPending ? 'Menghapus' : 'Delete'}
+            {isPending ? 'Menghapus' : 'Hapus'}
           </Button>
         }
       />
@@ -204,7 +207,7 @@ export default function ProductTableRow({
 }
 
 ProductTableRow.propTypes = {
-  onDeleteRow: PropTypes.func,
+  // onDeleteRow: PropTypes.func,
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,
   onViewRow: PropTypes.func,

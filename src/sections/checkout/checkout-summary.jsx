@@ -3,34 +3,42 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import TextField from '@mui/material/TextField';
-import CardHeader from '@mui/material/CardHeader';
+// import TextField from '@mui/material/TextField';
+// import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
-import InputAdornment from '@mui/material/InputAdornment';
+// import InputAdornment from '@mui/material/InputAdornment';
 // utils
 import { fCurrency } from 'src/utils/format-number';
 // components
-import Iconify from 'src/components/iconify';
+// import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
 export default function CheckoutSummary({
-  total,
-  discount,
-  subTotal,
-  shipping,
+  // total,
+  // discount,
+  // shipping,
   //
-  onEdit,
-  onApplyDiscount,
+  data,
+  // onEdit,
+  // onApplyDiscount,
 }) {
-  const displayShipping = shipping !== null ? 'Free' : '-';
+  // const displayShipping = shipping !== null ? 'Free' : '-';
+  console.log(data)
+  const cartItems = data?.cart || [];
+  console.log(cartItems)
+  const subTotal = cartItems.reduce((total, item) => {
+    const price = item.product?.final_price || 0;
+    return total + price;
+  }, 0);
+  
 
   return (
     <Card sx={{ mb: 3 }}>
-      <CardHeader
+      {/* <CardHeader
         title="Order Summary"
         action={
           onEdit && (
@@ -39,7 +47,7 @@ export default function CheckoutSummary({
             </Button>
           )
         }
-      />
+      /> */}
 
       <CardContent>
         <Stack spacing={2}>
@@ -47,24 +55,17 @@ export default function CheckoutSummary({
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Sub Total
             </Typography>
-            <Typography variant="subtitle2">{fCurrency(1000000)}</Typography>
+            <Typography variant="subtitle2">{fCurrency(subTotal)}</Typography>
           </Stack>
 
-          <Stack direction="row" justifyContent="space-between">
+          {/* <Stack direction="row" justifyContent="space-between">
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Discount
             </Typography>
             <Typography variant="subtitle2">{discount ? fCurrency(-discount) : '-'}</Typography>
           </Stack>
+ */}
 
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Shipping
-            </Typography>
-            <Typography variant="subtitle2">
-              {shipping ? fCurrency(shipping) : displayShipping}
-            </Typography>
-          </Stack>
 
           <Divider sx={{ borderStyle: 'dashed' }} />
 
@@ -72,7 +73,7 @@ export default function CheckoutSummary({
             <Typography variant="subtitle1">Total</Typography>
             <Box sx={{ textAlign: 'right' }}>
               <Typography variant="subtitle1" sx={{ color: 'error.main' }}>
-                {fCurrency(total)}
+                {fCurrency(subTotal)}
               </Typography>
               <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
                 (VAT included if applicable)
@@ -80,7 +81,7 @@ export default function CheckoutSummary({
             </Box>
           </Stack>
 
-          {onApplyDiscount && (
+          {/* {onApplyDiscount && (
             <TextField
               fullWidth
               placeholder="Discount codes / Gifts"
@@ -95,7 +96,7 @@ export default function CheckoutSummary({
                 ),
               }}
             />
-          )}
+          )} */}
         </Stack>
       </CardContent>
     </Card>
@@ -103,10 +104,11 @@ export default function CheckoutSummary({
 }
 
 CheckoutSummary.propTypes = {
-  total: PropTypes.number,
-  discount: PropTypes.number,
-  shipping: PropTypes.number,
-  subTotal: PropTypes.number,
-  onEdit: PropTypes.func,
-  onApplyDiscount: PropTypes.func,
+  // total: PropTypes.number,
+  data: PropTypes.any,
+  // discount: PropTypes.number,
+  // shipping: PropTypes.number,
+  // subTotal: PropTypes.number,
+  // onEdit: PropTypes.func,
+  // onApplyDiscount: PropTypes.func,
 };

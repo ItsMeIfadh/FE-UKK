@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query"
 import axiosInstance, { endpoints } from "src/utils/axios"
 
-export const useMutationAddToCart = ({ onSuccess,
+export const useMutationPaymentProduct = ({ onSuccess,
     onError }, id) => useMutation({
-        mutationKey: ['mutate.cart'],
+        mutationKey: ['mutate.cart.checkout'],
         mutationFn: async () => {
-            const response = await axiosInstance.post(endpoints.cart.add, {
+            const response = await axiosInstance.post(endpoints.cart.checkout, {
                 product_id: id
             })
             return response.data

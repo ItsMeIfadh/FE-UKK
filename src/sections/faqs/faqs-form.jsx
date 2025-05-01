@@ -6,11 +6,14 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 // 
+import { useState } from 'react';
 import { varFade, MotionViewport } from 'src/components/animate';
 
 // ----------------------------------------------------------------------
 
 export default function FaqsForm() {
+  const [questionType, setQuestionType] = useState('teknis'); // Nilai awal yang valid
+
   return (
     <Stack component={MotionViewport} spacing={3}>
       <m.div variants={varFade().inUp}>
@@ -30,20 +33,26 @@ export default function FaqsForm() {
       </m.div>
 
       <m.div variants={varFade().inUp}>
-        <TextField fullWidth label="Tipe Pertanyaan" select>
+        <TextField
+          fullWidth
+          label="Tipe Pertanyaan"
+          select
+          value={questionType} // Tambahkan value
+          onChange={(e) => setQuestionType(e.target.value)} // Tambahkan handler
+        >
           <MenuItem value="teknis">Masalah Teknis</MenuItem>
           <MenuItem value="lisensi">Pertanyaan Lisensi</MenuItem>
           <MenuItem value="generalis">Pertanyaan Umum</MenuItem>
         </TextField>
       </m.div>
-
+{/* 
       <m.div variants={varFade().inUp}>
         <TextField fullWidth label="Pilih Software" select>
           <MenuItem value="software1">Software 1</MenuItem>
           <MenuItem value="software2">Software 2</MenuItem>
           <MenuItem value="software3">Software 3</MenuItem>
         </TextField>
-      </m.div>
+      </m.div> */}
 
       <m.div variants={varFade().inUp}>
         <TextField fullWidth label="Tuliskan pesan atau pertanyaan Anda" multiline rows={4} />

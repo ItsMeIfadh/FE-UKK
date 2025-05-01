@@ -24,10 +24,11 @@ import { useCheckoutContext } from '../checkout/context';
 export default function ProductItem({ product }) {
   const { onAddToCart } = useCheckoutContext();
 
-  const { id, title, image_url, price, colors, sizes, priceSale } = product;
-
+  const { id, title, status, image_url, price, colors, sizes, priceSale } = product;
+  console.log(product)
   const linkTo = paths.product.details(id);
-  console.log('Generated link:', linkTo); // Periksa URL yang dihasilkan
+
+  const available = status === "published" ? true : false;
 
   const handleAddCart = async () => {
     const newProduct = {
@@ -46,9 +47,23 @@ export default function ProductItem({ product }) {
     }
   };
 
+  const renderLabels = (
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={1}
+      sx={{ position: 'absolute', zIndex: 9, top: 16, right: 16 }}
+    >
+
+      <Label variant="filled" color={available ? 'info' : 'error'}>
+        {available ? 'Tersedia' : 'Tidak Tersedia'}
+      </Label>
+    </Stack>
+  );
+
   const renderImg = (
     <Box sx={{ position: 'relative', p: 1 }}>
-      <Tooltip title="Tambah ke keranjang" placement="bottom-end">
+      {!!available && (
         <Fab
           color="warning"
           size="medium"
@@ -69,18 +84,25 @@ export default function ProductItem({ product }) {
         >
           <Iconify icon="solar:cart-plus-bold" width={24} />
         </Fab>
-      </Tooltip>
+      )}
 
-      <Image
-        alt={title}
-        src={image_url}
-        ratio="1/1"
-        sx={{
-          borderRadius: 1.5,
-        }}
-      />
+      <Tooltip title={!available && 'unpublished'} placement="bottom-end">
+        <Image
+          alt={title}
+          src={image_url}
+          ratio="1/1"
+          sx={{
+            borderRadius: 1.5,
+            ...(!available && {
+              opacity: 0.48,
+              filter: 'grayscale(1)',
+            }),
+          }}
+        />
+      </Tooltip>
     </Box>
   );
+
 
   const renderContent = (
     <Stack spacing={2.5} sx={{ p: 3, pt: 2 }}>
@@ -107,15 +129,22 @@ export default function ProductItem({ product }) {
   return (
     <Card
       sx={{
+        // maxWidth: 300, // Batasi ukuran maksimal kartu
         '&:hover .add-cart-btn': {
           opacity: 1,
         },
       }}
     >
+      {renderLabels}
+      {/* <Box sx={{ position: 'relative', p: 1 }}> */}
+
+
       {renderImg}
+      {/* </Box> */}
 
       {renderContent}
     </Card>
+
   );
 }
 

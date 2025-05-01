@@ -220,7 +220,7 @@ export default function HomeHero() {
     <Stack alignItems="center" spacing={2}>
       <Button
         component={RouterLink}
-        href={paths.dashboard.root}
+        href={paths.projects}
         size="large"
         variant="contained"
         color="primary" // <- ini bikin tombol jadi biru

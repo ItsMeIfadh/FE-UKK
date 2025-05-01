@@ -146,7 +146,7 @@ export default function ProductShopView() {
 
   return (
     <Container
-      maxWidth={settings.themeStretch ? false : 'lg'}
+      // maxWidth={settings.themeStretch ? false : 'lg'}
       sx={{
         mb: 15,
       }}

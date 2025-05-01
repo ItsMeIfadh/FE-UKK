@@ -52,7 +52,7 @@ export default function ProductNewEditForm({ currentProduct = '' }) {
   // console.log(currentProduct)
 
   const { data: detailProduct } = currentProduct
-  console.log(detailProduct?.id)
+  // console.log(detailProduct?.id)
   const router = useRouter();
 
   const mdUp = useResponsive('up', 'md');
@@ -62,7 +62,7 @@ export default function ProductNewEditForm({ currentProduct = '' }) {
   const [includeTaxes, setIncludeTaxes] = useState(false);
 
   const { data, isLoading, isFetching, isError } = useFetchAllCategory();
-  console.log(data)
+  // console.log(data)
 
   const { mutateAsync: createProduct } = useMutationCreateProduct({
     onSuccess: () => {
@@ -96,7 +96,7 @@ export default function ProductNewEditForm({ currentProduct = '' }) {
     category_id: Yup.string().required('Kategori wajib di isi'),
     price: Yup.number().typeError('Harga harus berupa angka').moreThan(0, 'Harga tidak boleh 0'),
     status: Yup.string()
-      .oneOf(['active', 'inactive'], 'Status tidak valid')  // Mengubah validasi status ke 'active' atau 'inactive'
+      .oneOf(['published', 'unpublished'], 'Status tidak valid')  // Mengubah validasi status ke 'active' atau 'inactive'
       .required('Status wajib diisi'),
   });
 
@@ -309,11 +309,11 @@ export default function ProductNewEditForm({ currentProduct = '' }) {
               </RHFSelect>
               <RHFSelect native name="status" label="Status" InputLabelProps={{ shrink: true }}>
                 <option value={``} selected>- Status -</option>
-                <option value='active'>
-                  Aktif
+                <option value='published'>
+                  Publish
                 </option>
-                <option value='inactive'>
-                  Tidak Aktif
+                <option value='unpublished'>
+                  Unpublish
                 </option>
               </RHFSelect>
 

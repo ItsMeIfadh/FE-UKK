@@ -9,20 +9,35 @@ import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 // utils
-import { fCurrency } from 'src/utils/format-number';
 // components
+// import IncrementerButton from '../product/common/incrementer-button';
+import { useQueryClient } from '@tanstack/react-query';
+import { useMutationDeleteCard } from 'src/hooks/cart/useMutationDeleteCard';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import { ColorPreview } from 'src/components/color-utils';
 //
-import IncrementerButton from '../product/common/incrementer-button';
+import { fCurrency } from 'src/utils/format-number';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
-export default function CheckoutCartProduct({ row, onDelete, onDecrease, onIncrease }) {
+export default function CheckoutCartProduct({ row }) {
+  const { product } = row
+  const { name, images_url: coverUrl, available } = product;
   console.log(row)
-  const { name, size, price, colors, coverUrl, quantity, available } = row;
+  const queryClient = useQueryClient()
+  const { enqueueSnackbar } = useSnackbar()
+  const { mutate, isPending } = useMutationDeleteCard({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['carts'] })
+      enqueueSnackbar('Cart Deleted', { variant: 'success' })
+    }
+  })
 
+  const handleDeleteCart = () => {
+    mutate(row?.cart_id)
+  }
   return (
     <TableRow>
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
@@ -30,7 +45,7 @@ export default function CheckoutCartProduct({ row, onDelete, onDecrease, onIncre
 
         <Stack spacing={0.5}>
           <Typography noWrap variant="subtitle2" sx={{ maxWidth: 240 }}>
-            {row?.product?.title}
+            {product?.title}
           </Typography>
 
           {/* <Stack
@@ -45,29 +60,22 @@ export default function CheckoutCartProduct({ row, onDelete, onDecrease, onIncre
         </Stack>
       </TableCell>
 
-      <TableCell>{fCurrency(row?.product?.price)}</TableCell>
+      <TableCell>{fCurrency(product?.price)}</TableCell>
 
       <TableCell>
         <Box sx={{ width: 88, textAlign: 'right' }}>
-          <IncrementerButton
-            quantity={quantity}
-            onDecrease={onDecrease}
-            onIncrease={onIncrease}
-            disabledDecrease={quantity <= 1}
-            disabledIncrease={quantity >= available}
-          />
 
           <Typography variant="caption" component="div" sx={{ color: 'text.secondary', mt: 1 }}>
-            Kategori: {row?.product?.category?.name}
+            {product?.category?.name}
           </Typography>
         </Box>
       </TableCell>
 
-      <TableCell align="right">{fCurrency(row?.product?.price * quantity)}</TableCell>
+      <TableCell align="right">{fCurrency(product?.price)}</TableCell>
 
       <TableCell align="right" sx={{ px: 1 }}>
-        <IconButton onClick={onDelete}>
-          <Iconify icon="solar:trash-bin-trash-bold" />
+        <IconButton onClick={handleDeleteCart}>
+          {isPending ? 'Deleting' : <Iconify icon="solar:trash-bin-trash-bold" />}
         </IconButton>
       </TableCell>
     </TableRow>
@@ -76,7 +84,4 @@ export default function CheckoutCartProduct({ row, onDelete, onDecrease, onIncre
 
 CheckoutCartProduct.propTypes = {
   row: PropTypes.object,
-  onDelete: PropTypes.func,
-  onDecrease: PropTypes.func,
-  onIncrease: PropTypes.func,
 };

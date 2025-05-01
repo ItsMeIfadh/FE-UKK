@@ -23,6 +23,9 @@ import { ColorPicker } from 'src/components/color-utils';
 import FormProvider, { RHFSelect } from 'src/components/hook-form';
 //
 import IncrementerButton from './common/incrementer-button';
+import { useMutationAddToCart } from 'src/hooks/cart/useMuatationAddToCart';
+import { useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -38,11 +41,11 @@ export default function ProductDetailsSummary({
 
   const {
     id,
-    name,
+    title: name,
     sizes,
     price,
-    image_url: coverUrl,
-    colors,
+    image: coverUrl,
+    url,
     newLabel,
     available,
     priceSale,
@@ -65,7 +68,7 @@ export default function ProductDetailsSummary({
     coverUrl,
     available,
     price,
-    // colors: colors[0],
+    url: url[0],
     // size: sizes[4],
     quantity: available < 1 ? 0 : 1,
   };
@@ -100,18 +103,16 @@ export default function ProductDetailsSummary({
       console.error(error);
     }
   });
-
-  const handleAddCart = useCallback(() => {
-    try {
-      onAddCart?.({
-        ...values,
-        colors: [values.colors],
-        subTotal: values.price * values.quantity,
-      });
-    } catch (error) {
-      console.error(error);
+  const queryClient = useQueryClient()
+  const { enqueueSnackbar } = useSnackbar()
+  const { mutate: handleAddCart, isPending } = useMutationAddToCart({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['carts'] })
+      enqueueSnackbar('Cart Ditambahkan', { variant: 'success' })
     }
-  }, [onAddCart, values]);
+  },
+
+    product?.id)
 
   const renderPrice = (
     <Box sx={{ typography: 'h5' }}>
@@ -172,79 +173,25 @@ export default function ProductDetailsSummary({
     </Stack>
   );
 
-  const renderColorOptions = (
+  const renderCategories = (
     <Stack direction="row">
       <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-        Color
+        Categories
       </Typography>
 
-      {/* <Controller
-        name="colors"
-        control={control}
-        render={({ field }) => (
-          <ColorPicker
-            colors={colors}
-            selected={field.value}
-            onSelectColor={(color) => field.onChange(color)}
-            limit={4}
-          />
-        )}
-      /> */}
+      <Typography>{product?.category?.name}</Typography>
     </Stack>
   );
 
   const renderSizeOptions = (
     <Stack direction="row">
       <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-        Size
+        Dibuat Oleh
       </Typography>
 
-      <RHFSelect
-        name="size"
-        size="small"
-        helperText={
-          <Link underline="always" color="textPrimary">
-            Size Chart
-          </Link>
-        }
-        sx={{
-          maxWidth: 88,
-          [`& .${formHelperTextClasses.root}`]: {
-            mx: 0,
-            mt: 1,
-            textAlign: 'right',
-          },
-        }}
-      >
-        {/* {sizes.map((size) => (
-          <MenuItem key={size} value={size}>
-            {size}
-          </MenuItem>
-        ))} */}
-      </RHFSelect>
-    </Stack>
-  );
-
-  const renderQuantity = (
-    <Stack direction="row">
-      <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-        Quantity
-      </Typography>
-
-      <Stack spacing={1}>
-        <IncrementerButton
-          name="quantity"
-          quantity={values.quantity}
-          disabledDecrease={values.quantity <= 1}
-          disabledIncrease={values.quantity >= available}
-          onIncrease={() => setValue('quantity', values.quantity + 1)}
-          onDecrease={() => setValue('quantity', values.quantity - 1)}
-        />
-
-        <Typography variant="caption" component="div" sx={{ textAlign: 'right' }}>
-          Available: {available}
-        </Typography>
-      </Stack>
+      <Link color="textPrimary">
+        {product?.creator_name}
+      </Link>
     </Stack>
   );
 
@@ -260,10 +207,15 @@ export default function ProductDetailsSummary({
         onClick={handleAddCart}
         sx={{ whiteSpace: 'nowrap' }}
       >
-        Tambah ke Keranjang
+        {isPending ? 'Menambahkan to cart...' : 'Tambah ke Cart'}
       </Button>
 
-      <Button fullWidth size="large" type="submit" variant="contained" disabled={disabledActions}>
+      <Button
+        fullWidth
+        size="large"
+        variant="contained"
+        onClick={() => window.open(url, '_blank')}
+      >
         Lihat Demo Website
       </Button>
     </Stack>
@@ -275,19 +227,7 @@ export default function ProductDetailsSummary({
     </Typography>
   );
 
-  const renderRating = (
-    <Stack
-      direction="row"
-      alignItems="center"
-      sx={{
-        color: 'text.disabled',
-        typography: 'body2',
-      }}
-    >
-      <Rating size="small" value={totalRatings} precision={0.1} readOnly sx={{ mr: 1 }} />
-      {`(${fShortenNumber(totalReviews)} reviews)`}
-    </Stack>
-  );
+  console.log(product)
 
   // const renderLabels = (newLabel.enabled || saleLabel.enabled) && (
   //   <Stack direction="row" alignItems="center" spacing={1}>
@@ -321,7 +261,7 @@ export default function ProductDetailsSummary({
 
           <Typography variant="h5">{name}</Typography>
 
-          {renderRating}
+          {/* {renderRating} */}
 
           {renderPrice}
 
@@ -330,11 +270,11 @@ export default function ProductDetailsSummary({
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        {renderColorOptions}
+        {renderCategories}
 
         {renderSizeOptions}
 
-        {renderQuantity}
+
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 

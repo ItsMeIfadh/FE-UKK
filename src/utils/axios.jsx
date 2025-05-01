@@ -32,9 +32,9 @@ export const fetcher = async (args) => {
 // ----------------------------------------------------------------------
 
 export const endpoints = {
-  chat: '/api/chat',
-  kanban: '/api/kanban',
-  calendar: '/api/calendar',
+  // chat: '/api/chat',
+  // kanban: '/api/kanban',
+  // calendar: '/api/calendar',
   auth: {
     me: '/api/user', 
     meUpdate: '/api/user/update-profile', 
@@ -65,9 +65,10 @@ export const endpoints = {
   },
   cart: {
     all: '/api/cart',
-    add: '/api/cart/add',
+    checkout: '/api/checkout',
+    add: '/api/cart',
     update: '/api/cart/update',
-    delete: '/api/cart/delete',
+    delete: '/api/cart',
   },
 
   // mail: {

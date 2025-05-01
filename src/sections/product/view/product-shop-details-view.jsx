@@ -1,4 +1,3 @@
-// import PropTypes from 'prop-types';
 import { useCallback, useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
@@ -12,72 +11,69 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 // routes
 import { useParams } from 'react-router';
-
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
-// import { useGetProduct } from 'src/api/product';
 // components
 import Iconify from 'src/components/iconify';
 import EmptyContent from 'src/components/empty-content';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-//
 import { useFetchProductById } from 'src/hooks/product/useFetchProductById';
-
 import CartIcon from '../common/cart-icon';
-// import ProductDetailsReview from '../product-details-review';
-
 import { ProductDetailsSkeleton } from '../product-skeleton';
 import ProductDetailsSummary from '../product-details-summary';
 import ProductDetailsCarousel from '../product-details-carousel';
 import ProductDetailsDescription from '../product-details-description';
 import { useCheckoutContext } from '../../checkout/context';
 
-// ----------------------------------------------------------------------
-
 const SUMMARY = [
   {
     title: '100% Original',
-    description: 'Chocolate bar candy canes ice cream toffee cookie halvah.',
+    description: 'Semua produk dijamin asli buatan siswa-siswi SMK berkualitas dan telah melalui proses kurasi.',
     icon: 'solar:verified-check-bold',
   },
   {
     title: '10 Day Replacement',
-    description: 'Marshmallow biscuit donut dragée fruitcake wafer.',
+    description: 'Jika terjadi bug atau kesalahan fungsi, produk dapat diganti dalam waktu 10 hari.',
     icon: 'solar:clock-circle-bold',
   },
   {
     title: 'Year Warranty',
-    description: 'Cotton candy gingerbread cake I love sugar sweet.',
+    description: 'Garansi dukungan teknis selama 3 bulan untuk semua produk yang tersedia.',
     icon: 'solar:shield-check-bold',
   },
 ];
 
-// ----------------------------------------------------------------------
 
 export default function ProductShopDetailsView() {
   const { id } = useParams();
   const settings = useSettingsContext();
-
   const checkout = useCheckoutContext();
 
   const [currentTab, setCurrentTab] = useState('description');
-// isFetching,
-  const { data, isLoading,  error } = useFetchProductById(id);
-  // console.log('Product:', product); // Periksa data produk yang diterima
-  // const { data: product } = data
-  // console.log(product)
-  console.log(data?.data?.description)
+
+  const { data, isLoading, error } = useFetchProductById(id);
+
   const handleChangeTab = useCallback((event, newValue) => {
     setCurrentTab(newValue);
   }, []);
+
+  const handleAddToCart = () => {
+    // ganti ini dengan logika nyata jika kamu punya
+    console.log('Add to cart clicked');
+  };
+
+  const handleGotoStep = (step) => {
+    // ganti ini juga jika punya implementasi checkout step
+    console.log('Go to step:', step);
+  };
 
   const renderSkeleton = <ProductDetailsSkeleton />;
 
   const renderError = (
     <EmptyContent
       filled
-      title={`  error: PropTypes.object,`}
+      title="Product tidak ditemukan"
       action={
         <Button
           component={RouterLink}
@@ -85,7 +81,7 @@ export default function ProductShopDetailsView() {
           startIcon={<Iconify icon="eva:arrow-ios-back-fill" width={16} />}
           sx={{ mt: 3 }}
         >
-          Back to List
+          Kembali ke list produk
         </Button>
       }
       sx={{ py: 10 }}
@@ -97,10 +93,7 @@ export default function ProductShopDetailsView() {
       <CustomBreadcrumbs
         links={[
           { name: 'Home', href: '/' },
-          {
-            name: 'Shop',
-            href: paths.product.root,
-          },
+          { name: 'Shop', href: paths.product.root },
           { name: data?.data?.title },
         ]}
         sx={{ mb: 5 }}
@@ -114,9 +107,8 @@ export default function ProductShopDetailsView() {
         <Grid xs={12} md={6} lg={5}>
           <ProductDetailsSummary
             product={data?.data}
-            items={`  error: PropTypes.object,`}
-            onAddCart={`  error: PropTypes.object,`}
-            onGotoStep={`  error: PropTypes.object,`}
+            onAddCart={handleAddToCart}
+            onGotoStep={handleGotoStep}
           />
         </Grid>
       </Grid>
@@ -172,12 +164,13 @@ export default function ProductShopDetailsView() {
           <ProductDetailsDescription description={data?.data?.description} />
         )}
 
+        {/* Jika ingin menambahkan review, aktifkan ini */}
         {/* {currentTab === 'reviews' && (
           <ProductDetailsReview
-            ratings={product.ratings}
-            reviews={product.reviews}
-            totalRatings={product.totalRatings}
-            totalReviews={product.totalReviews}
+            ratings={data?.data?.ratings}
+            reviews={data?.data?.reviews}
+            totalRatings={data?.data?.totalRatings}
+            totalReviews={data?.data?.totalReviews}
           />
         )} */}
       </Card>
@@ -186,23 +179,13 @@ export default function ProductShopDetailsView() {
 
   return (
     <Container
-      maxWidth={settings.themeStretch ? false : 'lg'}
-      sx={{
-        mt: 5,
-        mb: 15,
-      }}
+      // maxWidth={settings.themeStretch ? false : 'lg'}
+      sx={{ mt: 5, mb: 15 }}
     >
       <CartIcon totalItems={checkout.totalItems} />
-
       {isLoading && renderSkeleton}
-
       {error && renderError}
-
       {data && renderProduct}
     </Container>
   );
 }
-
-ProductShopDetailsView.propTypes = {
-  // id: PropTypes.string,
-};
